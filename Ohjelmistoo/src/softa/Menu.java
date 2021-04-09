@@ -15,23 +15,23 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 
     public void start(Stage alku) {
-    	  alku.setTitle("testi");
+    	  alku.setTitle("ListView Experiment 1");
     	  Text x = new Text("");
           ListView<String> listView = new ListView<String>();
           Pane ff = new Pane();
           ff.getChildren().add(x);
          
-          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); //testi 3
+          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
           listView.getItems().add("Uusi varaus");
           listView.getItems().add("Varaukset ja muokkaus");
-          listView.getItems().add("MÃ¶kit");
+          listView.getItems().add("Mökit");
           listView.getItems().add("Toiminta-alueet");
-          listView.getItems().add("Laskutusss");
+          listView.getItems().add("Laskutus");
           listView.setPrefSize(100, 150);
         
           
-          listView.setOnMouseReleased((EventHandler<? super MouseEvent>) new EventHandler<Event>() { // tÃ¤ssÃ¤ avataan sit eri nÃ¤kymÃ¤t ??? esimerkki vasta...
+          listView.setOnMouseReleased((EventHandler<? super MouseEvent>) new EventHandler<Event>() { // tässä avataan sit eri näkymät ??? esimerkki vasta...
 
               public void handle(Event event) {
                   		x.setText("Valittuina: "+listView.getSelectionModel().getSelectedItems().toString().replace("]", "").replace("[",""));
@@ -51,7 +51,7 @@ public class Menu extends Application {
         
 
         Scene kehys = new Scene(b,300,330);
-        alku.setTitle("MÃ¶kkivaraus softa !!!");
+        alku.setTitle("Mökkivaraus softa !!!");
         alku.setScene(kehys);
         alku.show();
     }
