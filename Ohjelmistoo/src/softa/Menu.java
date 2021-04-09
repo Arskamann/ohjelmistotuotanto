@@ -21,13 +21,13 @@ public class Menu extends Application {
           Pane ff = new Pane();
           ff.getChildren().add(x);
          
-          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); //testi
 
           listView.getItems().add("Uusi varaus");
           listView.getItems().add("Varaukset ja muokkaus");
           listView.getItems().add("Mökit");
           listView.getItems().add("Toiminta-alueet");
-          listView.getItems().add("Laskutus");
+          listView.getItems().add("Laskutusss");
           listView.setPrefSize(100, 150);
         
           
