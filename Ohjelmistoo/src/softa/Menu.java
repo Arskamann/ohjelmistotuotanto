@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 
     public void start(Stage alku) {
-    	  alku.setTitle("ListView Experiment 1");
+    	  alku.setTitle("testi");
     	  Text x = new Text("");
           ListView<String> listView = new ListView<String>();
           Pane ff = new Pane();
