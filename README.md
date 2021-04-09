@@ -1,3 +1,3 @@
 # ohjelmistotuotanto
 
-lol
+Tein nyt tohon yhen oh2 kurssin tehtävän pohjalta nopeesti jonkunlaisen alun, koitetaan saaha toimimaan kaikilla ...
