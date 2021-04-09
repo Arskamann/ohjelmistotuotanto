@@ -21,17 +21,17 @@ public class Menu extends Application {
           Pane ff = new Pane();
           ff.getChildren().add(x);
          
-          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); //testi
+          listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); //testi 3
 
           listView.getItems().add("Uusi varaus");
           listView.getItems().add("Varaukset ja muokkaus");
-          listView.getItems().add("Mökit");
+          listView.getItems().add("MÃ¶kit");
           listView.getItems().add("Toiminta-alueet");
           listView.getItems().add("Laskutusss");
           listView.setPrefSize(100, 150);
         
           
-          listView.setOnMouseReleased((EventHandler<? super MouseEvent>) new EventHandler<Event>() { // tässä avataan sit eri näkymät ??? esimerkki vasta...
+          listView.setOnMouseReleased((EventHandler<? super MouseEvent>) new EventHandler<Event>() { // tÃ¤ssÃ¤ avataan sit eri nÃ¤kymÃ¤t ??? esimerkki vasta...
 
               public void handle(Event event) {
                   		x.setText("Valittuina: "+listView.getSelectionModel().getSelectedItems().toString().replace("]", "").replace("[",""));
@@ -51,7 +51,7 @@ public class Menu extends Application {
         
 
         Scene kehys = new Scene(b,300,330);
-        alku.setTitle("Mökkivaraus softa !!!");
+        alku.setTitle("MÃ¶kkivaraus softa !!!");
         alku.setScene(kehys);
         alku.show();
     }
