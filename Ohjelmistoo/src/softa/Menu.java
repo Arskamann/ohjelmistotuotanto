@@ -47,7 +47,7 @@ public class Menu extends Application {
          b.setCenter(ff);
          
      
-     //testii wtf
+     //testii wtf!!
         
 
         Scene kehys = new Scene(b,300,330);
