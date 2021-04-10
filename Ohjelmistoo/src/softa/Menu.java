@@ -24,7 +24,7 @@ public class Menu extends Application {
 	
 
     public void start(Stage alku) {
-    	
+
     }
     
 
