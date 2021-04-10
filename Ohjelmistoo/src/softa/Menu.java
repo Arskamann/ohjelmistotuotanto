@@ -20,7 +20,9 @@ public class Menu extends Application {
           ListView<String> listView = new ListView<String>();
           Pane ff = new Pane();
           ff.getChildren().add(x);
-         
+
+
+          //rejected?
           listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
           listView.getItems().add("Uusi varaus");
