@@ -1,0 +1,5 @@
+Viikko 14:
+
+- Saatu kaikille github-eclipse yhteys toimimaan
+- Alustava visuaalinen suunnitelma
+- alustavaa työnjakoa
