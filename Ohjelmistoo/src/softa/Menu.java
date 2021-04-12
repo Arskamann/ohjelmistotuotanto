@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SelectionMode;
@@ -23,8 +25,11 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 	
 
-    public void start(Stage alku) {
-
+    public void start(Stage alku) throws IOException {
+    	Parent root = FXMLLoader.load(getClass().getResource("Ikkuna.fxml"));
+    	alku.setTitle("Hieno softa");
+    	alku.setScene(new Scene(root,300,300));
+    	alku.show();
     }
     
 
