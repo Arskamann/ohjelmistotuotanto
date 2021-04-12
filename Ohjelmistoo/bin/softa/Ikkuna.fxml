@@ -1,18 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.BorderPane?>
 
-
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/16">
-   <children>
-      <Canvas height="200.0" layoutX="-90.0" layoutY="-437.0" width="200.0" />
-      <VBox layoutX="27.0" prefHeight="200.0" prefWidth="100.0">
-         <children>
-            <Button fx:id="nappi" mnemonicParsing="false" text="Button" />
-         </children>
-      </VBox>
-   </children>
-</AnchorPane>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Menu">
+   <top>
+      <Button mnemonicParsing="false" onAction="#uusiVaraus" text="Uusi varaus" BorderPane.alignment="CENTER" />
+   </top>
+</BorderPane>
