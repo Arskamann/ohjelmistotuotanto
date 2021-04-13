@@ -1,6 +1,9 @@
 package softa;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -13,9 +16,13 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
+	static String kanta="mydb";
+	static String nimi="root";
+	static String salis="root"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
 	private static Stage stg;
 	@FXML
 	Button nappi;
+	Connection connection;
     public void start(Stage alku) throws IOException {
     	
     	stg=alku;
