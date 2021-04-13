@@ -46,6 +46,10 @@ public class Asiakastiedot extends Menu {
     	                 @Override
     	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
     	                     System.out.println(x.getText());
+    	                     String sisältö=x.getText();
+    	                     String[] sisältöosissa= sisältö.split(" ");
+    	                     String idd = sisältöosissa[0];
+    	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
     	                 }
     	             });
     	            lista.getItems().add(x);
