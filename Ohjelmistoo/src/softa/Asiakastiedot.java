@@ -36,7 +36,7 @@ public class Asiakastiedot extends Menu {
     		   lista.getItems().clear();
     		  
     		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-    			System.out.println("Connected With the database successfully");
+    			System.out.println("Tiedot saatu!");
     			PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas");
     	      
     	        ResultSet resultSet=preparedStatement.executeQuery();
@@ -76,7 +76,7 @@ public class Asiakastiedot extends Menu {
     	lista.getItems().clear();
  	   try {
  		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
- 			System.out.println("Connected With the database successfully");
+ 			System.out.println("Tiedot saatu!");
  			PreparedStatement preparedStatement=connection.prepareStatement(
  					"select * from asiakas where etunimi="+"'"+hakutext+"'"
  							+ "or asiakas_id="+"'"+hakutext+"'"
