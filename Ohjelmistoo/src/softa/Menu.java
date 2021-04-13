@@ -35,6 +35,7 @@ public class Menu extends Application {
     
     public void uusiVaraus(ActionEvent event) throws IOException {
 		changeScene("Uusivaraus.fxml");
+		
 	}
 	public void varaustenHallinta(ActionEvent event) throws IOException {
 		changeScene("VaraustenHallinta.fxml");
