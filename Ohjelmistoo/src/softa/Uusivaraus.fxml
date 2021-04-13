@@ -12,7 +12,7 @@
             <CheckBox mnemonicParsing="false" text="CheckBox" BorderPane.alignment="CENTER" />
          </center>
          <top>
-            <Button mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" BorderPane.alignment="TOP_LEFT" />
+            <Button fx:id="takas" mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" BorderPane.alignment="TOP_LEFT" />
          </top>
       </BorderPane>
    </children>
