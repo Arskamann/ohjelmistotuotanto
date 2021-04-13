@@ -3,13 +3,17 @@ package softa;
 import java.sql.*;
 
 public class MySQLAccess {
+
 	public static void main(String[] args) { // tehk‰‰ vaa muutoksia, t‰‰ oli testailua vaan
-		   try {
-		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "root"); 
+
+		try {
+
+		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/vn"+Menu.kanta, Menu.nimi, Menu.salis);
 		System.out.println("Connected With the database successfully");
-		PreparedStatement preparedStatement=connection.prepareStatement("select * from henkilo");
+		PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas");
         //Creating Java ResultSet object
         ResultSet resultSet=preparedStatement.executeQuery();
+
         while(resultSet.next()){
              String rollNo=resultSet.getString("idHenkilo");
              String name=resultSet.getString("nimi");
