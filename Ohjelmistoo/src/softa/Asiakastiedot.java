@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
@@ -39,7 +41,14 @@ public class Asiakastiedot extends Menu {
     	             String etu=resultSet.getString("etunimi");
     	             String suku=resultSet.getString("sukunimi");
     	             //Printing Results
-    	            lista.getItems().add(new Button(id+" "+etu+" "+suku));
+    	             Button x=new Button(id+" "+etu+" "+suku);
+    	             x.setOnAction(new EventHandler<ActionEvent>() {
+    	                 @Override
+    	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
+    	                     System.out.println(x.getText());
+    	                 }
+    	             });
+    	            lista.getItems().add(x);
     	           
     	        }
     			} catch (SQLException e) {
@@ -47,6 +56,11 @@ public class Asiakastiedot extends Menu {
     			}
     	   
     	   
+	}
+    public void henkilönappi(ActionEvent event,String id){
+ 	 
+ 	   
+ 	   
 	}
     
 	
