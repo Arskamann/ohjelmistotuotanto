@@ -50,14 +50,6 @@ public class Menu extends Application {
 		changeScene("MokkienHallinta.fxml");
 	}
 
-    
-    
-    
-    
-    
-    
-    
-    
     public void changeScene(String fxml) throws IOException {                      // t�ll� vaihdetaan ikkuna esim napin painnalluksella
     	Parent pane = FXMLLoader.load((getClass().getResource(fxml)));
     	stg.getScene().setRoot(pane);
