@@ -29,14 +29,15 @@ public class Asiakastiedot extends Menu {
     }
     public void listapäivitys(){
     	   try {
-    			
+    			Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "root");
+    			System.out.println("Connected With the database successfully");
     			PreparedStatement preparedStatement=connection.prepareStatement("select * from henkilo");
     	        //Creating Java ResultSet object
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        while(resultSet.next()){
-    	             String roll=resultSet.getString("idHenkilo");
-    	             String name=resultSet.getString("nimi");
-    	             String dept=resultSet.getString("rooli");
+    	             String roll=resultSet.getString("asiakas_id");
+    	             String name=resultSet.getString("etunimi");
+    	             String dept=resultSet.getString("sukunimi");
     	             //Printing Results
     	            lista.getItems().add(new Button(name));
     	           

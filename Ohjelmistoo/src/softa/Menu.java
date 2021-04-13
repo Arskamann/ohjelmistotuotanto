@@ -1,9 +1,6 @@
 package softa;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -16,14 +13,11 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
-	Connection connection;
 	private static Stage stg;
 	@FXML
 	Button nappi;
-	
-    public void start(Stage alku) throws IOException, SQLException {
-    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/mydb", "root", "root");
-		System.out.println("Connected With the database successfully");
+    public void start(Stage alku) throws IOException {
+    	
     	stg=alku;
     	Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
     
