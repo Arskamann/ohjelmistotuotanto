@@ -16,7 +16,7 @@ import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
-	static String kanta="mydb";
+	static String kanta="vn";
 	static String nimi="root";
 	static String salis="root"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
 	private static Stage stg;

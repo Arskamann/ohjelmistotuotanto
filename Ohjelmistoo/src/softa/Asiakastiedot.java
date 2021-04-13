@@ -31,15 +31,15 @@ public class Asiakastiedot extends Menu {
     	   try {
     		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
     			System.out.println("Connected With the database successfully");
-    			PreparedStatement preparedStatement=connection.prepareStatement("select * from henkilo");
+    			PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas");
     	        //Creating Java ResultSet object
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        while(resultSet.next()){
-    	             String roll=resultSet.getString("idHenkilo");
-    	             String name=resultSet.getString("nimi");
-    	             String dept=resultSet.getString("rooli");
+    	             String id=resultSet.getString("asiakas_id");
+    	             String etu=resultSet.getString("etunimi");
+    	             String suku=resultSet.getString("sukunimi");
     	             //Printing Results
-    	            lista.getItems().add(new Button(name));
+    	            lista.getItems().add(new Button(id+" "+etu+" "+suku));
     	           
     	        }
     			} catch (SQLException e) {
