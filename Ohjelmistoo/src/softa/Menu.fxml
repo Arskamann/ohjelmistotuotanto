@@ -5,9 +5,14 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Menu">
    <children>
-      <Button layoutX="114.0" layoutY="7.0" mnemonicParsing="false" onAction="#uusiVaraus" prefHeight="96.0" prefWidth="372.0" text="Uusi Varaus" />
+      <Button layoutX="114.0" layoutY="7.0" mnemonicParsing="false" onAction="#uusiVaraus" prefHeight="96.0" prefWidth="372.0" text="Uusi varaus" />
       <Button layoutX="114.0" layoutY="103.0" mnemonicParsing="false" onAction="#varaustenHallinta" prefHeight="96.0" prefWidth="372.0" text="Varausten hallinta" />
+<<<<<<< HEAD
       <Button layoutX="114.0" layoutY="199.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="372.0" text="Mökkien hallinta" />
       <Button layoutX="114.0" layoutY="295.0" mnemonicParsing="false" onAction="#asiakasTiedot" prefHeight="96.0" prefWidth="372.0" text="Asiakastiedot" />
+=======
+      <Button layoutX="114.0" layoutY="199.0" mnemonicParsing="false" onAction="#mokkienHallinta" prefHeight="96.0" prefWidth="372.0" text="Mökkien hallinta" />
+      <Button layoutX="114.0" layoutY="295.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="372.0" text="Asiakastiedot" />
+>>>>>>> branch 'main' of https://github.com/Arskamann/ohjelmistotuotanto.git
    </children>
 </AnchorPane>
