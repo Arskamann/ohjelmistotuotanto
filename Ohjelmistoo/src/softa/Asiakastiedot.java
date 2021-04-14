@@ -203,7 +203,7 @@ public class Asiakastiedot extends Menu {
 	
     PreparedStatement preparedStatement=connection.prepareStatement(
     		"update asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
-    				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
+    				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"' where asiakas_id="+iddd);
    preparedStatement.executeUpdate();
     tallenna.setText("Tallennettu");
     }
