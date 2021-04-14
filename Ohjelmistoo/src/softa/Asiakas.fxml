@@ -14,36 +14,31 @@
       <Accordion layoutX="139.0" layoutY="114.0" />
       <Pane layoutX="56.0" layoutY="58.0" prefHeight="271.0" prefWidth="489.0" style="-fx-background-color: skyblue;">
          <children>
-            <TextField fx:id="etu" layoutX="296.0" layoutY="33.0" />
+            <TextField fx:id="etu" layoutX="102.0" layoutY="33.0" />
             <Label layoutX="34.0" layoutY="37.0" text="Etunimi" />
-            <Label layoutX="9.0" layoutY="6.0" text="id">
+            <Label layoutX="36.0" layoutY="6.0" text="id:">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
-            <Label layoutX="26.0" layoutY="6.0" text="d">
+            <Label fx:id="i" layoutX="51.0" layoutY="6.0" text="d">
                <font>
                   <Font size="11.0" />
                </font>
             </Label>
             <Label layoutX="30.0" layoutY="68.0" text="Sukunimi" />
-            <TextField fx:id="suk" layoutX="296.0" layoutY="64.0" />
+            <TextField fx:id="suk" layoutX="102.0" layoutY="64.0" />
             <Label layoutX="13.0" layoutY="98.0" text="Puhelinnumero" />
-            <TextField fx:id="puh" layoutX="296.0" layoutY="94.0" />
+            <TextField fx:id="puh" layoutX="102.0" layoutY="94.0" />
             <Label layoutX="25.0" layoutY="127.0" text="Sähköposti" />
-            <TextField fx:id="säh" layoutX="296.0" layoutY="123.0" />
+            <TextField fx:id="säh" layoutX="102.0" layoutY="123.0" />
             <Label layoutX="36.0" layoutY="156.0" text="Osoite" />
-            <TextField fx:id="oso" layoutX="296.0" layoutY="152.0" />
+            <TextField fx:id="oso" layoutX="102.0" layoutY="152.0" />
             <Label layoutX="20.0" layoutY="185.0" text="Postinumero" />
-            <TextField fx:id="pos" layoutX="296.0" layoutY="181.0" />
-            <Label fx:id="su" layoutX="159.0" layoutY="68.0" />
-            <Label fx:id="et" layoutX="159.0" layoutY="37.0" />
-            <Label fx:id="pu" layoutX="159.0" layoutY="98.0" />
-            <Label fx:id="sä" layoutX="159.0" layoutY="127.0" />
-            <Label fx:id="os" layoutX="159.0" layoutY="156.0" />
-            <Label fx:id="po" layoutX="159.0" layoutY="185.0" />
+            <TextField fx:id="pos" layoutX="102.0" layoutY="181.0" />
          </children>
       </Pane>
-      <Button fx:id="tallenna" layoutX="78.0" layoutY="14.0" mnemonicParsing="false" text="Tallenna" />
+      <Button fx:id="tallenna" layoutX="78.0" layoutY="14.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
+      <Button fx:id="päiv" layoutX="52.0" layoutY="341.0" mnemonicParsing="false" onAction="#päivitä" text="Päivitä" />
    </children>
 </AnchorPane>

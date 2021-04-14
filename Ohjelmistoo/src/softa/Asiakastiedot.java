@@ -24,15 +24,8 @@ public class Asiakastiedot extends Menu {
 	private ListView<Button> lista;
 	@FXML
     private Button päivitä;
-	
-	 String etunimi="öpö";
-     String  sukunimi;
-     String puhelinnumero;
-     String  sähköposti;
-     String  osoite;
-     String postinumero;
-
-    public void menu(ActionEvent event) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
+	static int iddd=1;
+	public void menu(ActionEvent event) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
         
     }
@@ -40,7 +33,7 @@ public class Asiakastiedot extends Menu {
     	   try {
     		   lista.getItems().clear();
     		  
-    		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+    		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
     			System.out.println("Tiedot saatu!");
     			PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas");
     	      
@@ -52,24 +45,28 @@ public class Asiakastiedot extends Menu {
     	             String suku=resultSet.getString("sukunimi");
     	        
     	             Button x=new Button(id+" "+etu+" "+suku);
-    	            x.setOnAction(new EventHandler<ActionEvent>() {
-   	                 @Override
-   	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
-   	                     System.out.println(x.getText());
-   	                     String sisältö=x.getText();
-   	                     String[] sisältöosissa= sisältö.split(" ");
-   	                     int idd = Integer.parseInt(sisältöosissa[0]);
-   	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
-   	                     try {
-   							asiakas(idd);
-   						} catch (IOException e) {
-   							// TODO Auto-generated catch block
-   							e.printStackTrace();
-   						}
+    	            
+    	            x.setOnAction((event) -> {
+    	                System.out.println(x.getText());
+  	                     String sisältö=x.getText();
+  	                     String[] sisältöosissa= sisältö.split(" ");
+  	                    iddd = Integer.parseInt(sisältöosissa[0]);
+  	                   
+  	                  try {
+  	                	  
+  							changeScene("asiakas.fxml");
+  							asiakas(iddd);
+  							
+  						} catch (IOException e) {
+  							// TODO Auto-generated catch block
+  							e.printStackTrace();
+  						}
+    	            });
+   	            
+   	                    
    	                     
    	                     
-   	                 }
-   	             });
+   	             
     	
     	            lista.getItems().add(x);
     	           
@@ -153,21 +150,12 @@ public class Asiakastiedot extends Menu {
     TextField pos;
     @FXML
     Button tallenna;
+    
     @FXML
-    Label et;
-    @FXML
-    Label su;
-    @FXML
-    Label pu;
-    @FXML
-    Label sä;
-    @FXML
-    Label os;
-    @FXML
-    Label po;
+    Button päiv;
     
    
-    public void asiakas(int id) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
+    public void asiakas(int id) throws IOException {
         changeScene("asiakas.fxml");
        
         try {
@@ -180,12 +168,12 @@ public class Asiakastiedot extends Menu {
         
         while(resultSet.next()){
         	System.out.println(resultSet.getString("etunimi"));
-            et.setText(resultSet.getString("etunimi"));
-            su.setText(resultSet.getString("sukunimi"));
-            pu.setText(resultSet.getString("puhelinnro"));
-            sä.setText(resultSet.getString("email"));
-            os.setText(resultSet.getString("lahiosoite"));
-            po.setText(resultSet.getString("postinro"));
+            etu.setText(resultSet.getString("etunimi"));
+            suk.setText(resultSet.getString("sukunimi"));
+            puh.setText(resultSet.getString("puhelinnro"));
+            säh.setText(resultSet.getString("email"));
+            oso.setText(resultSet.getString("lahiosoite"));
+            pos.setText(resultSet.getString("postinro"));
             
         }
         
@@ -197,6 +185,47 @@ public class Asiakastiedot extends Menu {
 			e.printStackTrace();
 		}
      
+    }
+    public void tallenna() throws SQLException {
+    	
+    	System.out.println(iddd);
+    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+		System.out.println("Tiedot saatu!");
+		
+		String etunimi=etu.getText();
+		String sukunimi=suk.getText();
+		String numero=puh.getText();
+		String sähköposti=säh.getText();
+		String osoite=oso.getText();
+		String posti=pos.getText();
+		
+		
+	
+    PreparedStatement preparedStatement=connection.prepareStatement(
+    		"update asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
+    				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
+   preparedStatement.executeUpdate();
+    tallenna.setText("Tallennettu");
+    }
+    public void päivitä() throws SQLException{
+    	
+    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+		System.out.println("Tiedot saatu!");
+	
+    PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas where asiakas_id="+iddd);
+      
+    ResultSet resultSet=preparedStatement.executeQuery();
+    while(resultSet.next()){
+    	System.out.println(resultSet.getString("etunimi"));
+    	etu.setText(resultSet.getString("etunimi"));
+        suk.setText(resultSet.getString("sukunimi"));
+        puh.setText(resultSet.getString("puhelinnro"));
+        säh.setText(resultSet.getString("email"));
+        oso.setText(resultSet.getString("lahiosoite"));
+        pos.setText(resultSet.getString("postinro"));
+        
+    }
+    
     }
     
     
