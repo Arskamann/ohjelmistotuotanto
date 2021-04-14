@@ -11,6 +11,8 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -27,6 +29,10 @@ public class Asiakastiedot extends Menu {
 	static int iddd=1;
 	public void menu(ActionEvent event) throws IOException { //tällä  toiminnolla pääsee takasin päävalikkoon. Tätä kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
+        
+    }
+	public void uusiAsiakas(ActionEvent event) throws IOException { //tällä  toiminnolla pääsee takasin päävalikkoon. Tätä kutsutaan uusivaraus.xml tiedostossa
+        changeScene("Uusiasiakas.fxml");
         
     }
    public void listap�ivitys(){
@@ -155,6 +161,10 @@ public class Asiakastiedot extends Menu {
     Button p�iv;
     @FXML
     Label d;
+    @FXML
+    Button ua;
+    @FXML
+    Button poista;
     
    
     public void asiakas(int id) throws IOException {
@@ -231,5 +241,51 @@ public class Asiakastiedot extends Menu {
     
     }
     
-    
+    @FXML
+    TextField uusietu;
+    @FXML
+    TextField uusisuk;
+    @FXML
+    TextField uusipuh;
+    @FXML
+    TextField uusis�h;
+    @FXML
+    TextField uusioso;
+    @FXML
+    TextField uusipos;
+    @FXML
+    Button tallennauusi;
+ public void tallennaUusi() throws SQLException {
+    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+		System.out.println("Tiedot saatu!");
+		
+		String etunimi=uusietu.getText();
+		String sukunimi=uusisuk.getText();
+		String numero=uusipuh.getText();
+		String s�hk�posti=uusis�h.getText();
+		String osoite=uusioso.getText();
+		String posti=uusipos.getText();
+		
+		
+	
+    PreparedStatement preparedStatement=connection.prepareStatement(
+    		"insert into asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
+    				+ ", email='"+s�hk�posti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
+   preparedStatement.executeUpdate();
+    }
+
+public void poista() throws SQLException, IOException {
+	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+	System.out.println("Tiedot saatu!");
+	
+	
+
+PreparedStatement preparedStatement=connection.prepareStatement("delete from asiakas where asiakas_id="+iddd);
+preparedStatement.executeUpdate();
+Alert a = new Alert(AlertType.INFORMATION);
+a.setContentText("Asiakas poistettu");
+a.setTitle("Huomio");
+a.show();
+changeScene("Asiakastiedot.fxml");
+}
 }
