@@ -153,6 +153,8 @@ public class Asiakastiedot extends Menu {
     
     @FXML
     Button päiv;
+    @FXML
+    Label d;
     
    
     public void asiakas(int id) throws IOException {
@@ -217,6 +219,7 @@ public class Asiakastiedot extends Menu {
     ResultSet resultSet=preparedStatement.executeQuery();
     while(resultSet.next()){
     	System.out.println(resultSet.getString("etunimi"));
+    	d.setText(resultSet.getString("asiakas_id"));
     	etu.setText(resultSet.getString("etunimi"));
         suk.setText(resultSet.getString("sukunimi"));
         puh.setText(resultSet.getString("puhelinnro"));
