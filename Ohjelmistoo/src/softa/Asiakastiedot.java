@@ -169,33 +169,6 @@ public class Asiakastiedot extends Menu {
    
     public void asiakas(int id) throws IOException {
         changeScene("asiakas.fxml");
-       
-        try {
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-			System.out.println("Tiedot saatu!");
-		
-        PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas where asiakas_id="+id);
-	      
-        ResultSet resultSet=preparedStatement.executeQuery();
-        
-        while(resultSet.next()){
-        	System.out.println(resultSet.getString("etunimi"));
-            etu.setText(resultSet.getString("etunimi"));
-            suk.setText(resultSet.getString("sukunimi"));
-            puh.setText(resultSet.getString("puhelinnro"));
-            säh.setText(resultSet.getString("email"));
-            oso.setText(resultSet.getString("lahiosoite"));
-            pos.setText(resultSet.getString("postinro"));
-            
-        }
-        
-        
-       
-        
-        } catch (SQLException e) {
-			System.out.println("Error while connecting to the database");
-			e.printStackTrace();
-		}
      
     }
     public void tallenna() throws SQLException {
