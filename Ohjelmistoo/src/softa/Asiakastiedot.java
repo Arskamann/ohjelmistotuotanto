@@ -255,7 +255,8 @@ public class Asiakastiedot extends Menu {
     TextField uusipos;
     @FXML
     Button tallennauusi;
- public void tallennaUusi() throws SQLException {
+ public void tallennaUusi() {
+	 try {
     	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
 		
@@ -272,6 +273,17 @@ public class Asiakastiedot extends Menu {
     		"insert into asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
     				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
    preparedStatement.executeUpdate();
+   Alert a = new Alert(AlertType.INFORMATION);
+	 a.setContentText("Uusi asiakas luotu!");
+	 a.setTitle("Huomio");
+	 a.show();
+	 changeScene("Asiakastiedot.fxml");
+	 }catch (Exception e) {
+		 Alert a = new Alert(AlertType.INFORMATION);
+		 a.setContentText("Täytä kaikki kentät!");
+		 a.setTitle("Huomio");
+		 a.show();
+	 }
     }
 
 public void poista() throws SQLException, IOException {
