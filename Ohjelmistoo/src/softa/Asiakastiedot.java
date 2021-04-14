@@ -12,20 +12,25 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.PasswordField;
 
 public class Asiakastiedot extends Menu {
 	@FXML
-    TextField hae;
+    private TextField hae;
 	@FXML
-    Button takas;
+    private Button takas;
 	@FXML
 	private ListView<Button> lista;
 	@FXML
-    Button päivitä;
+    private Button päivitä;
 	
-	
+	 String etunimi="öpö";
+     String  sukunimi;
+     String puhelinnumero;
+     String  sähköposti;
+     String  osoite;
+     String postinumero;
 
     public void menu(ActionEvent event) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
@@ -42,25 +47,31 @@ public class Asiakastiedot extends Menu {
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        
     	        while(resultSet.next()){
-    	             String id=resultSet.getString("asiakas_id");
+    	             int id=resultSet.getInt("asiakas_id");
     	             String etu=resultSet.getString("etunimi");
     	             String suku=resultSet.getString("sukunimi");
-    	          
+    	        
     	             Button x=new Button(id+" "+etu+" "+suku);
-    	             
-    	             lista.getItems().add(x);
-    	             
-    	             x.setOnAction(new EventHandler<ActionEvent>() {
-    	                 @Override
-    	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
-    	                     System.out.println(x.getText());
-    	                     String sisältö=x.getText();
-    	                     String[] sisältöosissa= sisältö.split(" ");
-    	                     String idd = sisältöosissa[0];
-    	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
-    	                 }
-    	             });
-    	            
+    	            x.setOnAction(new EventHandler<ActionEvent>() {
+   	                 @Override
+   	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
+   	                     System.out.println(x.getText());
+   	                     String sisältö=x.getText();
+   	                     String[] sisältöosissa= sisältö.split(" ");
+   	                     int idd = Integer.parseInt(sisältöosissa[0]);
+   	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
+   	                     try {
+   							asiakas(idd);
+   						} catch (IOException e) {
+   							// TODO Auto-generated catch block
+   							e.printStackTrace();
+   						}
+   	                     
+   	                     
+   	                 }
+   	             });
+    	
+    	            lista.getItems().add(x);
     	           
     	        }
     	        
@@ -88,12 +99,29 @@ public class Asiakastiedot extends Menu {
  	        ResultSet resultSet=preparedStatement.executeQuery();
  	       
  	        while(resultSet.next()){
- 	             String id=resultSet.getString("asiakas_id");
+ 	             int id=resultSet.getInt("asiakas_id");
  	             String etu=resultSet.getString("etunimi");
  	             String suku=resultSet.getString("sukunimi");
  	        
  	             Button x=new Button(id+" "+etu+" "+suku);
- 	             
+ 	            x.setOnAction(new EventHandler<ActionEvent>() {
+	                 @Override
+	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
+	                     System.out.println(x.getText());
+	                     String sisältö=x.getText();
+	                     String[] sisältöosissa= sisältö.split(" ");
+	                     int idd = Integer.parseInt(sisältöosissa[0]);
+	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
+	                     try {
+							asiakas(idd);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	                     
+	                     
+	                 }
+	             });
  	
  	            lista.getItems().add(x);
  	           
@@ -107,5 +135,69 @@ public class Asiakastiedot extends Menu {
 	}
     
     
-	
+   // ----------------------------------------------------------------
+    
+	//yksittäisen asiakkaan asiat...
+  
+    @FXML
+    TextField etu;
+    @FXML
+    TextField suk;
+    @FXML
+    TextField puh;
+    @FXML
+    TextField säh;
+    @FXML
+    TextField oso;
+    @FXML
+    TextField pos;
+    @FXML
+    Button tallenna;
+    @FXML
+    Label et;
+    @FXML
+    Label su;
+    @FXML
+    Label pu;
+    @FXML
+    Label sä;
+    @FXML
+    Label os;
+    @FXML
+    Label po;
+    
+   
+    public void asiakas(int id) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
+        changeScene("asiakas.fxml");
+       
+        try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+		
+        PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas where asiakas_id="+id);
+	      
+        ResultSet resultSet=preparedStatement.executeQuery();
+        
+        while(resultSet.next()){
+        	System.out.println(resultSet.getString("etunimi"));
+            et.setText(resultSet.getString("etunimi"));
+            su.setText(resultSet.getString("sukunimi"));
+            pu.setText(resultSet.getString("puhelinnro"));
+            sä.setText(resultSet.getString("email"));
+            os.setText(resultSet.getString("lahiosoite"));
+            po.setText(resultSet.getString("postinro"));
+            
+        }
+        
+        
+       
+        
+        } catch (SQLException e) {
+			System.out.println("Error while connecting to the database");
+			e.printStackTrace();
+		}
+     
+    }
+    
+    
 }
