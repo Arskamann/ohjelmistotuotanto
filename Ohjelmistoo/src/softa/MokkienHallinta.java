@@ -11,24 +11,36 @@ public class MokkienHallinta extends Menu {
 	@FXML
 	Button takaisin;
 	
+	@FXML
+	Button muutaMokki;
+	
+	@FXML
+	Button haku;
+	
+	@FXML
+	Button lisaaMokki;
+	
 	public void menu(ActionEvent event) throws IOException
 	{
         changeScene("Menu.fxml");
+    }
+	
+	public void muutaMokki(ActionEvent event) throws IOException
+	{
+        changeScene("MokinMuokkaus.fxml");
     }
 
     public void hakuMokeista () {
         System.out.println("Tästä haetaan kaikista mökeistä");
     }
     
-    public void lisaaMokki () {
-        System.out.println("Tästä pääsee lisäämään mökin");
+    public void lisaaMokki (ActionEvent event) throws IOException
+    {
+        changeScene("MokinLisays.fxml");
     }
     
     public void muutaMokki () {
         System.out.println("Tästä muutetaan mökin tietoja");
     }
     
-    public void poistaMokki () {
-        System.out.println("Tästä mökki poistuu");
-    }
 }
