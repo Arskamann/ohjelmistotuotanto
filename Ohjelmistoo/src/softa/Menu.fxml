@@ -1,18 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Menu">
    <children>
-      <Button layoutX="114.0" layoutY="7.0" mnemonicParsing="false" onAction="#uusiVaraus" prefHeight="96.0" prefWidth="372.0" text="Uusi varaus" />
-      <Button layoutX="114.0" layoutY="103.0" mnemonicParsing="false" onAction="#varaustenHallinta" prefHeight="96.0" prefWidth="372.0" text="Varausten hallinta" />
+      <ImageView fitHeight="404.0" fitWidth="718.0" layoutX="-75.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="http://www.rantatienlomamokit.fi/wp-content/uploads/2019/03/huvimaen-mokki-2018.jpg" />
+         </image>
+      </ImageView>
+      <Button layoutX="147.0" layoutY="14.0" mnemonicParsing="false" onAction="#uusiVaraus" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Uusi varaus...">
+         <font>
+            <Font name="System Bold" size="20.0" />
+         </font></Button>
+      <Button layoutX="147.0" layoutY="106.0" mnemonicParsing="false" onAction="#varaustenHallinta" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Varausten hallinta">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
+      <Button layoutX="147.0" layoutY="301.0" mnemonicParsing="false" onAction="#asiakasTiedot" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Asiakastiedot">
+         <font>
+            <Font size="20.0" />
+         </font></Button>
 
-      <Button layoutX="114.0" layoutY="199.0" mnemonicParsing="false" prefHeight="96.0" prefWidth="372.0" text="Mökkien hallinta" />
-      <Button layoutX="114.0" layoutY="295.0" mnemonicParsing="false" onAction="#asiakasTiedot" prefHeight="96.0" prefWidth="372.0" text="Asiakastiedot" />
-
-      <Button layoutX="114.0" layoutY="199.0" mnemonicParsing="false" onAction="#mokkienHallinta" prefHeight="96.0" prefWidth="372.0" text="Mökkien hallinta" />
-      <Button layoutX="114.0" layoutY="295.0" mnemonicParsing="false" onAction="#asiakasTiedot" prefHeight="96.0" prefWidth="372.0" text="Asiakastiedot" />
+            <Button layoutX="147.0" layoutY="202.0" mnemonicParsing="false" onAction="#mokkienHallinta" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Mökkien hallinta">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Button>
 
    </children>
 </AnchorPane>

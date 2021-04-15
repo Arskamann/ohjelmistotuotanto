@@ -95,14 +95,17 @@ public class Asiakastiedot extends Menu {
   	                  try {
   	                	 
   							changeScene("asiakas.fxml");
-  							asiakas();
+  							päivitä();
   							 
   							
   							
   						} catch (IOException e) {
   							// TODO Auto-generated catch block
   							e.printStackTrace();
-  						}
+  						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
     	            });
    	            
    	                    
@@ -189,7 +192,7 @@ public class Asiakastiedot extends Menu {
     
    
     public void asiakas() throws IOException {
-        changeScene("asiakas.fxml");
+      
        
     }
     public void tallenna() throws SQLException {
