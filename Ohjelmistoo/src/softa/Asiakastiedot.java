@@ -27,11 +27,45 @@ public class Asiakastiedot extends Menu {
 	@FXML
     private Button päivitä;
 	static int iddd=1;
-	public void menu(ActionEvent event) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
+	
+	
+	private static String etunimi;
+	private static String sukunimi;
+	private static String puhelinnumero;
+	private static String osoite;
+	private static String sähköposti;
+	private static String postiosoite;
+	
+
+	
+	  	@FXML
+	    TextField etu;
+	    @FXML
+	    TextField suk;
+	    @FXML
+	    TextField puh;
+	    @FXML
+	    TextField säh;
+	    @FXML
+	    TextField oso;
+	    @FXML
+	    TextField pos;
+	    @FXML
+	    Button tallenna;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public void menu(ActionEvent event) throws IOException {
         changeScene("Menu.fxml");
         
     }
-	public void uusiAsiakas(ActionEvent event) throws IOException { //tÃ¤llÃ¤  toiminnolla pÃ¤Ã¤see takasin pÃ¤Ã¤valikkoon. TÃ¤tÃ¤ kutsutaan uusivaraus.xml tiedostossa
+	public void uusiAsiakas(ActionEvent event) throws IOException {
         changeScene("Uusiasiakas.fxml");
         
     }
@@ -59,9 +93,11 @@ public class Asiakastiedot extends Menu {
   	                    iddd = Integer.parseInt(sisältöosissa[0]);
   	                   
   	                  try {
-  	                	  
+  	                	 
   							changeScene("asiakas.fxml");
-  							asiakas(iddd);
+  							asiakas();
+  							 
+  							
   							
   						} catch (IOException e) {
   							// TODO Auto-generated catch block
@@ -107,24 +143,22 @@ public class Asiakastiedot extends Menu {
  	             String suku=resultSet.getString("sukunimi");
  	        
  	             Button x=new Button(id+" "+etu+" "+suku);
- 	            x.setOnAction(new EventHandler<ActionEvent>() {
-	                 @Override
-	                 public void handle(ActionEvent event) {   // kun henkilöstä klikkaa...
-	                     System.out.println(x.getText());
+ 	            x.setOnAction((event) -> {
+	                System.out.println(x.getText());
 	                     String sisältö=x.getText();
 	                     String[] sisältöosissa= sisältö.split(" ");
-	                     int idd = Integer.parseInt(sisältöosissa[0]);
-	                     System.out.println(idd); // tällä id:llä sitten etsitään asiakas-taulusta kyseisen henkilön tiedot!
-	                     try {
-							asiakas(idd);
+	                    iddd = Integer.parseInt(sisältöosissa[0]);
+	                   
+	                  try {
+	                	  
+							changeScene("asiakas.fxml");
+							asiakas();
+							
 						} catch (IOException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-	                     
-	                     
-	                 }
-	             });
+	            });
  	
  	            lista.getItems().add(x);
  	           
@@ -142,20 +176,7 @@ public class Asiakastiedot extends Menu {
     
 	//yksittäisen asiakkaan asiat...
   
-    @FXML
-    TextField etu;
-    @FXML
-    TextField suk;
-    @FXML
-    TextField puh;
-    @FXML
-    TextField säh;
-    @FXML
-    TextField oso;
-    @FXML
-    TextField pos;
-    @FXML
-    Button tallenna;
+  
     
     @FXML
     Button päiv;
@@ -167,8 +188,9 @@ public class Asiakastiedot extends Menu {
     Button poista;
     
    
-    public void asiakas(int id) throws IOException {
+    public void asiakas() throws IOException {
         changeScene("asiakas.fxml");
+       
     }
     public void tallenna() throws SQLException {
     	
