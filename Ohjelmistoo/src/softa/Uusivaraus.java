@@ -12,7 +12,7 @@ import javafx.scene.control.ListView;
 public class Uusivaraus extends Menu {
 	
 	@FXML
-	Button takas;
+	private Button takas;
 	
 	public void menu(ActionEvent event) throws IOException { //t‰ll‰  toiminnolla p‰‰see takasin p‰‰valikkoon. T‰t‰ kutsutaan uusivaraus.xml tiedostossa
 		changeScene("Menu.fxml");
