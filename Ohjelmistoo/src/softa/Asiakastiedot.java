@@ -9,10 +9,14 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -29,7 +33,7 @@ public class Asiakastiedot extends Menu {
 	@FXML
     private Button päivitä;
 	static int iddd=1;
-	
+	static boolean uusiposti=true;
 
 
 	
@@ -46,6 +50,10 @@ public class Asiakastiedot extends Menu {
 	    @FXML
 	    TextField pos;
 	    @FXML
+	    TextField paik;
+	    @FXML
+	    TextField toim;
+	    @FXML
 	    Button tallenna;
 	@FXML
 	Pane henk;
@@ -54,7 +62,20 @@ public class Asiakastiedot extends Menu {
 	
 	
 	
-	
+	   @FXML
+	    TextField uusietu;
+	    @FXML
+	    TextField uusisuk;
+	    @FXML
+	    TextField uusipuh;
+	    @FXML
+	    TextField uusisäh;
+	    @FXML
+	    TextField uusioso;
+	    @FXML
+	    TextField uusipos;
+	    @FXML
+	    Button tallennauusi;
 	
 	
 	
@@ -62,7 +83,7 @@ public class Asiakastiedot extends Menu {
         changeScene("Menu.fxml");
         
     }
-	public void takas(ActionEvent event) throws IOException {
+	public void takas() throws IOException {
        henk.setVisible(false);
        list.setVisible(true);
        listapäivitys();
@@ -73,6 +94,9 @@ public class Asiakastiedot extends Menu {
     }
 	public void uusiAsiakas(ActionEvent event) throws IOException {
         changeScene("Uusiasiakas.fxml");
+        
+        
+        
         
     }
    public void listapäivitys(){
@@ -91,6 +115,8 @@ public class Asiakastiedot extends Menu {
     	             String suku=resultSet.getString("sukunimi");
     	        
     	             Button x=new Button(etu+" "+suku);
+    	             x.setMinWidth(150);
+    	             x.setAlignment(Pos.CENTER_LEFT);
     	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
     	            
     	            x.setOnAction((event) -> {
@@ -133,9 +159,10 @@ public class Asiakastiedot extends Menu {
  		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
  			System.out.println("Tiedot saatu!");
  			PreparedStatement preparedStatement=connection.prepareStatement(
- 					"select * from asiakas where etunimi="+"'"+hakutext+"'"
- 							+ "or asiakas_id="+"'"+hakutext+"'"
- 							+"or sukunimi="+"'"+hakutext+"'"
+ 					"select distinct * from asiakas,posti where etunimi="+"'"+hakutext+"'"
+ 						+" and asiakas.postinro=posti.postinro "	+ "or asiakas_id="+"'"+hakutext+"'"
+ 						+" and asiakas.postinro=posti.postinro "+"or sukunimi="+"'"+hakutext+"'"
+ 						+" and asiakas.postinro=posti.postinro "+"or toimipaikka='"+hakutext+"'"+" and asiakas.postinro=posti.postinro "
  					
  					
  					);
@@ -148,6 +175,8 @@ public class Asiakastiedot extends Menu {
 	             String suku=resultSet.getString("sukunimi");
 	        
 	             Button x=new Button(etu+" "+suku);
+	             x.setMinWidth(150);
+	             x.setAlignment(Pos.CENTER_LEFT);
 	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
 	            
 	            x.setOnAction((event) -> {
@@ -202,7 +231,7 @@ public class Asiakastiedot extends Menu {
    
     
     public void tallenna() throws SQLException {
-    	
+    	uusiposti=true;
     	System.out.println(iddd);
     	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
@@ -213,7 +242,30 @@ public class Asiakastiedot extends Menu {
 		String sähköposti=säh.getText();
 		String osoite=oso.getText();
 		String posti=pos.getText();
+		String toi=toim.getText();
+		if(etunimi!=""&&sukunimi!=""&&posti!=""&&toi!=""&&osoite!="") {
+		PreparedStatement preparedStatement2=connection.prepareStatement("SELECT * FROM posti");
+		preparedStatement2.executeQuery();
 		
+		 ResultSet resultSet=preparedStatement2.executeQuery();
+		    while(resultSet.next()){
+		    	String num =resultSet.getString("postinro");
+		    	
+		        if(num.equals(posti)) {
+		        	uusiposti=false;
+		        }
+		    }
+		    if(uusiposti==true) {
+				
+				
+				PreparedStatement preparedStatement3=connection.prepareStatement(
+			    		"insert into posti set postinro ='"+posti+"',toimipaikka= '"+toi+"'");
+			   preparedStatement3.executeUpdate();
+			   Alert b = new Alert(AlertType.INFORMATION);
+				 b.setContentText("postitietoja lisätty tietokantaan!");
+				 b.setTitle("Huomio");
+				 b.show();
+			}
 		
 	
     PreparedStatement preparedStatement=connection.prepareStatement(
@@ -222,13 +274,31 @@ public class Asiakastiedot extends Menu {
    preparedStatement.executeUpdate();
     tallenna.setText("Tallennettu");
     tallenna.setStyle("-fx-background-color: #00ff00");
+		}
+		else {
+			Alert a = new Alert(AlertType.INFORMATION);
+			 a.setContentText("Täytä kaikki pakolliset kentät!");
+			 a.setTitle("Huomio");
+			 a.show();
+		}
     }
     public void päivitä() throws SQLException{
     	
     	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
+		 PreparedStatement preparedStatement2=connection.prepareStatement("select * from asiakas where asiakas_id="+iddd);
+	      
+		    ResultSet resultSet2=preparedStatement2.executeQuery();
+		    String postinumero = null;
+		    while(resultSet2.next()){
+		    	postinumero=resultSet2.getString("postinro");
+		    
+		
+		    }
+		    
+		    
 	
-    PreparedStatement preparedStatement=connection.prepareStatement("select * from asiakas where asiakas_id="+iddd);
+    PreparedStatement preparedStatement=connection.prepareStatement("select * from vn.asiakas,vn.posti where asiakas_id="+iddd+" and posti.postinro= '"+postinumero+"'");
       
     ResultSet resultSet=preparedStatement.executeQuery();
     while(resultSet.next()){
@@ -240,27 +310,17 @@ public class Asiakastiedot extends Menu {
         säh.setText(resultSet.getString("email"));
         oso.setText(resultSet.getString("lahiosoite"));
         pos.setText(resultSet.getString("postinro"));
-        
+        toim.setText(resultSet.getString("toimipaikka"));
     }
     
     }
     
-    @FXML
-    TextField uusietu;
-    @FXML
-    TextField uusisuk;
-    @FXML
-    TextField uusipuh;
-    @FXML
-    TextField uusisäh;
-    @FXML
-    TextField uusioso;
-    @FXML
-    TextField uusipos;
-    @FXML
-    Button tallennauusi;
+ 
  public void tallennaUusi() {
+	 
 	 try {
+		 
+		 uusiposti=true;
     	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
 		
@@ -270,26 +330,60 @@ public class Asiakastiedot extends Menu {
 		String sähköposti=uusisäh.getText();
 		String osoite=uusioso.getText();
 		String posti=uusipos.getText();
+		String toimip = toim.getText();
+		if(etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {
+			
 		
+		PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM posti");
+		preparedStatement.executeQuery();
 		
-	
-    PreparedStatement preparedStatement=connection.prepareStatement(
+		 ResultSet resultSet=preparedStatement.executeQuery();
+		    while(resultSet.next()){
+		    	String num =resultSet.getString("postinro");
+		    	
+		        if(num.equals(posti)) {
+		        	uusiposti=false;
+		        }
+		    }
+		    if(uusiposti==true) {
+				
+				
+				PreparedStatement preparedStatement3=connection.prepareStatement(
+			    		"insert into posti set postinro ='"+posti+"',toimipaikka= '"+toimip+"'");
+			   preparedStatement3.executeUpdate();
+			   Alert b = new Alert(AlertType.INFORMATION);
+				 b.setContentText("Uusi asiakas luotu ja postitietoja lisätty tietokantaan!");
+				 b.setTitle("Huomio");
+				 b.show();
+			}
+		    
+		    
+		    
+    PreparedStatement preparedStatement2=connection.prepareStatement(
     		"insert into asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
     				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
-   preparedStatement.executeUpdate();
+   preparedStatement2.executeUpdate();
    Alert a = new Alert(AlertType.INFORMATION);
 	 a.setContentText("Uusi asiakas luotu!");
 	 a.setTitle("Huomio");
 	 a.show();
 	 changeScene("Asiakastiedot.fxml");
+		}
+		else {
+			Alert a = new Alert(AlertType.INFORMATION);
+			 a.setContentText("Täytä kaikki pakolliset kentät!");
+			 a.setTitle("Huomio");
+			 a.show();
+		}
 	 }catch (Exception e) {
 		 Alert a = new Alert(AlertType.INFORMATION);
-		 a.setContentText("Täytä kaikki kentät!");
+		 a.setContentText("Virhe!");
 		 a.setTitle("Huomio");
 		 a.show();
 	 }
+	 
     }
-
+ 
 public void poista() throws IOException {
 	try {
 	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
@@ -303,6 +397,7 @@ Alert a = new Alert(AlertType.INFORMATION);
 a.setContentText("Asiakas poistettu");
 a.setTitle("Huomio");
 a.show();
+takas();
 listapäivitys();
 	}catch(Exception e) {
 		Alert a = new Alert(AlertType.INFORMATION);
