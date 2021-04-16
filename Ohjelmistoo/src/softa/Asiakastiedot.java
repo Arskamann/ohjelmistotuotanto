@@ -80,17 +80,19 @@ public class Asiakastiedot extends Menu {
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        
     	        while(resultSet.next()){
-    	             int id=resultSet.getInt("asiakas_id");
+    	             String id=resultSet.getString("asiakas_id");
     	             String etu=resultSet.getString("etunimi");
     	             String suku=resultSet.getString("sukunimi");
     	        
-    	             Button x=new Button(id+" "+etu+" "+suku);
+    	             Button x=new Button(etu+" "+suku);
+    	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
     	            
     	            x.setOnAction((event) -> {
     	                System.out.println(x.getText());
   	                     String sisältö=x.getText();
   	                     String[] sisältöosissa= sisältö.split(" ");
-  	                    iddd = Integer.parseInt(sisältöosissa[0]);
+  	                   
+  	                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
   	                   
   	                  try {
   	                	 
@@ -140,32 +142,45 @@ public class Asiakastiedot extends Menu {
  	        
  	        ResultSet resultSet=preparedStatement.executeQuery();
  	       
- 	        while(resultSet.next()){
- 	             int id=resultSet.getInt("asiakas_id");
- 	             String etu=resultSet.getString("etunimi");
- 	             String suku=resultSet.getString("sukunimi");
- 	        
- 	             Button x=new Button(id+" "+etu+" "+suku);
- 	            x.setOnAction((event) -> {
+ 	       while(resultSet.next()){
+	             String id=resultSet.getString("asiakas_id");
+	             String etu=resultSet.getString("etunimi");
+	             String suku=resultSet.getString("sukunimi");
+	        
+	             Button x=new Button(etu+" "+suku);
+	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+	            
+	            x.setOnAction((event) -> {
 	                System.out.println(x.getText());
-	                     String sisältö=x.getText();
-	                     String[] sisältöosissa= sisältö.split(" ");
-	                    iddd = Integer.parseInt(sisältöosissa[0]);
-	                   
-	                  try {
-	                	  
-							changeScene("asiakas.fxml");
-							asiakas();
-							
-						} catch (IOException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+                     String sisältö=x.getText();
+                     String[] sisältöosissa= sisältö.split(" ");
+                   
+                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+                   
+                  try {
+                	 
+						changeScene("asiakas.fxml");
+						päivitä();
+						 
+						
+						
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 	            });
- 	
- 	            lista.getItems().add(x);
- 	           
- 	        }
+	            
+	                    
+	                     
+	                     
+	             
+	
+	            lista.getItems().add(x);
+	           
+	        }
  	        
  			} catch (SQLException e) {
  			System.out.println("Error while connecting to the database");

@@ -71,7 +71,7 @@ public class Uusivaraus extends Menu {
 	           String mail=resultSet.getString("email");
 	          String osoi=resultSet.getString("lahiosoite");
 	         String poss=resultSet.getString("postinro");
-	             Button x=new Button(id+" "+etuu+" "+suku);
+	             Button x=new Button(etuu+" "+suku);
 	            x.setOnAction((event) -> {
 	            etu.setText(etuu);
 	   	        suk.setText(suku);
@@ -118,7 +118,7 @@ public class Uusivaraus extends Menu {
  	           String mail=resultSet.getString("email");
  	          String osoi=resultSet.getString("lahiosoite");
  	         String poss=resultSet.getString("postinro");
- 	             Button x=new Button(id+" "+etuu+" "+suku);
+ 	             Button x=new Button(etuu+" "+suku);
  	            x.setOnAction((event) -> {
  	            etu.setText(etuu);
  	   	        suk.setText(suku);
@@ -204,17 +204,19 @@ public class Uusivaraus extends Menu {
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
-            int id=resultSet.getInt("mokki_id");
+            String id=resultSet.getString("mokki_id");
             String nim=resultSet.getString("mokkinimi");
             String henk=resultSet.getString("henkilomaara");
             String var=resultSet.getString("varustelu");
             String hin=resultSet.getString("hinta");
             String alue=resultSet.getString("nimi");
        
-            Button x=new Button(id+" "+nim+" "+henk+" "+var+" "+hin+" "+alue);
-           
+            Button x=new Button(nim+" "+henk+" "+var+" "+hin+" "+alue);
+          x.setAccessibleText(id);
+          
+          
            x.setOnAction((event) -> {
-               
+               System.out.println("mökin id:"+x.getAccessibleText());
                 // tästä valitaan mökki...
               
            });
