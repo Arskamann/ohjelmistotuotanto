@@ -33,7 +33,7 @@ public class Menu extends Application {
     	alku.show();
     }
     
-    public void uusiVaraus() throws IOException, SQLException {
+    public void uusiVaraus(ActionEvent event) throws IOException, SQLException {
 		changeScene("Uusivaraus.fxml");
 		
 	}
