@@ -28,14 +28,7 @@ public class Asiakastiedot extends Menu {
     private Button päivitä;
 	static int iddd=1;
 	
-	
-	private static String etunimi;
-	private static String sukunimi;
-	private static String puhelinnumero;
-	private static String osoite;
-	private static String sähköposti;
-	private static String postiosoite;
-	
+
 
 	
 	  	@FXML
@@ -97,17 +90,13 @@ public class Asiakastiedot extends Menu {
   	                  try {
   	                	 
   							changeScene("asiakas.fxml");
-  							päivitä();
   							 
   							
   							
   						} catch (IOException e) {
   							// TODO Auto-generated catch block
   							e.printStackTrace();
-  						} catch (SQLException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
+  						}
     	            });
    	            
    	                    
@@ -160,17 +149,13 @@ public class Asiakastiedot extends Menu {
                   try {
                 	 
 						changeScene("asiakas.fxml");
-						päivitä();
 						 
 						
 						
 					} catch (IOException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					} 
 	            });
 	            
 	                    
