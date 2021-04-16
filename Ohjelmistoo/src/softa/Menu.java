@@ -19,10 +19,10 @@ public class Menu extends Application {
 	static String kanta="vn";
 	static String nimi="root";
 	static String salis="root"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
-	private static Stage stg;
+	static Stage stg;
 	@FXML
 	Button nappi;
-	Connection connection;
+	static Connection connection;
     public void start(Stage alku) throws IOException {
     	
     	stg=alku;
@@ -33,7 +33,7 @@ public class Menu extends Application {
     	alku.show();
     }
     
-    public void uusiVaraus(ActionEvent event) throws IOException {
+    public void uusiVaraus() throws IOException, SQLException {
 		changeScene("Uusivaraus.fxml");
 		
 	}
