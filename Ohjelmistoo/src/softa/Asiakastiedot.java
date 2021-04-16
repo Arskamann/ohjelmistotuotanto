@@ -66,6 +66,8 @@ public class Asiakastiedot extends Menu {
        henk.setVisible(false);
        list.setVisible(true);
        listapäivitys();
+       tallenna.setStyle("-fx-background-color: #FFFFFF");
+       tallenna.setText("Tallenna");
        
         
     }
