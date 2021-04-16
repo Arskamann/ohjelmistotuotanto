@@ -2,14 +2,12 @@ package softa;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.layout.Pane;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.Locale;
+
 
 public class VaraustenHallinta extends Menu {
 
@@ -27,6 +25,10 @@ public class VaraustenHallinta extends Menu {
     TextField varauksenAlkuPVM;
     @FXML
     TextField varauksenLoppuPVM;
+    @FXML
+    Pane list;
+    @FXML
+    Pane varaus;
 
 
     @FXML
@@ -38,23 +40,23 @@ public class VaraustenHallinta extends Menu {
     @FXML
     private TextField haku;
     @FXML
-    Button päivitä;
+    Button paivita;
     @FXML
     Label d;
     @FXML
     Button poista;
-    static int iddd=1;
+
+    static int iddd = 0;
 
     public void menu(ActionEvent event) throws IOException { //tällä  toiminnolla pääsee takasin päävalikkoon. Tätä kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
     }
-
-    public void takaisin (ActionEvent event) throws IOException {
-        changeScene("VaraustenHallinta.fxml");
+    public void takaisin (ActionEvent event){
+        varaus.setVisible(false);
     }
-    public void listaHaku(){            // tässä haetaan id:n ja nimen perusteella asiakkaita
+    public void listaHaku(){    //käytetään "Hae" nappulan painamisen yhteydessä
         String hakutext=haku.getText();
-        String aID = "";
+        String aID;
         String vID;
         String mID;
         int increment = 0;
@@ -62,7 +64,7 @@ public class VaraustenHallinta extends Menu {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
             PreparedStatement preparedStatement=connection.prepareStatement(
-                    "select asiakas_ID from asiakas where etunimi or sukunimi = "+"'"+hakutext+"'"
+                    "select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
             );
 
             ResultSet aIDResult = preparedStatement.executeQuery();
@@ -82,17 +84,9 @@ public class VaraustenHallinta extends Menu {
                 Button x=new Button(hakutext +  "n " + increment + ". varaus: " + "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
                 x.setAccessibleText(vID);
                 x.setOnAction((event) -> {
-                    System.out.println(x.getText());
                     iddd = Integer.parseInt(x.getAccessibleText());
 
-                    try {
-
-                        changeScene("varaus.fxml");
-
-                    } catch (IOException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+                    varaus.setVisible(true);
                 });
 
                 lista.getItems().add(x);
@@ -101,14 +95,102 @@ public class VaraustenHallinta extends Menu {
             System.out.println("Tiedot saatu!");
 
         } catch (SQLException e) {
+            if(e.getMessage().equals("Illegal operation on empty result set.")) {
+                Alert a = new Alert(Alert.AlertType.INFORMATION);
+                a.setContentText("Haulla ei löytynyt tuloksia");
+                a.setTitle("Huomio");
+                a.show();
+            }
+            else {
+                System.out.println("Error while connecting to the database");
+            }
+        }
+
+
+    }
+    public void listapaivitys(){    //käytetään "Näytä kaikki" nappulan painamisen yhteydessä
+        String etunimi;
+        String sukunimi;
+        try {
+            lista.getItems().clear();
+
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+            System.out.println("Tiedot saatu!");
+            PreparedStatement preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
+
+            ResultSet nimet = preparedStatement.executeQuery();
+            nimet.next();
+
+            preparedStatement=connection.prepareStatement("select * from varaus");
+
+            ResultSet resultSet=preparedStatement.executeQuery();
+
+            while(resultSet.next()){ //tekee nappulat tietokannasta haetuilla tiedoilla
+
+                String id=resultSet.getString("varaus_id");
+                String asiakasID =resultSet.getString("asiakas_id");
+                String mokkiID =resultSet.getString("mokki_mokki_id");
+
+                if(!asiakasID.equals(nimet.getString("asiakas_id"))) { //pidetään sama nimi nappuloissa jos varaus on samalta henkilöltä
+                    nimet.next();
+                }
+
+                etunimi = nimet.getString("etunimi");
+                sukunimi = nimet.getString("sukunimi");
+
+                Button x = new Button(etunimi +" "+ sukunimi);
+
+                x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+
+                x.setOnAction((event) -> {
+                    System.out.println(x.getText());
+
+                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+
+                    varaus.setVisible(true);
+                    try {
+                        paivita();
+                    } catch (SQLException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                });
+
+
+
+
+
+
+                lista.getItems().add(x);
+
+            }
+
+        } catch (SQLException e) {
             System.out.println("Error while connecting to the database");
         }
 
 
     }
-    public void poista() throws SQLException, IOException {
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
-        System.out.println("Tiedot saatu!");
+    public void poista() {
+        try {
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+            System.out.println("Tiedot saatu!");
+
+
+
+            PreparedStatement preparedStatement=connection.prepareStatement("delete from varaus where varaus_id="+iddd);
+            preparedStatement.executeUpdate();
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setContentText("Asiakas poistettu");
+            a.setTitle("Huomio");
+            a.show();
+            listapaivitys();
+        }catch(Exception e) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setContentText("Asiakkaalla on aktiivinen varaus! Poista varaus ensin.");
+            a.setTitle("Huomio");
+            a.show();
+        }
     }
     public void paivita() throws SQLException{
 
@@ -147,10 +229,10 @@ public class VaraustenHallinta extends Menu {
 
 
         PreparedStatement preparedStatement=connection.prepareStatement(
-                "update varaus set varaus_id ='"+sVarausID+"', asiakas_id='"+sAsiakasID+"',"+"mokki_mokki_id='"+sMokkiID+"'"
-                        + ", varattu_pvm='"+sVarattuPVM+"', vahvistus_pvm='"+sVahvistusPVM+"', varattu_alkupvm='"+sVarauksenAlkuPVM+"', varattu_loppupvm ='"+sVarauksenLoppuPVM+"' where asiakas_id="+iddd);
+                "update varaus set varattu_pvm='"+sVarattuPVM+"', vahvistus_pvm='"+sVahvistusPVM+"', varattu_alkupvm='"+sVarauksenAlkuPVM+"', varattu_loppupvm ='"+sVarauksenLoppuPVM+"' where asiakas_id="+iddd);
         preparedStatement.executeUpdate();
         tallenna.setText("Tallennettu");
+        tallenna.setStyle("-fx-background-color: #00ff00");
     }
 
 }
