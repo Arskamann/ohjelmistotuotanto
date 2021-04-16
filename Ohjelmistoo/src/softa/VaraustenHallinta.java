@@ -1,9 +1,13 @@
 package softa;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.*;
@@ -29,6 +33,8 @@ public class VaraustenHallinta extends Menu {
     Pane list;
     @FXML
     Pane varaus;
+    @FXML
+    Label hakuTulos;
 
 
     @FXML
@@ -54,7 +60,7 @@ public class VaraustenHallinta extends Menu {
     public void takaisin (ActionEvent event){
         varaus.setVisible(false);
     }
-    public void listaHaku(){    //käytetään "Hae" nappulan painamisen yhteydessä
+    public void listaHaku() {    //käytetään "Hae" nappulan painamisen yhteydessä
         String hakutext=haku.getText();
         String aID;
         String vID;
@@ -95,11 +101,17 @@ public class VaraustenHallinta extends Menu {
             System.out.println("Tiedot saatu!");
 
         } catch (SQLException e) {
+
+
+
             if(e.getMessage().equals("Illegal operation on empty result set.")) {
-                Alert a = new Alert(Alert.AlertType.INFORMATION);
-                a.setContentText("Haulla ei löytynyt tuloksia");
-                a.setTitle("Huomio");
-                a.show();
+                hakuTulos.setText("Haulla ei tuloksia");
+                hakuTulos.setVisible(true);
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(3000),
+                                new KeyValue(hakuTulos.visibleProperty(), false)));
+                timeline.play();
             }
             else {
                 System.out.println("Error while connecting to the database");

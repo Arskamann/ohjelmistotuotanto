@@ -47,4 +47,5 @@
       <Button fx:id="poista" layoutX="481.0" layoutY="67.0" mnemonicParsing="false" onAction="#poista" style="-fx-background-color: red;" text="Poista varaus" />
       <Button fx:id="tallenna" layoutX="136.0" layoutY="59.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
    </Pane>
+   <Label fx:id="hakuTulos" layoutX="498.0" layoutY="22.0" visible="false" />
 </AnchorPane>
