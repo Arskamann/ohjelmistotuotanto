@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Accordion?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallinta">
+    <children>
+        <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
+        <Accordion layoutX="139.0" layoutY="114.0" />
+        <Pane layoutX="56.0" layoutY="58.0" prefHeight="271.0" prefWidth="489.0" style="-fx-background-color: skyblue;">
+            <children>
+                <Label layoutX="36.0" layoutY="6.0" text="id:">
+                    <font>
+                        <Font size="11.0" />
+                    </font>
+                </Label>
+                <Label fx:id="d" layoutX="51.0" layoutY="6.0" text="d">
+                    <font>
+                        <Font size="11.0" />
+                    </font>
+                </Label>
+                <TextField id="varausID" fx:id="varausID" layoutX="102.0" layoutY="33.0" />
+                <Label layoutX="12.0" layoutY="37.0" text="VarausID" />
+                <Label layoutX="11.0" layoutY="68.0" text="AsiakasID" />
+                <TextField id="asiakasID" fx:id="asiakasID" layoutX="102.0" layoutY="64.0" />
+                <Label layoutX="10.0" layoutY="98.0" text="MökkiID" />
+                <TextField id="mokkiID" fx:id="mokkiID" layoutX="102.0" layoutY="94.0" />
+                <Label layoutX="10.0" layoutY="127.0" text="VarattuPVM" />
+                <TextField id="varattuPVM" fx:id="varattuPVM" layoutX="102.0" layoutY="123.0" />
+                <Label layoutX="10.0" layoutY="156.0" text="VahvistusPVM" />
+                <TextField id="vahvistusPVM" fx:id="vahvistusPVM" layoutX="102.0" layoutY="152.0" />
+                <Label layoutX="10.0" layoutY="185.0" text="Varauksen alku" />
+                <TextField id="varattuAlkuPVM" fx:id="varauksenAlkuPVM" layoutX="102.0" layoutY="181.0" />
+            <TextField id="varattuLoppuPVM" fx:id="varauksenLoppuPVM" layoutX="102.0" layoutY="212.0" />
+            <Label layoutX="10.0" layoutY="216.0" text="Varauksen loppu" />
+            </children>
+        </Pane>
+        <Button fx:id="tallenna" layoutX="78.0" layoutY="14.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
+        <Button fx:id="päivitä" layoutX="52.0" layoutY="341.0" mnemonicParsing="false" onAction="#paivita" text="Päivitä" />
+        <Button fx:id="poista" layoutX="435.0" layoutY="14.0" mnemonicParsing="false" onAction="#poista" style="-fx-background-color: darkgray;" text="X Poista asiakas X" />
+    </children>
+</AnchorPane>
