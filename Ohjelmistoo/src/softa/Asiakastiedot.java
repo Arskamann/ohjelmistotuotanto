@@ -290,7 +290,8 @@ public class Asiakastiedot extends Menu {
 	 }
     }
 
-public void poista() throws SQLException, IOException {
+public void poista() throws IOException {
+	try {
 	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 	System.out.println("Tiedot saatu!");
 	
@@ -303,5 +304,11 @@ a.setContentText("Asiakas poistettu");
 a.setTitle("Huomio");
 a.show();
 listapäivitys();
+	}catch(Exception e) {
+		Alert a = new Alert(AlertType.INFORMATION);
+		a.setContentText("Asiakkaalla on aktiivinen varaus! Poista varaus ensin.");
+		a.setTitle("Huomio");
+		a.show();
+	}
 }
 }
