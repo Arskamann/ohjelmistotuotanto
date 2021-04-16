@@ -9,7 +9,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallinta">
    <Button mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
    <Text layoutX="67.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="58.025390625" />
-   <TextField fx:id="haku" layoutX="289.0" layoutY="18.0" promptText="id" />
+   <TextField fx:id="haku" layoutX="289.0" layoutY="18.0" promptText="Hae nimellä" />
    <ListView fx:id="lista" layoutX="103.0" layoutY="52.0" prefHeight="316.0" prefWidth="395.0" />
    <Button fx:id="paivita" layoutX="447.0" layoutY="18.0" mnemonicParsing="false" onAction="#listaHaku" text="Hae" />
 </AnchorPane>
