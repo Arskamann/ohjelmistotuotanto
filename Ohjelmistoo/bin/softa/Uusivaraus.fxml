@@ -59,10 +59,11 @@
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Button layoutX="111.0" layoutY="328.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="88.0" text="Varaa" />
-            <ListView layoutX="40.0" layoutY="17.0" prefHeight="138.0" prefWidth="158.0" />
+            <ListView fx:id="palvelut" layoutX="40.0" layoutY="17.0" prefHeight="138.0" prefWidth="158.0" />
             <Text layoutX="40.0" layoutY="13.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Palvelut" />
             <Text layoutX="40.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Valittuna:" />
             <Button layoutX="111.0" layoutY="285.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="87.0" text="Poista varaus" />
+            <Button layoutX="100.0" layoutY="183.0" mnemonicParsing="false" onAction="#päivitäpalvelut" text="Päivitä palvelut" />
          </children>
       </AnchorPane>
    </right>

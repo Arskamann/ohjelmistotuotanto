@@ -230,7 +230,32 @@ public class Uusivaraus extends Menu {
 	    
 	    }
 	 
-
-
+	 
+	 // palvelut hommeleita
+	 
+	 @FXML
+	 private ListView<Button> palvelut;
+	 
+	 public void päivitäpalvelut() throws SQLException {
+		 palvelut.getItems().clear();
+		 
+		 String nimi=alueet.getValue().toString();
+		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
+			System.out.println("Tiedot saatu!");
+		
+	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where t.nimi = '"+nimi+"' and p.toimintaalue_id = t.toimintaalue_id;");
+	    
+	    ResultSet resultSet=preparedStatement.executeQuery();
+	    while(resultSet.next()) {
+	    	String pnimi = resultSet.getString("p.nimi");
+	    	String pkuvaus = resultSet.getString("p.kuvaus");
+	    	double phinta = resultSet.getDouble("p.hinta");
+	    	double palv = resultSet.getDouble("p.alv");
+	    	
+	    	Button x = new Button(pnimi+" "+pkuvaus+" "+phinta+"€"+" "+palv);
+	    	
+	    	palvelut.getItems().add(x);
+	    }
+	 }
 
 }
