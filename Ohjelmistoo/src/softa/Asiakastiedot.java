@@ -1,6 +1,8 @@
 package softa;
 
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -45,8 +47,10 @@ public class Asiakastiedot extends Menu {
 	    TextField pos;
 	    @FXML
 	    Button tallenna;
-	
-	
+	@FXML
+	Pane henk;
+	@FXML
+	Pane list;
 	
 	
 	
@@ -56,6 +60,13 @@ public class Asiakastiedot extends Menu {
 	
 	public void menu(ActionEvent event) throws IOException {
         changeScene("Menu.fxml");
+        
+    }
+	public void takas(ActionEvent event) throws IOException {
+       henk.setVisible(false);
+       list.setVisible(true);
+       listapäivitys();
+       
         
     }
 	public void uusiAsiakas(ActionEvent event) throws IOException {
@@ -87,16 +98,14 @@ public class Asiakastiedot extends Menu {
   	                   
   	                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
   	                   
-  	                  try {
-  	                	 
-  							changeScene("asiakas.fxml");
-  							 
-  							
-  							
-  						} catch (IOException e) {
-  							// TODO Auto-generated catch block
-  							e.printStackTrace();
-  						}
+  	                  list.setVisible(false);
+					henk.setVisible(true);
+					try {
+						päivitä();
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
     	            });
    	            
    	                    
@@ -146,16 +155,14 @@ public class Asiakastiedot extends Menu {
                    
                     iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
                    
-                  try {
-                	 
-						changeScene("asiakas.fxml");
-						 
-						
-						
-					} catch (IOException e) {
+                    list.setVisible(false);
+					henk.setVisible(true);
+					try {
+						päivitä();
+					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
-					} 
+					}
 	            });
 	            
 	                    
@@ -191,10 +198,7 @@ public class Asiakastiedot extends Menu {
     Button poista;
     
    
-    public void asiakas() throws IOException {
-      
-       
-    }
+    
     public void tallenna() throws SQLException {
     	
     	System.out.println(iddd);
@@ -215,6 +219,7 @@ public class Asiakastiedot extends Menu {
     				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"' where asiakas_id="+iddd);
    preparedStatement.executeUpdate();
     tallenna.setText("Tallennettu");
+    tallenna.setStyle("-fx-background-color: #00ff00");
     }
     public void päivitä() throws SQLException{
     	
@@ -295,6 +300,6 @@ Alert a = new Alert(AlertType.INFORMATION);
 a.setContentText("Asiakas poistettu");
 a.setTitle("Huomio");
 a.show();
-changeScene("Asiakastiedot.fxml");
+listapäivitys();
 }
 }
