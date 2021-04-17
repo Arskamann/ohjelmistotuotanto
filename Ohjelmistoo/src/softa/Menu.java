@@ -13,12 +13,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 public class Menu extends Application {
 	static String kanta="vn";
 	static String nimi="root";
-	static String salis="MIBber12"; // näihin kun laittaa nyt oman kannan tiedot nii se yhistää siihen suoraa. Helpottaa testailua
+	static String salis="root"; // näihin kun laittaa nyt oman kannan tiedot nii se yhistää siihen suoraa. Helpottaa testailua
 	static Stage stg;
 	@FXML
 	Button nappi;
@@ -29,6 +30,7 @@ public class Menu extends Application {
     	Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
     
     	alku.setTitle("Hieno softa");
+    	alku.getIcons().add(new Image("file:möggi.jfif"));
     	alku.setScene(new Scene(root,600,400));
     	alku.show();
     }
