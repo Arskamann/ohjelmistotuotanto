@@ -71,9 +71,8 @@ public class VaraustenHallinta extends Menu {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
             PreparedStatement preparedStatement=connection.prepareStatement(
 
-                    "select asiakas_ID from asiakas where etunimi = "+"'"+hakutext+"'"
 
-                    +"select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
+                    "select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
 
             );
 
