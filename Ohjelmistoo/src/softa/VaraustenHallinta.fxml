@@ -1,15 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallinta">
-   <Button mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
-   <Text layoutX="67.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="58.025390625" />
-   <TextField fx:id="haku" layoutX="289.0" layoutY="18.0" promptText="Hae nimellä" />
-   <ListView fx:id="lista" layoutX="103.0" layoutY="52.0" prefHeight="316.0" prefWidth="395.0" />
-   <Button fx:id="paivita" layoutX="447.0" layoutY="18.0" mnemonicParsing="false" onAction="#listaHaku" text="Hae" />
+   <Pane fx:id="list">
+      <Button layoutY="2.0" mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
+      <Text layoutX="67.0" layoutY="0.05078125" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="58.025390625" />
+      <TextField fx:id="haku" layoutX="289.0" layoutY="18.0" promptText="Hae nimellä" />
+      <ListView fx:id="lista" layoutX="103.0" layoutY="52.0" prefHeight="316.0" prefWidth="395.0" />
+      <Button fx:id="paivita" layoutX="447.0" layoutY="18.0" mnemonicParsing="false" onAction="#listaHaku" text="Hae" />
+      <Button fx:id="paivita" layoutX="198.0" layoutY="18.0" mnemonicParsing="false" onAction="#listapaivitys" text="Näytä kaikki" />
+   </Pane>
+   <Pane fx:id="varaus" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: skyblue;" visible="false">
+      <Label layoutX="46.0" layoutY="64.0" text="id:">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <Label fx:id="d" layoutX="61.0" layoutY="64.0" text="d">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </Label>
+      <TextField id="varausID" fx:id="varausID" disable="true" layoutX="136.0" layoutY="90.0" />
+      <Label layoutX="46.0" layoutY="94.0" text="VarausID" />
+      <Label layoutX="45.0" layoutY="125.0" text="AsiakasID" />
+      <TextField id="asiakasID" fx:id="asiakasID" disable="true" layoutX="136.0" layoutY="121.0" />
+      <Label layoutX="44.0" layoutY="155.0" text="MökkiID" />
+      <TextField id="mokkiID" fx:id="mokkiID" disable="true" layoutX="136.0" layoutY="151.0" />
+      <Label layoutX="44.0" layoutY="184.0" text="VarattuPVM" />
+      <TextField id="varattuPVM" fx:id="varattuPVM" layoutX="136.0" layoutY="180.0" />
+      <Label layoutX="44.0" layoutY="213.0" text="VahvistusPVM" />
+      <TextField id="vahvistusPVM" fx:id="vahvistusPVM" layoutX="136.0" layoutY="209.0" />
+      <Label layoutX="44.0" layoutY="242.0" text="Varauksen alku" />
+      <TextField id="varattuAlkuPVM" fx:id="varauksenAlkuPVM" layoutX="136.0" layoutY="238.0" />
+      <TextField id="varattuLoppuPVM" fx:id="varauksenLoppuPVM" layoutX="136.0" layoutY="269.0" />
+      <Label layoutX="44.0" layoutY="273.0" text="Varauksen loppu" />
+      <Button layoutY="2.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
+      <Button fx:id="poista" layoutX="481.0" layoutY="67.0" mnemonicParsing="false" onAction="#poista" style="-fx-background-color: red;" text="Poista varaus" />
+      <Button fx:id="tallenna" layoutX="136.0" layoutY="59.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
+   </Pane>
+   <Label fx:id="hakuTulos" layoutX="498.0" layoutY="22.0" visible="false" />
 </AnchorPane>

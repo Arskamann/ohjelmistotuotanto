@@ -28,7 +28,6 @@ public class Menu extends Application {
     	
     	stg=alku;
     	Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
-    
     	alku.setTitle("Village Newbies");
     	alku.getIcons().add(new Image("file:möggi.jfif"));
     	alku.setScene(new Scene(root,600,400));
