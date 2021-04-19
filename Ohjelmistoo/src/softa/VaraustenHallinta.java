@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -51,6 +52,18 @@ public class VaraustenHallinta extends Menu {
     Label d;
     @FXML
     Button poista;
+    @FXML
+    ListView palveluList;
+    @FXML
+    Pane palvelu;
+    @FXML
+    Button lisaaPalvelu;
+    @FXML
+    TextField palveluIDText;
+    @FXML
+    TextField lkmText;
+    @FXML
+    TextField varausIDText;
 
     static int iddd = 0;
 
@@ -59,6 +72,7 @@ public class VaraustenHallinta extends Menu {
     }
     public void takaisin (ActionEvent event){
         varaus.setVisible(false);
+        palveluList.getItems().clear();
     }
     public void listaHaku() {    //käytetään "Hae" nappulan painamisen yhteydessä
         String hakutext=haku.getText();
@@ -71,9 +85,7 @@ public class VaraustenHallinta extends Menu {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
             PreparedStatement preparedStatement=connection.prepareStatement(
 
-
                     "select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
-
             );
 
             ResultSet aIDResult = preparedStatement.executeQuery();
@@ -101,6 +113,13 @@ public class VaraustenHallinta extends Menu {
                 lista.getItems().add(x);
 
             }
+            hakuTulos.setText("Haulla " + increment + " tulosta");
+            hakuTulos.setVisible(true);
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().add(
+                    new KeyFrame(Duration.millis(3000),
+                            new KeyValue(hakuTulos.visibleProperty(), false)));
+            timeline.play();
             System.out.println("Tiedot saatu!");
 
         } catch (SQLException e) {
@@ -165,6 +184,7 @@ public class VaraustenHallinta extends Menu {
                     varaus.setVisible(true);
                     try {
                         paivita();
+                        palveluListapaivitys();
                     } catch (SQLException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
@@ -248,6 +268,62 @@ public class VaraustenHallinta extends Menu {
         preparedStatement.executeUpdate();
         tallenna.setText("Tallennettu");
         tallenna.setStyle("-fx-background-color: #00ff00");
+    }
+    public void palveluListapaivitys() throws SQLException {
+
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+        PreparedStatement preparedStatement1=connection.prepareStatement(
+
+                "select palvelu_id, lkm from varauksen_palvelut where varaus_id  = "+" '"+Integer.parseInt(varausID.getText())+"'"
+        );
+        ResultSet varauksenPalvelut = preparedStatement1.executeQuery();
+
+        while(varauksenPalvelut.next()) {
+            preparedStatement1 = connection.prepareStatement(
+
+                    "select palvelu_id, nimi from palvelu where palvelu_id order by palvelu_id = " + " '" + varauksenPalvelut.getString("palvelu_id") + "'"
+            );
+            ResultSet palveluNimet = preparedStatement1.executeQuery();
+            palveluNimet.next();
+
+            Text x = new Text("palveluID: " + varauksenPalvelut.getString("palvelu_id") +" || "+ palveluNimet.getString("nimi") + " x " + varauksenPalvelut.getString("lkm"));
+            x.setAccessibleText(palveluNimet.getString("palvelu_id"));
+            palveluList.getItems().add(x);
+
+        }
+    }
+    public void poistaVarauksenPalvelu () throws SQLException {
+        String id = palveluList.getSelectionModel().getSelectedItem().toString();
+        id = id.substring(22, 36);
+        id = id.replaceAll("\\D+","");
+        System.out.println(id);
+
+        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+
+        PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where palvelu_id ="+ Integer.parseInt(id));
+        preparedStatement.executeUpdate();
+    }
+    public void palveluIkkuna() {
+        varausIDText.setText(varausID.getText());
+        list.setVisible(false);
+        varaus.setVisible(false);
+        palvelu.setVisible(true);
+    }
+    public void lisaaPalvelu() throws SQLException {
+        int palvelu_id = -1;
+        int lkm = -1;
+        try {
+            palvelu_id = Integer.parseInt(palveluIDText.getText());
+            lkm = Integer.parseInt(lkmText.getText());
+        } catch (IllegalArgumentException e) {
+
+        } catch (NullPointerException e) {
+            System.out.println("Tyhjiä kenttiä");
+        }
+        PreparedStatement preparedStatement2=connection.prepareStatement(
+                "insert into varauksen_palvelut set varaus_id ='"+Integer.parseInt(varausIDText.getText())+"', palvelu_id='"+palvelu_id+"',"+"lkm='"+lkm+"'");
+        preparedStatement2.executeUpdate();
+        System.out.println("Tiedot tallennetu");
     }
 
 }
