@@ -286,21 +286,20 @@ public class VaraustenHallinta extends Menu {
             ResultSet palveluNimet = preparedStatement1.executeQuery();
             palveluNimet.next();
 
-            Text x = new Text("palveluID: " + varauksenPalvelut.getString("palvelu_id") +" || "+ palveluNimet.getString("nimi") + " x " + varauksenPalvelut.getString("lkm"));
+            Text x = new Text(palveluNimet.getString("nimi") + " x " + varauksenPalvelut.getString("lkm"));
             x.setAccessibleText(palveluNimet.getString("palvelu_id"));
             palveluList.getItems().add(x);
 
         }
     }
     public void poistaVarauksenPalvelu () throws SQLException {
-        String id = palveluList.getSelectionModel().getSelectedItem().toString();
-        id = id.substring(22, 36);
-        id = id.replaceAll("\\D+","");
-        System.out.println(id);
+        Text id = (Text) palveluList.getSelectionModel().getSelectedItem();
+        String idd=id.getAccessibleText().toString();
+        System.out.println(idd);
 
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 
-        PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where palvelu_id ="+ Integer.parseInt(id));
+        PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where palvelu_id ="+ Integer.parseInt(idd));
         preparedStatement.executeUpdate();
     }
     public void palveluIkkuna() {
