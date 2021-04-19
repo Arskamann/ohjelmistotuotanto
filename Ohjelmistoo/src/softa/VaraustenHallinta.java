@@ -216,13 +216,13 @@ public class VaraustenHallinta extends Menu {
             PreparedStatement preparedStatement=connection.prepareStatement("delete from varaus where varaus_id="+iddd);
             preparedStatement.executeUpdate();
             Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText("Asiakas poistettu");
+            a.setContentText("Varaus poistettu");
             a.setTitle("Huomio");
             a.show();
             listapaivitys();
         }catch(Exception e) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText("Asiakkaalla on aktiivinen varaus! Poista varaus ensin.");
+            a.setContentText("Virhe");
             a.setTitle("Huomio");
             a.show();
         }
