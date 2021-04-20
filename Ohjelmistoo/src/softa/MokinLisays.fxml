@@ -1,45 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.MokinLisays">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.MokinLisays">
    <children>
-      <Button fx:id="peru" layoutX="14.0" layoutY="12.0" mnemonicParsing="false" onAction="#takaisinMokkiin" text="Peruuta" />
-      <Label layoutX="171.0" layoutY="11.0" text="Uuden mökin lisäys">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="17.0" layoutY="54.0" text="Mökin nimi" />
-      <TextField layoutX="109.0" layoutY="54.0" />
-      <Label layoutX="302.0" layoutY="54.0" text="Mökin id" />
-      <TextField layoutX="393.0" layoutY="54.0" prefHeight="26.0" prefWidth="51.0" />
-      <Label layoutX="17.0" layoutY="93.0" prefHeight="17.0" prefWidth="101.0" text="Mökin toimialue" />
-      <TextField layoutX="109.0" layoutY="89.0" />
-      <Label layoutX="302.0" layoutY="95.0" prefHeight="17.0" prefWidth="83.0" text="Henkilömäärä" />
-      <TextField layoutX="394.0" layoutY="89.0" prefHeight="26.0" prefWidth="29.0" />
-      <Label layoutX="16.0" layoutY="129.0" prefHeight="17.0" prefWidth="101.0" text="Katuosoite" />
-      <TextField layoutX="109.0" layoutY="124.0" />
-      <Label layoutX="302.0" layoutY="129.0" prefHeight="17.0" prefWidth="83.0" text="Varustelu" />
-      <CheckBox layoutX="394.0" layoutY="128.0" mnemonicParsing="false" text="CheckBox" />
-      <CheckBox layoutX="394.0" layoutY="172.0" mnemonicParsing="false" text="CheckBox" />
-      <CheckBox layoutX="394.0" layoutY="151.0" mnemonicParsing="false" text="CheckBox" />
-      <CheckBox layoutX="394.0" layoutY="195.0" mnemonicParsing="false" text="CheckBox" />
-      <CheckBox layoutX="394.0" layoutY="217.0" mnemonicParsing="false" text="CheckBox" />
-      <Label layoutX="16.0" layoutY="164.0" prefHeight="17.0" prefWidth="101.0" text="Postinumero" />
-      <TextField layoutX="109.0" layoutY="159.0" prefHeight="26.0" prefWidth="51.0" />
-      <Label layoutX="16.0" layoutY="198.0" prefHeight="17.0" prefWidth="101.0" text="Toimipaikka" />
-      <TextField layoutX="109.0" layoutY="194.0" prefHeight="26.0" prefWidth="131.0" />
-      <Label layoutX="18.0" layoutY="229.0" prefHeight="17.0" prefWidth="101.0" text="Kuvaus" />
-      <TextArea layoutX="16.0" layoutY="245.0" prefHeight="111.0" prefWidth="559.0" />
-      <Button fx:id="tallenna" layoutX="391.0" layoutY="364.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
-      <Button fx:id="tallennapoistu" layoutX="463.0" layoutY="364.0" mnemonicParsing="false" onAction="#tallennaJaPoistu" text="Tallenna ja poistu" />
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="42.0" layoutY="92.0" text="Mökin ID" />
+            <TextField fx:id="mokkiID" layoutX="101.0" layoutY="86.0" prefHeight="26.0" prefWidth="76.0" />
+            <Label layoutX="14.0" layoutY="159.0" text="Toiminta-alue" />
+            <Label layoutX="31.0" layoutY="126.0" text="Mökin nimi" />
+            <Label layoutX="55.0" layoutY="194.0" text="Osoite" />
+            <Label layoutX="47.0" layoutY="230.0" text="Postinro" />
+            <Label layoutX="27.0" layoutY="265.0" text="Toimipaikka" />
+            <Label layoutX="159.0" layoutY="301.0" text="Varustelu" />
+            <Label layoutX="52.0" layoutY="333.0" text="Kuvaus" />
+            <Label layoutX="18.0" layoutY="301.0" text="Henkilömäärä" />
+            <TextField fx:id="mokkinimi" layoutX="100.0" layoutY="121.0" prefHeight="26.0" prefWidth="200.0" />
+            <TextField fx:id="osoite" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="200.0" />
+            <TextField fx:id="postinro" layoutX="102.0" layoutY="226.0" prefHeight="26.0" prefWidth="76.0" />
+            <TextField fx:id="toimipaikka" layoutX="102.0" layoutY="261.0" prefHeight="26.0" prefWidth="200.0" />
+            <TextField fx:id="hlo" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="50.0" />
+            <TextField fx:id="kuvaus" layoutX="104.0" layoutY="330.0" prefHeight="315.0" prefWidth="434.0" />
+            <Label fx:id="id" layoutX="45.0" layoutY="102.0" />
+            <Button fx:id="takaisin" layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Takaisin" />
+            <Label layoutX="100.0" layoutY="53.0" text="Uuden mökin lisäys">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="943.0" layoutY="79.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna muutokset" />
+            <Button layoutX="321.0" layoutY="156.0" mnemonicParsing="false" text="Lisää uusi alue" />
+            <ChoiceBox fx:id="toimialue" layoutX="102.0" layoutY="155.0" prefHeight="26.0" prefWidth="200.0" />
+            <ChoiceBox fx:id="mokkivarustelu" layoutX="226.0" layoutY="297.0" prefHeight="26.0" prefWidth="75.0" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
