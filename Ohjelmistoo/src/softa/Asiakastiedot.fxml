@@ -9,19 +9,19 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Asiakastiedot">
    <children>
-      <Pane fx:id="list" layoutX="-1.0" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0">
+      <Pane fx:id="list" layoutX="-1.0" layoutY="-1.0" prefHeight="700.0" prefWidth="1100.0">
          <children>
-            <Button layoutX="452.0" layoutY="45.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="25.0" prefWidth="45.0" text="Hae" />
-            <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#menu" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
-            <ListView fx:id="lista" layoutX="103.0" layoutY="89.0" prefHeight="262.0" prefWidth="394.0" />
-            <Button fx:id="päivitä" layoutX="206.0" layoutY="45.0" mnemonicParsing="false" onAction="#listapäivitys" text="Näytä kaikki" />
-            <TextField fx:id="hae" alignment="CENTER" layoutX="300.0" layoutY="45.0" prefHeight="25.0" prefWidth="149.0" promptText="Hae asiakkaita" />
-            <Button fx:id="ua" layoutX="103.0" layoutY="45.0" mnemonicParsing="false" onAction="#uusiAsiakas" style="-fx-background-color: skyblue;" text="Uusi asiakas..." />
+            <Button layoutX="799.0" layoutY="138.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="42.0" prefWidth="67.0" scaleX="1.5" scaleY="1.5" text="Hae" />
+            <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#menu" prefHeight="49.0" prefWidth="87.0" text="&lt;" />
+            <ListView fx:id="lista" layoutX="328.0" layoutY="282.0" prefHeight="255.0" prefWidth="444.0" scaleX="1.5" scaleY="1.5" />
+            <Button fx:id="päivitä" layoutX="419.0" layoutY="138.0" mnemonicParsing="false" onAction="#listapäivitys" prefHeight="42.0" prefWidth="87.0" scaleX="1.5" scaleY="1.5" text="Näytä kaikki" />
+            <TextField fx:id="hae" alignment="CENTER" layoutX="578.0" layoutY="138.0" prefHeight="42.0" prefWidth="157.0" promptText="Hae asiakkaita" scaleX="1.5" scaleY="1.5" />
+            <Button fx:id="ua" layoutX="241.0" layoutY="138.0" mnemonicParsing="false" onAction="#uusiAsiakas" prefHeight="42.0" prefWidth="95.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;" text="Uusi asiakas..." />
          </children>
       </Pane>
-      <Pane fx:id="henk" layoutY="-1.0" prefHeight="400.0" prefWidth="600.0" visible="false">
+      <Pane fx:id="henk" layoutY="-1.0" prefHeight="699.0" prefWidth="1099.0" visible="false">
          <children>
-            <Pane layoutX="62.0" layoutY="77.0" prefHeight="262.0" prefWidth="477.0" style="-fx-background-color: skyblue;">
+            <Pane layoutX="326.0" layoutY="227.0" prefHeight="246.0" prefWidth="447.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;">
                <children>
                   <Label layoutX="61.0" layoutY="16.0" text="Etunimi" />
                   <Label layoutX="54.0" layoutY="49.0" text="Sukunimi" />
@@ -41,9 +41,9 @@
                   <Label layoutX="41.0" layoutY="219.0" text="Toimipaikka" />
                </children>
             </Pane>
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="25.0" prefWidth="45.0" text="&lt;" />
-            <Button fx:id="tallenna" layoutX="62.0" layoutY="14.0" mnemonicParsing="false" onAction="#tallenna" text="Tallenna" />
-            <Button fx:id="poista" layoutX="449.0" layoutY="14.0" mnemonicParsing="false" onAction="#poista" style="-fx-background-color: grey;" text="Poista henkilö" />
+            <Button layoutX="37.0" layoutY="27.0" mnemonicParsing="false" onAction="#takas" prefHeight="25.0" prefWidth="45.0" scaleX="1.5" scaleY="1.5" text="&lt;" />
+            <Button fx:id="tallenna" layoutX="136.0" layoutY="27.0" mnemonicParsing="false" onAction="#tallenna" scaleX="1.5" scaleY="1.5" text="Tallenna" />
+            <Button fx:id="poista" layoutX="774.0" layoutY="111.0" mnemonicParsing="false" onAction="#poista" scaleX="1.5" scaleY="1.5" style="-fx-background-color: grey;" text="Poista henkilö" />
          </children>
       </Pane>
    </children>
