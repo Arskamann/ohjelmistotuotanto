@@ -68,7 +68,7 @@ public class Laskutus extends Menu {
     	        	String nimi =resultSet.getString("etunimi");
     	        	String snimi =resultSet.getString("sukunimi");
     	        	String summa=resultSet.getString("summa");
-    	        	String aika=resultSet.getString("varattu_loppupvm").substring(0,9);
+    	        	String aika=resultSet.getString("varattu_loppupvm").substring(0,10);
     	        	Text x = new Text("Laskutettava: "+nimi+" "+snimi+" Summa: "+summa+"Ä"+" | Varaus p‰‰ttyi: "+aika);
     	            x.setAccessibleText(id);
     	          
