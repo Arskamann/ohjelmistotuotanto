@@ -14,18 +14,16 @@
       <Pane fx:id="list" prefHeight="700.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <Button fx:id="haku" layoutX="912.0" layoutY="83.0" mnemonicParsing="false" onAction="#hakuMokeista" text="Haku" />
-            <Button fx:id="muutaMokki" layoutX="712.0" layoutY="209.0" mnemonicParsing="false" onAction="#muutaMokki" text="Muuta mökin tietoja" />
             <Button fx:id="takaisin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#menu" text="Takaisin" />
-            <Label layoutX="451.0" layoutY="12.0" text="Mökkien hallinnointi">
+            <Label layoutX="516.0" layoutY="9.0" text="Mökkien hallinnointi">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="toimipaikkalistaus" layoutX="615.0" layoutY="117.0" onDragDetected="#hakuToimipaikoilla" onMouseClicked="#hakuToimipaikoilla" onMouseDragged="#hakuToimipaikoilla" onMouseExited="#hakuToimipaikoilla" onMousePressed="#hakuToimipaikoilla" onMouseReleased="#hakuToimipaikoilla" prefHeight="26.0" prefWidth="280.0" />
-            <Button fx:id="lisaaMokki" layoutX="712.0" layoutY="244.0" mnemonicParsing="false" onAction="#mokinLisays" text="Lisää uusi mökki" />
+            <ChoiceBox fx:id="toimipaikkalistaus" layoutX="615.0" layoutY="117.0" onDragDetected="#hakuToimipaikoilla" onDragDone="#hakuToimipaikoilla" onDragDropped="#hakuToimipaikoilla" onMouseClicked="#hakuToimipaikoilla" onMouseDragged="#hakuToimipaikoilla" onMouseExited="#hakuToimipaikoilla" onMousePressed="#hakuToimipaikoilla" onMouseReleased="#hakuToimipaikoilla" onTouchPressed="#hakuToimipaikoilla" onTouchReleased="#hakuToimipaikoilla" prefHeight="26.0" prefWidth="280.0" />
+            <Button fx:id="lisaaMokki" layoutX="789.0" layoutY="155.0" mnemonicParsing="false" onAction="#mokinLisays" text="Lisää uusi mökki" />
             <TextField fx:id="hakukentta" layoutX="614.0" layoutY="83.0" prefHeight="26.0" prefWidth="281.0" />
             <Button fx:id="paivita" layoutX="615.0" layoutY="155.0" mnemonicParsing="false" onAction="#listapaivitys" text="Näytä kaikki" />
-            <Button fx:id="testinab" layoutX="912.0" layoutY="117.0" mnemonicParsing="false" onAction="#hakuToimipaikoilla" text="Testinab" />
             <ListView fx:id="lista" layoutX="9.0" layoutY="81.0" prefHeight="609.0" prefWidth="591.0" />
          </children>
       </Pane>
@@ -38,28 +36,86 @@
             <Label layoutX="55.0" layoutY="194.0" text="Osoite" />
             <Label layoutX="47.0" layoutY="230.0" text="Postinro" />
             <Label layoutX="27.0" layoutY="265.0" text="Toimipaikka" />
-            <Label layoutX="159.0" layoutY="301.0" text="Varustelu" />
-            <Label layoutX="52.0" layoutY="333.0" text="Kuvaus" />
+            <Label layoutX="168.0" layoutY="301.0" text="Varustelu" />
+            <Label layoutX="53.0" layoutY="370.0" text="Kuvaus" />
             <Label layoutX="18.0" layoutY="301.0" text="Henkilömäärä" />
-            <TextField fx:id="mokkinimi" layoutX="100.0" layoutY="121.0" prefHeight="26.0" prefWidth="200.0" />
-            <TextField fx:id="alue" layoutX="100.0" layoutY="155.0" prefHeight="26.0" prefWidth="200.0" />
-            <TextField fx:id="osoite" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="200.0" />
+            <TextField fx:id="mokkinimi" layoutX="100.0" layoutY="121.0" prefHeight="26.0" prefWidth="270.0" />
+            <TextField fx:id="toimipaikka" layoutX="101.0" layoutY="261.0" prefHeight="26.0" prefWidth="270.0" />
+            <TextField fx:id="osoite" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="270.0" />
             <TextField fx:id="postinro" layoutX="102.0" layoutY="226.0" prefHeight="26.0" prefWidth="76.0" />
-            <TextField fx:id="toimipaikka" layoutX="102.0" layoutY="261.0" prefHeight="26.0" prefWidth="200.0" />
-            <TextField fx:id="hlo" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="50.0" />
-            <TextField fx:id="varustelu" layoutX="220.0" layoutY="296.0" prefHeight="26.0" prefWidth="82.0" />
-            <TextField fx:id="kuvaus" layoutX="104.0" layoutY="330.0" prefHeight="315.0" prefWidth="434.0" />
+            <TextField fx:id="hlo" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="59.0" />
+            <TextField fx:id="kuvaus" layoutX="104.0" layoutY="366.0" prefHeight="323.0" prefWidth="434.0" />
             <Label fx:id="id" layoutX="45.0" layoutY="102.0" />
-            <Button layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Takaisin" />
+            <Button fx:id="back" layoutX="11.0" layoutY="10.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Takaisin" />
             <Label layoutX="100.0" layoutY="53.0" text="Mökin tiedot">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button layoutX="944.0" layoutY="40.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
-            <Button layoutX="943.0" layoutY="79.0" mnemonicParsing="false" text="Tallenna muutokset" />
-            <Label layoutX="577.0" layoutY="126.0" text="Tulevat varaukset" />
-            <ListView fx:id="tulevatVaraukset" layoutX="577.0" layoutY="161.0" prefHeight="486.0" prefWidth="334.0" />
+            <Button fx:id="poista" layoutX="950.0" layoutY="11.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
+            <Button fx:id="tallenna" layoutX="950.0" layoutY="49.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna" />
+            <Label layoutX="556.0" layoutY="118.0" text="Tulevat varaukset">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <ListView fx:id="tulevatVaraukset" layoutX="554.0" layoutY="186.0" prefHeight="504.0" prefWidth="509.0" />
+            <ChoiceBox fx:id="toimialue" layoutX="100.0" layoutY="155.0" prefHeight="26.0" prefWidth="270.0" />
+            <ChoiceBox fx:id="varustelu" layoutX="230.0" layoutY="297.0" prefHeight="26.0" prefWidth="142.0" />
+            <Label layoutX="65.0" layoutY="334.0" text="Hinta" />
+            <TextField fx:id="hinta" layoutX="104.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
+            <Button fx:id="tallennaJaPoistu" layoutX="949.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
+            <Button fx:id="uusivaraus" layoutX="556.0" layoutY="150.0" mnemonicParsing="false" text="Uusi varaus" />
+            <Label layoutX="471.0" layoutY="10.0" text="Mökin tietojen muokkaus">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="uusiMokki" layoutX="10.0" layoutY="10.0" style="-fx-background-color: skyblue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <Label layoutX="42.0" layoutY="92.0" text="Mökin ID" />
+            <TextField fx:id="mokkiID1" layoutX="101.0" layoutY="86.0" prefHeight="26.0" prefWidth="76.0" />
+            <Label layoutX="14.0" layoutY="159.0" text="Toiminta-alue" />
+            <Label layoutX="31.0" layoutY="126.0" text="Mökin nimi" />
+            <Label layoutX="55.0" layoutY="194.0" text="Osoite" />
+            <Label layoutX="47.0" layoutY="230.0" text="Postinro" />
+            <Label layoutX="27.0" layoutY="265.0" text="Toimipaikka" />
+            <Label layoutX="171.0" layoutY="301.0" text="Varustelu" />
+            <Label layoutX="50.0" layoutY="370.0" text="Kuvaus" />
+            <Label layoutX="18.0" layoutY="301.0" text="Henkilömäärä" />
+            <TextField fx:id="mokkinimi1" layoutX="100.0" layoutY="121.0" prefHeight="26.0" prefWidth="270.0" />
+            <TextField fx:id="alue1" layoutX="100.0" layoutY="261.0" prefHeight="26.0" prefWidth="270.0" />
+            <TextField fx:id="osoite1" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="270.0" />
+            <TextField fx:id="postinro1" layoutX="102.0" layoutY="226.0" prefHeight="26.0" prefWidth="76.0" />
+            <TextField fx:id="hlo1" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="59.0" />
+            <TextField fx:id="kuvaus1" layoutX="102.0" layoutY="367.0" prefHeight="323.0" prefWidth="434.0" />
+            <Label fx:id="id1" layoutX="45.0" layoutY="102.0" />
+            <Button layoutX="11.0" layoutY="10.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Peruuta" />
+            <Label layoutX="100.0" layoutY="53.0" text="Mökin tiedot">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button fx:id="tallenna1" layoutX="964.0" layoutY="12.0" mnemonicParsing="false" text="Tallenna muutokset" />
+            <Label layoutX="553.0" layoutY="126.0" text="Tulevat varaukset">
+               <font>
+                  <Font size="18.0" />
+               </font></Label>
+            <ListView fx:id="tulevatVaraukset1" layoutX="553.0" layoutY="194.0" prefHeight="497.0" prefWidth="516.0" />
+            <Label layoutX="513.0" layoutY="9.0" text="Uuden mökin lisäys">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Label>
+            <Button fx:id="tallennaJaPoistu1" layoutX="965.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
+            <ChoiceBox fx:id="toimialue1" layoutX="101.0" layoutY="155.0" prefHeight="26.0" prefWidth="270.0" />
+            <ChoiceBox fx:id="varustelu1" layoutX="238.0" layoutY="297.0" prefHeight="26.0" prefWidth="133.0" />
+            <Label layoutX="65.0" layoutY="335.0" text="Hinta" />
+            <TextField fx:id="hinta1" layoutX="103.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
+            <Button fx:id="uusivaraus1" layoutX="555.0" layoutY="157.0" mnemonicParsing="false" text="Uusi varaus" />
+            <Button fx:id="lisaaAlue1" layoutX="411.0" layoutY="155.0" mnemonicParsing="false" text="Lisää toimialue" />
          </children>
       </Pane>
    </children>

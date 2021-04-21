@@ -23,29 +23,27 @@ import javafx.scene.layout.Pane;
 
 public class MokkienHallinta extends Menu {
 	
+	//ensimmäisen näkymät napit ja listat
 	@FXML
 	Button takaisin;
-	@FXML
-	Button muutaMokki;
 	@FXML
 	Button haku;
 	@FXML
 	Button lisaaMokki;
 	@FXML
-	Button testinab;
-	@FXML
 	private ChoiceBox<String> toimipaikkalistaus;
-	@FXML
-	private void initialize() {
-		toimipaikkalistaus.setValue("Valitse toimipaikka");
-		toimipaikkalistaus.setItems(toimipaikat);
-	}
 	@FXML
 	private ListView<Button> lista;
 	@FXML
 	private TextField hakukentta;
 	@FXML
+    private Button paivita;
+	
+	//mökin tietojen muokkauksen napit
+	@FXML
 	private Pane hakutulos;
+	@FXML
+	private TextField mokkiID;
 	@FXML
     private TextField mokkinimi;
     @FXML
@@ -59,29 +57,83 @@ public class MokkienHallinta extends Menu {
     @FXML
     private TextField hlo;
     @FXML
-    private TextField varustelu;
+    private ChoiceBox<String> varustelu;
     @FXML
     private TextField kuvaus;
     @FXML
     private Label id;
+    @FXML
+    private Button uusivaraus;
+    @FXML
+    private ChoiceBox<String> toimialue;
 	@FXML
-    private Button paivita;
+	private TextField hinta;
+	@FXML
+	private Button poista;
+	@FXML
+	private Button tallenna;
+	@FXML
+	private Button tallennaJaPoistu;
+	@FXML
+	private ListView<Button> tulevatVaraukset;
+	@FXML
+	private Button back;
+	
+	//uuden mökin napit
+	@FXML
+    private Pane uusiMokki;
+	@FXML
+	private Button lisaaAlue1;
+    @FXML
+    private TextField mokkiID1;
+    @FXML
+    private TextField mokkinimi1;
+    @FXML
+    private TextField alue1;
+    @FXML
+    private TextField osoite1;
+    @FXML
+    private TextField postinro1;
+    @FXML
+    private TextField hlo1;
+    @FXML
+    private TextField kuvaus1;
+    @FXML
+    private Label id1;
+    @FXML
+    private Button tallenna1;
+    @FXML
+    private ListView<?> tulevatVaraukset1;
+    @FXML
+    private Button lisaaVaraus1;
+    @FXML
+    private Button tallennaJaPoistu1;
+    @FXML
+    private ChoiceBox<String> toimialue1;
+    @FXML
+    private ChoiceBox<String> varustelu1;
+	
+    //mökin id:n poimimista varten
     static int iddd=1;
 	
+    //dropdown-listaukset
+    @FXML
+	private void initialize() {
+    	toimipaikkalistaus.setValue("Valitse toimipaikka");
+		toimipaikkalistaus.setItems(toimipaikat);
+    	toimialue.setValue("Valitse toimipaikka");
+		toimialue.setItems(toimipaikat);
+		toimialue1.setValue("Valitse toimipaikka");
+		toimialue1.setItems(toimipaikat);
+		varustelu.setValue("Valitse varustelutaso");
+		varustelu.setItems(varustelut);
+		varustelu1.setValue("Valitse varustelutaso");
+		varustelu1.setItems(varustelut);
+	}
+    
 	//takaisin menuun painamalla 'peruuta'
 	public void menu(ActionEvent event) throws IOException {
         changeScene("Menu.fxml");
-        }
-	
-	//vaihtaa ikkunaan mökin tietojen muokkaukseen painamalla 'muokkaa'
-	public void muutaMokki(ActionEvent event) throws IOException {
-        changeScene("MokinMuokkaus.fxml");
-        }
-
-	// mökin lisäys vie eri ikkunaan
-	
-	public void mokinLisays (ActionEvent event) throws IOException {
-        changeScene("MokinLisays.fxml");
         }
 	
 	//takaisin kaikkiin mökkeihin yksittäisestä mökistä
@@ -137,6 +189,8 @@ public class MokkienHallinta extends Menu {
 	//dropdown-valikossa näkyvät toimipaikat
 	ObservableList<String> toimipaikat = FXCollections.
 			observableArrayList("Valitse toimipaikka", "Ruka", "Levi", "Ylläs", "Äkäslompolo");
+	ObservableList<String> varustelut = FXCollections.
+			observableArrayList("Valitse varustelutaso", "Perus", "Öky");
 	
 	// mökkien näyttäminen toimipaikoittain
 		public void hakuToimipaikoilla() {
@@ -189,6 +243,11 @@ public class MokkienHallinta extends Menu {
 	    			System.out.println("Error while connecting to the database");
 	    			}
 		   }
+	
+	//uuden mökin lisäys
+	public void mokinLisays() {
+		uusiMokki.setVisible(true);
+	}
 	
 		
 	// mökkien haku nimellä, id:llä
@@ -250,18 +309,22 @@ public class MokkienHallinta extends Menu {
 	    	
 	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 			System.out.println("Tiedot saatu!");
-			 PreparedStatement preparedStatement2=connection.prepareStatement("Select m.mokki_id, m.mokkinimi, t.nimi, m.postinro, m.katuosoite, m.kuvaus, m.henkilomaara, m.varustelu, m.hinta from mokki m join toimintaalue t using(toimintaalue_id) where mokki_id="+iddd);
+			 PreparedStatement preparedStatement2=connection.prepareStatement("Select * from mokki m join toimintaalue t using(toimintaalue_id) where mokki_id="+iddd);
 		      
 			    ResultSet resultSet2=preparedStatement2.executeQuery();
 			    while(resultSet2.next()){
+			    	mokkiID.setText(resultSet2.getString("mokki_id"));
 			    	mokkinimi.setText(resultSet2.getString("mokkinimi"));
-			    	hlo.setText(resultSet2.getString("mokkinimi"));
+			    	toimialue.setValue(resultSet2.getString("nimi"));
 		            osoite.setText(resultSet2.getString("katuosoite"));
-		            varustelu.setText(resultSet2.getString("varustelu"));
-		            kuvaus.setText(resultSet2.getString("kuvaus"));
-		            alue.setText(resultSet2.getString("nimi"));
 		            postinro.setText(resultSet2.getString("postinro"));
-		            toimipaikka.setText(resultSet2.getString("varattu_loppupvm"));
+		            //toimipaikka.setText(resultSet2.getString(iddd)); //muuta, täytyy hakea posti-taulusta
+		            hlo.setText(resultSet2.getString("henkilomaara"));
+		            varustelu.setValue(resultSet2.getString("varustelu"));
+		            hinta.setText(resultSet2.getString("hinta"));
+		            kuvaus.setText(resultSet2.getString("kuvaus"));
+
+
 		            }
 			    }
 	    
