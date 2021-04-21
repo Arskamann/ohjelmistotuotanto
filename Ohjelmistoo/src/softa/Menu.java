@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 	static String kanta="vn";
 	static String nimi="root";
-	static String salis="root"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
+	static String salis="DBA123"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
 	static Stage stg;
 	@FXML
 	Button nappi;
@@ -38,6 +38,10 @@ public class Menu extends Application {
 		changeScene("Uusivaraus.fxml");
 		
 	}
+    public void ToimintaAlueet(ActionEvent event) throws IOException, SQLException {
+    	changeScene("ToimintaAlueet.fxml");
+    	
+    }
 	public void varaustenHallinta(ActionEvent event) throws IOException {
 		changeScene("VaraustenHallinta.fxml");
 	
