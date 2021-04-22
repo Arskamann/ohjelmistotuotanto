@@ -13,9 +13,9 @@
       <Accordion layoutX="139.0" layoutY="114.0" />
       <Pane layoutX="306.0" layoutY="225.0" prefHeight="271.0" prefWidth="489.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;">
          <children>
-            <TextField layoutX="102.0" layoutY="33.0" />
+            <TextField fx:id="uusinimi" layoutX="102.0" layoutY="33.0" />
             <Label layoutX="34.0" layoutY="37.0" text="Nimi*" />
-            <Button layoutX="310.0" layoutY="103.0" mnemonicParsing="false" text="Luo uusi toimialue!" />
+            <Button fx:id="tallennauusi" layoutX="310.0" layoutY="103.0" mnemonicParsing="false" onAction="#tallennaUusi" text="Luo uusi toimialue!" />
          </children>
       </Pane>
    </children>

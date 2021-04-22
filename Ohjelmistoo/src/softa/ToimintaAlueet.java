@@ -212,7 +212,67 @@ public class ToimintaAlueet extends Menu {
 	    }
 	    
 	    }
+	 
+	 @FXML
+	    TextField uusinimi;
+	  @FXML
+	    Button tallennauusi;
 	
-	
+	 public void tallennaUusi() {
+		 
+		 try {
+			 
+	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			
+			String nimi=uusinimi.getText();
+			PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM toimintaalue");
+			preparedStatement.executeQuery();
+  
+			    
+	    PreparedStatement preparedStatement2=connection.prepareStatement(
+	    		"insert into toimintaalue set nimi ='"+nimi+"'");
+	   preparedStatement2.executeUpdate();
+	   Alert a = new Alert(AlertType.INFORMATION);
+		 a.setContentText("Uusi toiminta-alue luotu!");
+		 a.setTitle("Huomio");
+		 a.show();
+		 changeScene("ToimintaAlueet.fxml");
+			
+		
+		 }catch (Exception e) {
+			 Alert a = new Alert(AlertType.INFORMATION);
+			 a.setContentText("Virhe!");
+			 a.setTitle("Huomio");
+			 a.show();
+		 }
+		 
+	    }
+	 
+	 @FXML
+	    Button poista;
+	 
+	 public void poista() throws IOException {
+			try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			
+			
+
+		PreparedStatement preparedStatement=connection.prepareStatement("delete from toimintaalue where toimintaalue_id="+iddd);
+		preparedStatement.executeUpdate();
+		Alert a = new Alert(AlertType.INFORMATION);
+		a.setContentText("Toiminta-alue poistettu");
+		a.setTitle("Huomio");
+		a.show();
+		takas();
+		listapäivitys();
+			}catch(Exception e) {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("Virhe poistaessa toiminta-aluetta");
+				a.setTitle("Huomio");
+				a.show();
+			}
+		}
 }
 
