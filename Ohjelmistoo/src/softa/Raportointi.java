@@ -196,11 +196,23 @@ public void listap‰ivitys(){
 	  
 }
 public void ympyr‰p‰ivitys() throws SQLException{
+	listap‰ivitys();
+	String alkaa = v‰li1.getText();
+	 String loppuu = v‰li2.getText();
+	
+	 String v‰li=" varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	 if(v‰li1.getText().equals("") || v‰li2.getText().equals("")) {
+		  v‰li="";
+	  }
+	  else  {
+		 v‰li= " varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	  }
+	
 	ympyr‰.getData().clear();;
 	 ObservableList<PieChart.Data> pieChartData =
              FXCollections.observableArrayList();
      ympyr‰.getData().addAll(pieChartData);
-	 PreparedStatement preparedStatement2=connection.prepareStatement("SELECT  toimintaalue.nimi,Count(*) as m‰‰r‰ FROM vn.varaus,vn.mokki,vn.toimintaalue where mokki_id=mokki_mokki_id "+
+	 PreparedStatement preparedStatement2=connection.prepareStatement("SELECT  toimintaalue.nimi,Count(*) as m‰‰r‰ FROM vn.varaus,vn.mokki,vn.toimintaalue where"+v‰li+" mokki_id=mokki_mokki_id "+
 			 "and mokki.toimintaalue_id=toimintaalue.toimintaalue_id Group by toimintaalue.nimi;");
    
      ResultSet resultSet2=preparedStatement2.executeQuery();
