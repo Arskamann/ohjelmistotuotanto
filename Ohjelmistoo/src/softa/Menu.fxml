@@ -31,7 +31,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Button>
-      <Button layoutX="185.0" layoutY="365.0" mnemonicParsing="false" onAction="#asiakasTiedot" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Raportointi">
+      <Button layoutX="185.0" layoutY="365.0" mnemonicParsing="false" onAction="#raportit" opacity="0.8" prefHeight="71.0" prefWidth="307.0" text="Raportointi">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>

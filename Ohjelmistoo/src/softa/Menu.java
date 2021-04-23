@@ -57,6 +57,9 @@ public class Menu extends Application {
 	public void laskut(ActionEvent event) throws IOException {
 		changeScene("Laskutus.fxml");
 	}
+	public void raportit(ActionEvent event) throws IOException {
+		changeScene("Raportointi.fxml");
+	}
 
     public void changeScene(String fxml) throws IOException {                      // t�ll� vaihdetaan ikkuna esim napin painnalluksella
     	Parent pane = FXMLLoader.load((getClass().getResource(fxml)));
