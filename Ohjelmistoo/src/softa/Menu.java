@@ -19,7 +19,7 @@ import javafx.stage.Stage;
 public class Menu extends Application {
 	static String kanta="vn";
 	static String nimi="root";
-	static String salis="root"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
+	static String salis="MIBber12"; // n‰ihin kun laittaa nyt oman kannan tiedot nii se yhist‰‰ siihen suoraa. Helpottaa testailua
 	static Stage stg;
 	@FXML
 	Button nappi;
