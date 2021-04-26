@@ -43,9 +43,12 @@ public class Uusivaraus extends Menu {
     TextField oso;
     @FXML
     TextField pos;
+    @FXML
+    Label hinta;
     
     
-    
+    static Double palveluthinta=0.0;
+    static int mökkihinta=0;
     
 	public void menu(ActionEvent event) throws IOException { 
 		changeScene("Menu.fxml");
@@ -211,14 +214,14 @@ public class Uusivaraus extends Menu {
             String hin=resultSet.getString("hinta");
             String alue=resultSet.getString("nimi");
        
-            Button x=new Button(nim+" "+henk+" "+var+" "+hin+" "+alue);
+            Button x=new Button(nim+" | Henkilömäärä:"+henk+" Varustelu:"+var+" Hinta/yö:"+hin+" Alue:"+alue);
           x.setAccessibleText(id);
           
           
            x.setOnAction((event) -> {
                System.out.println("mökin id:"+x.getAccessibleText());
-                // tästä valitaan mökki...
-              
+                mökkihinta=Integer.parseInt(hin);
+                hinta.setText((Double.toString(palveluthinta+mökkihinta)));
            });
           
                   
@@ -245,19 +248,36 @@ public class Uusivaraus extends Menu {
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
 		
-	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where t.nimi = '"+nimi+"' and p.toimintaalue_id = t.toimintaalue_id;");
+	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select p.palvelu_id, p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where t.nimi = '"+nimi+"' and p.toimintaalue_id = t.toimintaalue_id;");
 	    
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()) {
+	    	String id= resultSet.getString("p.palvelu_id");
 	    	String pnimi = resultSet.getString("p.nimi");
 	    	String pkuvaus = resultSet.getString("p.kuvaus");
 	    	double phinta = resultSet.getDouble("p.hinta");
-	    	double palv = resultSet.getDouble("p.alv");
-	    	
-	    	Button x = new Button(pnimi+" "+pkuvaus+" "+phinta+"€"+" "+palv);
-	    	
+	    	boolean valittu = false;
+	    	Button x = new Button(pnimi+" "+pkuvaus+" "+phinta+"€ 0");
+	    	x.setAccessibleText(id);
+	    	 x.setOnAction((event) -> {
+	    		
+	    	       System.out.println(x.getText());
+                   String sisältö=x.getText();
+                   String[] sisältöosissa= sisältö.split(" ");
+                   palveluthinta+=phinta;
+                   int määrä=Integer.parseInt(sisältö.substring(sisältö.lastIndexOf(" ")+1))+1;
+	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+määrä;
+	         x.setText(y);
+	         hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+				
+	            });
 	    	palvelut.getItems().add(x);
 	    }
+	    palveluthinta=0.0;
+	    hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+	    
+	 }
+	
 	 }
 
-}
+
