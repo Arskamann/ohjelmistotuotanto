@@ -178,6 +178,7 @@ public class Uusivaraus extends Menu {
            if(alueet.getValue().toString()!=""||alueet.getValue().toString()!="Toimialue") {
         	   try {
 				päivitämökit();
+				päivitäpalvelut();
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
