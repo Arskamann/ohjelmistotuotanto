@@ -180,16 +180,6 @@ public class ToimintaAlueet extends Menu {
 			
 			String tnimi=nimiii.getText();
 					
-					PreparedStatement preparedStatement3=connection.prepareStatement(
-				    		"insert into toimintaalue set nimi ='"+tnimi+"'");
-				   preparedStatement3.executeUpdate();
-				   Alert b = new Alert(AlertType.INFORMATION);
-					 b.setContentText("nimitietoja lisätty tietokantaan!");
-					 b.setTitle("Huomio");
-					 b.show();
-				
-			
-		
 	    PreparedStatement preparedStatement=connection.prepareStatement(
 	    		"update toimintaalue set nimi ='"+tnimi+"' where toimintaalue_id="+iddd);
 	   preparedStatement.executeUpdate();
