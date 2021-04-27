@@ -23,14 +23,16 @@
          <children>
             <Pane layoutX="346.0" layoutY="189.0" prefHeight="246.0" prefWidth="388.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;">
                <children>
+                  <Label layoutX="57.0" layoutY="59.0" text="Saatavilla olevat palvelut" />
                   <Label layoutX="37.0" layoutY="21.0" text="Nimi" />
                   <TextField fx:id="nimiii" layoutX="66.0" layoutY="16.0" />
-                  <Label layoutX="17.0" layoutY="65.0" text="Lisää palveluita" />
+                  <ListView fx:id="plista" layoutX="56.0" layoutY="78.0" prefHeight="161.0" prefWidth="269.0" />
                </children>
             </Pane>
-            <Button fx:id="tallenna" layoutX="249.0" layoutY="85.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="36.0" prefWidth="64.0" text="Tallenna" />
+            <Button fx:id="tallenna" layoutX="613.0" layoutY="85.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="36.0" prefWidth="83.0" text="Tallenna" />
             <Button fx:id="poista" layoutX="704.0" layoutY="85.0" mnemonicParsing="false" onAction="#poista" prefHeight="36.0" prefWidth="127.0" text="Poista toiminta-alue" />
             <Button layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="36.0" prefWidth="60.0" text="&lt;" />
+            <Button layoutX="249.0" layoutY="85.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="127.0" text="Lisää uusi palvelu" />
          </children>
       </Pane>
    </children>
