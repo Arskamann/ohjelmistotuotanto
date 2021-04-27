@@ -83,6 +83,7 @@ public class ToimintaAlueet extends Menu {
 					alue.setVisible(true);
 					try {
 						päivitä();
+						palvelupäivitys();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -264,5 +265,69 @@ public class ToimintaAlueet extends Menu {
 				a.show();
 			}
 		}
+	 
+	 
+	 //palvelut
+	 
+	 
+	 @FXML
+		private ListView<Button> plista;
+	 
+	 public void palvelupäivitys(){
+	 	   try {
+	 		   plista.getItems().clear();
+	 		  String nim=nimiii.getText();
+	 		  
+	 		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+	 			System.out.println("Tiedot saatu!");
+	 			PreparedStatement preparedStatement=connection.prepareStatement("select p.palvelu_id, p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where t.nimi = '"+nim+"' and p.toimintaalue_id = t.toimintaalue_id;");
+	 	      
+	 	        ResultSet resultSet=preparedStatement.executeQuery();
+	 	        
+	 	        while(resultSet.next()){
+	 	             String id=resultSet.getString("p.palvelu_id");
+	 	             String nimi=resultSet.getString("p.nimi");
+	 	             String kuvaus=resultSet.getString("p.kuvaus");
+	 	             String hinta=resultSet.getString("p.hinta");
+	 	             String alv=resultSet.getString("p.alv");
+	 	            
+	 	        
+	 	             Button x=new Button(nimi+" "+kuvaus+" "+hinta+" "+alv);
+	 	             x.setMinWidth(150);
+	 	             x.setAlignment(Pos.CENTER_LEFT);
+	 	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+	 	            
+	 	            /*x.setOnAction((event) -> {
+	 	                System.out.println(x.getText());
+		                     String sisältö=x.getText();
+		                     String[] sisältöosissa= sisältö.split(" ");
+		                   
+		                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+		                   
+						try {
+							päivitä();
+						} catch (SQLException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+	 	            });
+	 	            */
+		            
+		                    
+		                     
+		                     
+		             
+	 	
+	 	            plista.getItems().add(x);
+	 	           
+	 	        }
+	 	        
+	 			} catch (SQLException e) {
+	 			System.out.println("Error while connecting to the database");
+	 			}
+	 	   
+	 	   
+		}
+	 
 }
 
