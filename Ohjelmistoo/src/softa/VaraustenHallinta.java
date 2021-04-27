@@ -12,7 +12,12 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 
 public class VaraustenHallinta extends Menu {
@@ -24,6 +29,7 @@ public class VaraustenHallinta extends Menu {
     TextField asiakasID;
     @FXML
     TextField mokkiID;
+    /* Jätän siltä varalta että jotai hajoo mut kalenterin pitäs toimia
     @FXML
     TextField varattuPVM;
     @FXML
@@ -32,6 +38,7 @@ public class VaraustenHallinta extends Menu {
     TextField varauksenAlkuPVM;
     @FXML
     TextField varauksenLoppuPVM;
+     */
     @FXML
     Pane list;
     @FXML
@@ -68,6 +75,14 @@ public class VaraustenHallinta extends Menu {
     CheckBox naytaTulevat;
     @FXML
     CheckBox naytaVanhat;
+    @FXML
+    DatePicker vahvistusPVM;
+    @FXML
+    DatePicker varattuPVM;
+    @FXML
+    DatePicker varauksenAlkuPVM;
+    @FXML
+    DatePicker varauksenLoppuPVM;
     //</editor-fold>
 
     static int iddd = 0;
@@ -137,7 +152,7 @@ public class VaraustenHallinta extends Menu {
                         try {
                             paivita();
                             palveluListapaivitys();
-                        } catch (SQLException throwables) {
+                        } catch (SQLException | ParseException throwables) {
                             throwables.printStackTrace();
                         }
                         varaus.setVisible(true);
@@ -222,7 +237,7 @@ public class VaraustenHallinta extends Menu {
                     try {
                         paivita();
                         palveluListapaivitys();
-                    } catch (SQLException e) {
+                    } catch (SQLException | ParseException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -264,7 +279,7 @@ public class VaraustenHallinta extends Menu {
             a.show();
         }
     }
-    public void paivita() throws SQLException{
+    public void paivita() throws SQLException, ParseException {
 
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
         System.out.println("Tiedot saatu!");
@@ -273,17 +288,48 @@ public class VaraustenHallinta extends Menu {
 
         ResultSet resultSet=preparedStatement.executeQuery();
         while(resultSet.next()){
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+
+            String sVarattuPVM = resultSet.getString("varattu_pvm");
+            String sVahvistusPVM = resultSet.getString("vahvistus_pvm");
+            String sVarauksenAlkuPVM = resultSet.getString("varattu_alkupvm");
+            String sVarauksenLoppuPVM = resultSet.getString("varattu_loppupvm");
+            Date dVarattuPVM = formatter.parse(sVarattuPVM);
+            Date dVahvistusPVM = formatter.parse(sVahvistusPVM);
+            Date dVarauksenAlkuPVM = formatter.parse(sVarauksenAlkuPVM);
+            Date dVarauksenLoppuPVM = formatter.parse(sVarauksenLoppuPVM);
+
+            System.out.println(sVarattuPVM);
+            System.out.println(dVarattuPVM);
             varausID.setText(resultSet.getString("varaus_ID"));
             asiakasID.setText(resultSet.getString("asiakas_id"));
             mokkiID.setText(resultSet.getString("mokki_mokki_id"));
-            varattuPVM.setText(resultSet.getString("varattu_pvm"));
-            vahvistusPVM.setText(resultSet.getString("vahvistus_pvm"));
-            varauksenAlkuPVM.setText(resultSet.getString("varattu_alkupvm"));
-            varauksenLoppuPVM.setText(resultSet.getString("varattu_loppupvm"));
+            /*
+            varattuPVM.setText(sVarattuPVM);
+            vahvistusPVM.setText(sVahvistusPVM);
+            varauksenAlkuPVM.setText(sVarauksenAlkuPVM);
+            varauksenLoppuPVM.setText(sVarauksenLoppuPVM);
+
+             */
+
+            varattuPVM.setValue(muunnaLocalDateksi(dVarattuPVM));
+            vahvistusPVM.setValue(muunnaLocalDateksi(dVahvistusPVM));
+            varauksenAlkuPVM.setValue(muunnaLocalDateksi(dVarauksenAlkuPVM));
+            varauksenLoppuPVM.setValue(muunnaLocalDateksi(dVarauksenLoppuPVM));
+
+            System.out.println(dVarattuPVM);
+            System.out.println(muunnaLocalDateksi(dVarattuPVM));
+
 
         }
 
     }
+    public LocalDate muunnaLocalDateksi (Date dateToConvert) {
+        return Instant.ofEpochMilli(dateToConvert.getTime())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
+    }
+    /*
     public void tallenna() throws SQLException {
 
         System.out.println(iddd);
@@ -293,10 +339,12 @@ public class VaraustenHallinta extends Menu {
         String sVarausID = varausID.getText();
         String sAsiakasID= asiakasID.getText();
         String sMokkiID= mokkiID.getText();
+
         String sVarattuPVM= varattuPVM.getText();
         String sVahvistusPVM= vahvistusPVM.getText();
         String sVarauksenAlkuPVM= varauksenAlkuPVM.getText();
         String sVarauksenLoppuPVM=varauksenLoppuPVM.getText();
+
 
 
 
@@ -306,6 +354,8 @@ public class VaraustenHallinta extends Menu {
         tallenna.setText("Tallennettu");
         tallenna.setStyle("-fx-background-color: #00ff00");
     }
+
+     */
     public void palveluListapaivitys() throws SQLException {
 
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
