@@ -329,7 +329,6 @@ public class VaraustenHallinta extends Menu {
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
     }
-    /*
     public void tallenna() throws SQLException {
 
         System.out.println(iddd);
@@ -339,11 +338,12 @@ public class VaraustenHallinta extends Menu {
         String sVarausID = varausID.getText();
         String sAsiakasID= asiakasID.getText();
         String sMokkiID= mokkiID.getText();
+        System.out.println(varattuPVM.getValue());
 
-        String sVarattuPVM= varattuPVM.getText();
-        String sVahvistusPVM= vahvistusPVM.getText();
-        String sVarauksenAlkuPVM= varauksenAlkuPVM.getText();
-        String sVarauksenLoppuPVM=varauksenLoppuPVM.getText();
+        String sVarattuPVM = varattuPVM.getValue().toString();
+        String sVahvistusPVM = vahvistusPVM.getValue().toString();
+        String sVarauksenAlkuPVM = varauksenAlkuPVM.getValue().toString();
+        String sVarauksenLoppuPVM = varauksenLoppuPVM.getValue().toString();
 
 
 
@@ -355,7 +355,6 @@ public class VaraustenHallinta extends Menu {
         tallenna.setStyle("-fx-background-color: #00ff00");
     }
 
-     */
     public void palveluListapaivitys() throws SQLException {
 
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
