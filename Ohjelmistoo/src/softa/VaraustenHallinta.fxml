@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
@@ -12,12 +13,14 @@
 <AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallinta">
    <Pane id="listPane" fx:id="list" layoutY="4.0" prefHeight="700.0" prefWidth="1100.0">
       <Button layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#menu" prefHeight="51.0" prefWidth="75.0" text="&lt;" />
-      <Text layoutX="211.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="63.708984375" />
-      <TextField fx:id="haku" alignment="CENTER" layoutX="623.0" layoutY="85.0" prefHeight="51.0" prefWidth="172.0" promptText="Hae nimellä" />
+      <Text layoutX="211.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="63.708984375" />
+      <TextField fx:id="haku" alignment="CENTER" layoutX="623.0" layoutY="85.0" prefHeight="25.0" prefWidth="172.0" promptText="Hae nimellä" />
       <ListView fx:id="lista" layoutX="211.0" layoutY="162.0" prefHeight="377.0" prefWidth="679.0" />
       <Button fx:id="paivita" layoutX="805.0" layoutY="85.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="51.0" prefWidth="85.0" text="Hae" />
       <Button fx:id="paivita" layoutX="507.0" layoutY="84.0" mnemonicParsing="false" onAction="#listapaivitys" prefHeight="51.0" prefWidth="106.0" text="Näytä kaikki" />
       <Label fx:id="hakuTulos" layoutX="497.0" layoutY="22.0" visible="false" />
+      <CheckBox fx:id="naytaTulevat" layoutX="623.0" layoutY="110.0" mnemonicParsing="false" onAction="#listaHaku" selected="true" text="Näytä tulevat varaukset" />
+      <CheckBox fx:id="naytaVanhat" layoutX="623.0" layoutY="131.0" mnemonicParsing="false" onAction="#listaHaku" selected="true" text="Näytä vanhat varaukset" />
    </Pane>
    <Pane id="varausPane" fx:id="varaus" prefHeight="704.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" visible="false">
       <Label layoutX="46.0" layoutY="64.0" text="id:">

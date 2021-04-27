@@ -12,10 +12,12 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 
 
 public class VaraustenHallinta extends Menu {
 
+    //<editor-fold desc="FXML oliot">
     @FXML
     TextField varausID;
     @FXML
@@ -36,8 +38,6 @@ public class VaraustenHallinta extends Menu {
     Pane varaus;
     @FXML
     Label hakuTulos;
-
-
     @FXML
     Button tallenna;
     @FXML
@@ -64,6 +64,11 @@ public class VaraustenHallinta extends Menu {
     TextField lkmText;
     @FXML
     TextField varausIDText;
+    @FXML
+    CheckBox naytaTulevat;
+    @FXML
+    CheckBox naytaVanhat;
+    //</editor-fold>
 
     static int iddd = 0;
 
@@ -75,15 +80,18 @@ public class VaraustenHallinta extends Menu {
         palveluList.getItems().clear();
     }
     public void listaHaku() {    //käytetään "Hae" nappulan painamisen yhteydessä
+        ResultSet resultSet = null;
         String hakutext=haku.getText();
+        String kokonimi = "N/a";
         String aID;
         String vID;
         String mID;
         int increment = 0;
+        PreparedStatement preparedStatement;
         lista.getItems().clear();
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-            PreparedStatement preparedStatement=connection.prepareStatement(
+            preparedStatement = connection.prepareStatement(
 
                     "select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
             );
@@ -93,25 +101,53 @@ public class VaraustenHallinta extends Menu {
             aIDResult.next();
             aID = aIDResult.getString("asiakas_id");
 
-            preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = "+"'"+aID+"'");
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while(resultSet.next()){
-                increment++;
-                vID = resultSet.getString("varaus_id");
-                aID = resultSet.getString("asiakas_ID");
-                mID = resultSet.getString("mokki_mokki_id");
-
-                Button x=new Button(hakutext +  "n " + increment + ". varaus: " + "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
-                x.setAccessibleText(vID);
-                x.setOnAction((event) -> {
-                    iddd = Integer.parseInt(x.getAccessibleText());
-
-                    varaus.setVisible(true);
-                });
-
-                lista.getItems().add(x);
-
+            if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
+                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "'");
+                resultSet = preparedStatement.executeQuery();
+            }
+            else if (naytaVanhat.isSelected()) {
+                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm <= current_date()");
+                resultSet = preparedStatement.executeQuery();
+            }
+            else if (naytaTulevat.isSelected()) {
+                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm >= current_date()");
+                resultSet = preparedStatement.executeQuery();
+            }
+            preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
+            ResultSet nimet = preparedStatement.executeQuery();
+            try {
+                while(resultSet.next()){
+                    while (nimet.next()) {
+                        if (aID.equals(nimet.getString("asiakas_id"))) {
+                            kokonimi = nimet.getString("etunimi") + " " + nimet.getString("sukunimi");
+                            System.out.println("nimi onnistu");
+                            System.out.println(kokonimi);
+                        }
+                    }
+                    increment++;
+                    vID = resultSet.getString("varaus_id");
+                    aID = resultSet.getString("asiakas_ID");
+                    mID = resultSet.getString("mokki_mokki_id");
+    
+                    Button x=new Button(kokonimi + " Varaus: " + increment + " || " +  "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
+                    x.setAccessibleText(vID);
+    
+                    x.setOnAction((event) -> {
+                        iddd = Integer.parseInt(x.getAccessibleText());
+                        try {
+                            paivita();
+                            palveluListapaivitys();
+                        } catch (SQLException throwables) {
+                            throwables.printStackTrace();
+                        }
+                        varaus.setVisible(true);
+                    });
+    
+                    lista.getItems().add(x);
+    
+                }
+            } catch (NullPointerException e) {
+                lista.getItems().clear();
             }
             hakuTulos.setText("Haulla " + increment + " tulosta");
             hakuTulos.setVisible(true);
@@ -121,6 +157,7 @@ public class VaraustenHallinta extends Menu {
                             new KeyValue(hakuTulos.visibleProperty(), false)));
             timeline.play();
             System.out.println("Tiedot saatu!");
+
 
         } catch (SQLException e) {
 
