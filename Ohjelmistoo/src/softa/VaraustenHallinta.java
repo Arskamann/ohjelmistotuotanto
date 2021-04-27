@@ -68,6 +68,8 @@ public class VaraustenHallinta extends Menu {
     @FXML
     TextField palveluIDText;
     @FXML
+    TextField palvelunNimiText;
+    @FXML
     TextField lkmText;
     @FXML
     TextField varausIDText;
@@ -86,6 +88,8 @@ public class VaraustenHallinta extends Menu {
     //</editor-fold>
 
     static int iddd = 0;
+
+
 
     public void menu(ActionEvent event) throws IOException { //tällä  toiminnolla pääsee takasin päävalikkoon. Tätä kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
@@ -304,12 +308,11 @@ public class VaraustenHallinta extends Menu {
             varausID.setText(resultSet.getString("varaus_ID"));
             asiakasID.setText(resultSet.getString("asiakas_id"));
             mokkiID.setText(resultSet.getString("mokki_mokki_id"));
-            /*
+            /* Vanhojen textfieldien koodia
             varattuPVM.setText(sVarattuPVM);
             vahvistusPVM.setText(sVahvistusPVM);
             varauksenAlkuPVM.setText(sVarauksenAlkuPVM);
             varauksenLoppuPVM.setText(sVarauksenLoppuPVM);
-
              */
 
             varattuPVM.setValue(muunnaLocalDateksi(dVarattuPVM));
@@ -354,7 +357,6 @@ public class VaraustenHallinta extends Menu {
         tallenna.setText("Tallennettu");
         tallenna.setStyle("-fx-background-color: #00ff00");
     }
-
     public void palveluListapaivitys() throws SQLException {
 
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
@@ -408,7 +410,19 @@ public class VaraustenHallinta extends Menu {
         PreparedStatement preparedStatement2=connection.prepareStatement(
                 "insert into varauksen_palvelut set varaus_id ='"+Integer.parseInt(varausIDText.getText())+"', palvelu_id='"+palvelu_id+"',"+"lkm='"+lkm+"'");
         preparedStatement2.executeUpdate();
+        preparedStatement2 = connection.prepareStatement("Insert into palvelu set nimi = '"+palvelunNimiText.getText()+"'");
         System.out.println("Tiedot tallennetu");
+    }
+    public void paivitaPalvelut() {
+            try{
+                palveluIDText.clear();
+                PreparedStatement ps = connection.prepareStatement("select palvelu_id from palvelu where nimi ='"+palvelunNimiText.getText()+"' ");
+                ResultSet rs = ps.executeQuery();
+                rs.next();
+                palveluIDText.setText(rs.getString("palvelu_id"));
+            } catch (SQLException e) {
+
+            }
     }
 
 }
