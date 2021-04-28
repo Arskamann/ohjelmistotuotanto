@@ -32,7 +32,28 @@
             <Button fx:id="tallenna" layoutX="613.0" layoutY="85.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="36.0" prefWidth="83.0" text="Tallenna" />
             <Button fx:id="poista" layoutX="704.0" layoutY="85.0" mnemonicParsing="false" onAction="#poista" prefHeight="36.0" prefWidth="127.0" text="Poista toiminta-alue" />
             <Button layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="36.0" prefWidth="60.0" text="&lt;" />
-            <Button layoutX="249.0" layoutY="85.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="127.0" text="Lisää uusi palvelu" />
+            <Button fx:id="up" layoutX="249.0" layoutY="85.0" mnemonicParsing="false" onAction="#uusiPalvelu" prefHeight="36.0" prefWidth="127.0" text="Lisää uusi palvelu" />
+         </children>
+      </Pane>
+      <Pane fx:id="palveluikkuna" prefHeight="700.0" prefWidth="1100.0" visible="false">
+         <children>
+            <Pane layoutX="335.0" layoutY="214.0" prefHeight="273.0" prefWidth="431.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;">
+               <children>
+                  <Label layoutX="60.0" layoutY="87.0" text="Tyyppi" />
+                  <Label layoutX="43.0" layoutY="54.0" text="Palvelun nimi" />
+                  <TextField fx:id="nim" layoutX="120.0" layoutY="50.0" />
+                  <TextField fx:id="tyyppi" layoutX="120.0" layoutY="83.0" />
+                  <TextField fx:id="kuvaus" layoutX="120.0" layoutY="117.0" />
+                  <TextField fx:id="hinta" layoutX="120.0" layoutY="153.0" />
+                  <TextField fx:id="alv" layoutX="120.0" layoutY="187.0" />
+                  <Label layoutX="59.0" layoutY="121.0" text="Kuvaus" />
+                  <Label layoutX="55.0" layoutY="157.0" text="Hinta (€)" />
+                  <Label layoutX="63.0" layoutY="191.0" text="Alv (%)" />
+               </children>
+            </Pane>
+            <Button layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="42.0" prefWidth="64.0" text="&lt;" />
+            <Button fx:id="tallenna2" layoutX="683.0" layoutY="106.0" mnemonicParsing="false" onAction="#tallenna2" prefHeight="36.0" prefWidth="83.0" text="Tallenna" />
+            <Button fx:id="poista2" layoutX="778.0" layoutY="106.0" mnemonicParsing="false" onAction="#poista2" prefHeight="36.0" prefWidth="96.0" text="Poista palvelu" />
          </children>
       </Pane>
    </children>

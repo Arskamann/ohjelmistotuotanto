@@ -33,6 +33,8 @@ public class ToimintaAlueet extends Menu {
 	Pane alue;
 	@FXML
 	Pane list;
+	@FXML
+	Pane palveluikkuna;
 	
 	
 	public void menu(ActionEvent event) throws IOException { 
@@ -43,12 +45,20 @@ public class ToimintaAlueet extends Menu {
         changeScene("UusiToimintaAlue.fxml");
 	}
 	
+	public void uusiPalvelu(ActionEvent event) throws IOException {
+        changeScene("UusiPalvelu.fxml");
+	}
+	
 	public void takas() throws IOException {
+			palveluikkuna.setVisible(false);
 	       alue.setVisible(false);
 	       list.setVisible(true);
 	       listapäivitys();
+	       palvelupäivitys();
 	       tallenna.setStyle("-fx-background-color: #FFFFFF");
 	       tallenna.setText("Tallenna");
+	       tallenna2.setStyle("-fx-background-color: #FFFFFF");
+	       tallenna2.setText("Tallenna");
 	       
 	        
 	    }
@@ -269,6 +279,36 @@ public class ToimintaAlueet extends Menu {
 	 
 	 //palvelut
 	 
+	 @FXML
+	    TextField nim;
+	 @FXML
+	    TextField kuvaus;
+	 @FXML
+	    TextField tyyppi;
+	 @FXML
+	    TextField hinta;
+	 @FXML
+	    TextField alv;
+	 
+	 public void päivitä2() throws SQLException{
+	    	
+	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			 PreparedStatement preparedStatement=connection.prepareStatement("select * from vn.palvelu,vn.toimintaalue where toimintaalue.toimintaalue_id="+iddd+" and palvelu.toimintaalue_id= "+iddd+""); 
+	      
+	    ResultSet resultSet=preparedStatement.executeQuery();
+	    while(resultSet.next()){
+	    	System.out.println(resultSet.getString("palvelu.nimi"));
+	    	nim.setText(resultSet.getString("palvelu.nimi"));
+	    	tyyppi.setText(resultSet.getString("palvelu.tyyppi"));
+	    	kuvaus.setText(resultSet.getString("palvelu.kuvaus"));
+	    	hinta.setText(resultSet.getString("palvelu.hinta"));
+	    	alv.setText(resultSet.getString("palvelu.alv"));
+	    }
+	    
+	    }
+	 
+	 
 	 
 	 @FXML
 		private ListView<Button> plista;
@@ -297,21 +337,24 @@ public class ToimintaAlueet extends Menu {
 	 	             x.setAlignment(Pos.CENTER_LEFT);
 	 	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
 	 	            
-	 	            /*x.setOnAction((event) -> {
+	 	            x.setOnAction((event) -> {
 	 	                System.out.println(x.getText());
 		                     String sisältö=x.getText();
 		                     String[] sisältöosissa= sisältö.split(" ");
 		                   
 		                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
-		                   
+		                    
+		                    
+							alue.setVisible(false);
+							palveluikkuna.setVisible(true);
 						try {
-							päivitä();
+							päivitä2();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
 	 	            });
-	 	            */
+	 	            
 		            
 		                    
 		                     
@@ -328,6 +371,109 @@ public class ToimintaAlueet extends Menu {
 	 	   
 	 	   
 		}
+	 
+	 
+	 @FXML
+	    Button tallenna2;
+	 
+	 public void tallenna2() throws SQLException {
+	    	
+	    	System.out.println(iddd);
+	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			
+			String nimi=nim.getText();
+			String tyypp=tyyppi.getText();
+			String kuv=kuvaus.getText();
+			String hint=hinta.getText();
+			String al=alv.getText();
+					
+	    PreparedStatement preparedStatement=connection.prepareStatement(
+	    		"update palvelu set nimi ='"+nimi+"', tyyppi ='"+tyypp+"', kuvaus ='"+kuv+"', hinta ='"+hint+"', alv ='"+al+"' where toimintaalue_id="+iddd);
+	   preparedStatement.executeUpdate();
+	    tallenna2.setText("Tallennettu");
+	    tallenna2.setStyle("-fx-background-color: #00ff00");
+			
+			
+	    }
+	 
+	 @FXML
+	    Button poista2;
+	 
+	 public void poista2() throws IOException {
+			try {
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			
+			
+
+		PreparedStatement preparedStatement=connection.prepareStatement("delete from palvelu where toimintaalue_id="+iddd);
+		preparedStatement.executeUpdate();
+		Alert a = new Alert(AlertType.INFORMATION);
+		a.setContentText("Palvelu poistettu");
+		a.setTitle("Huomio");
+		a.show();
+		takas();
+		palvelupäivitys();
+			}catch(Exception e) {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("Virhe poistaessa palvelua");
+				a.setTitle("Huomio");
+				a.show();
+			}
+		}
+	 
+	 @FXML
+	    Button up;
+	 @FXML
+	    TextField uusipnimi;
+	 @FXML
+	    TextField uusityyppi;
+	 @FXML
+	    TextField uusikuvaus;
+	 @FXML
+	    TextField uusihinta;
+	 @FXML
+	    TextField uusialv;
+	 
+	 @FXML
+	    Button tallennauusi2;
+	
+	 public void tallennaUusi2() {
+		 
+		 try {
+			 
+			 System.out.println(iddd);
+			 
+	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");			
+			
+			String nimi=uusipnimi.getText();
+			String tyyppi=uusityyppi.getText();
+			String kuvaus=uusikuvaus.getText();
+			String hinta=uusihinta.getText();
+			String alv=uusialv.getText();
+
+			    
+	    PreparedStatement preparedStatement2=connection.prepareStatement(
+	    		"insert into palvelu set nimi ='"+nimi+"', tyyppi ='"+tyyppi+"', kuvaus ='"+kuvaus+"', hinta ='"+hinta+"', alv ='"+alv+"' where toimintaalue_id='"+iddd+"'");
+	   preparedStatement2.executeUpdate();
+	   Alert a = new Alert(AlertType.INFORMATION);
+		 a.setContentText("Uusi palvelu luotu!");
+		 a.setTitle("Huomio");
+		 a.show();
+		 changeScene("ToimintaAlueet.fxml");
+			
+		
+		 }catch (Exception e) {
+			 Alert a = new Alert(AlertType.INFORMATION);
+			 a.setContentText("Virhe!");
+			 a.setTitle("Huomio");
+			 a.show();
+		 }
+		 
+	    }
+	 
 	 
 }
 

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.ToimintaAlueet">
+   <children>
+      <Pane layoutX="328.0" layoutY="208.0" prefHeight="284.0" prefWidth="445.0" scaleX="1.5" scaleY="1.5" style="-fx-background-color: skyblue;">
+         <children>
+            <Button fx:id="tallennauusi2" layoutX="327.0" layoutY="129.0" mnemonicParsing="false" onAction="#tallennaUusi2" prefHeight="25.0" prefWidth="105.0" text="Luo uusi palvelu!" />
+            <Label layoutX="43.0" layoutY="48.0" prefHeight="17.0" prefWidth="77.0" text="Palvelun nimi*" />
+            <Label layoutX="59.0" layoutY="81.0" text="Tyyppi*" />
+            <Label layoutX="57.0" layoutY="115.0" text="Kuvaus*" />
+            <Label layoutX="59.0" layoutY="147.0" text="Hinta (€)*" />
+            <Label layoutX="61.0" layoutY="182.0" text="Alv (%)*" />
+            <TextField fx:id="uusipnimi" layoutX="138.0" layoutY="44.0" />
+            <TextField fx:id="uusityyppi" layoutX="139.0" layoutY="77.0" prefHeight="25.0" prefWidth="146.0" />
+            <TextField fx:id="uusikuvaus" layoutX="138.0" layoutY="111.0" />
+            <TextField fx:id="uusihinta" layoutX="138.0" layoutY="143.0" />
+            <TextField fx:id="uusialv" layoutX="140.0" layoutY="178.0" />
+         </children>
+      </Pane>
+      <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#menu" prefHeight="52.0" prefWidth="97.0" text="Takaisin" />
+   </children>
+</AnchorPane>
