@@ -294,16 +294,16 @@ public class ToimintaAlueet extends Menu {
 	    	
 	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 			System.out.println("Tiedot saatu!");
-			 PreparedStatement preparedStatement=connection.prepareStatement("select * from vn.palvelu,vn.toimintaalue where toimintaalue.toimintaalue_id="+iddd+" and palvelu.toimintaalue_id= "+iddd+""); 
+			 PreparedStatement preparedStatement=connection.prepareStatement("select * from vn.palvelu where toimintaalue_id="+iddd+" and palvelu.toimintaalue_id= "+iddd+""); 
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
-	    	System.out.println(resultSet.getString("palvelu.nimi"));
-	    	nim.setText(resultSet.getString("palvelu.nimi"));
-	    	tyyppi.setText(resultSet.getString("palvelu.tyyppi"));
-	    	kuvaus.setText(resultSet.getString("palvelu.kuvaus"));
-	    	hinta.setText(resultSet.getString("palvelu.hinta"));
-	    	alv.setText(resultSet.getString("palvelu.alv"));
+	    	System.out.println(resultSet.getString("nimi"));
+	    	nim.setText(resultSet.getString("nimi"));
+	    	tyyppi.setText(resultSet.getString("tyyppi"));
+	    	kuvaus.setText(resultSet.getString("kuvaus"));
+	    	hinta.setText(resultSet.getString("hinta"));
+	    	alv.setText(resultSet.getString("alv"));
 	    }
 	    
 	    }
@@ -405,9 +405,9 @@ public class ToimintaAlueet extends Menu {
 			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 			System.out.println("Tiedot saatu!");
 			
-			
-
-		PreparedStatement preparedStatement=connection.prepareStatement("delete from palvelu where toimintaalue_id="+iddd);
+			String nimi = nim.getText();
+		
+		PreparedStatement preparedStatement=connection.prepareStatement("delete from palvelu where nimi="+nimi);
 		preparedStatement.executeUpdate();
 		Alert a = new Alert(AlertType.INFORMATION);
 		a.setContentText("Palvelu poistettu");
@@ -456,7 +456,7 @@ public class ToimintaAlueet extends Menu {
 
 			    
 	    PreparedStatement preparedStatement2=connection.prepareStatement(
-	    		"insert into palvelu set nimi ='"+nimi+"', tyyppi ='"+tyyppi+"', kuvaus ='"+kuvaus+"', hinta ='"+hinta+"', alv ='"+alv+"' where toimintaalue_id='"+iddd+"'");
+	    		"insert into palvelu set nimi ='"+nimi+"', tyyppi ='"+tyyppi+"', kuvaus ='"+kuvaus+"', hinta ='"+hinta+"', alv ='"+alv+"', toimintaalue_id="+iddd+"");
 	   preparedStatement2.executeUpdate();
 	   Alert a = new Alert(AlertType.INFORMATION);
 		 a.setContentText("Uusi palvelu luotu!");
