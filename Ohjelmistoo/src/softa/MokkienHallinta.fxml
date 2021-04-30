@@ -4,6 +4,7 @@
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
@@ -37,14 +38,13 @@
             <Label layoutX="47.0" layoutY="230.0" text="Postinro" />
             <Label layoutX="27.0" layoutY="265.0" text="Toimipaikka" />
             <Label layoutX="168.0" layoutY="301.0" text="Varustelu" />
-            <Label layoutX="53.0" layoutY="370.0" text="Kuvaus" />
+            <Label layoutX="53.0" layoutY="368.0" text="Kuvaus" />
             <Label layoutX="18.0" layoutY="301.0" text="Henkilömäärä" />
             <TextField fx:id="mokinnimi" layoutX="100.0" layoutY="121.0" prefHeight="26.0" prefWidth="270.0" />
             <TextField fx:id="toim" layoutX="101.0" layoutY="261.0" prefHeight="26.0" prefWidth="270.0" />
             <TextField fx:id="osoite" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="270.0" />
             <TextField fx:id="postinro" layoutX="102.0" layoutY="226.0" prefHeight="26.0" prefWidth="76.0" />
             <TextField fx:id="hlo" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="59.0" />
-            <TextField fx:id="kuvaus" layoutX="104.0" layoutY="366.0" prefHeight="323.0" prefWidth="434.0" />
             <Label fx:id="id" layoutX="45.0" layoutY="102.0" />
             <Button fx:id="back" layoutX="11.0" layoutY="10.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Takaisin" />
             <Label layoutX="100.0" layoutY="53.0" text="Mökin tiedot">
@@ -53,7 +53,7 @@
                </font>
             </Label>
             <Button fx:id="poista" layoutX="950.0" layoutY="11.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
-            <Button fx:id="tallenna" layoutX="950.0" layoutY="49.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna" />
+            <Button fx:id="tallenna" layoutX="950.0" layoutY="49.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="26.0" prefWidth="122.0" text="Tallenna" />
             <Label layoutX="556.0" layoutY="118.0" text="Tulevat varaukset">
                <font>
                   <Font size="18.0" />
@@ -64,13 +64,14 @@
             <ChoiceBox fx:id="varustelu" layoutX="230.0" layoutY="297.0" prefHeight="26.0" prefWidth="142.0" />
             <Label layoutX="65.0" layoutY="334.0" text="Hinta" />
             <TextField fx:id="hinta" layoutX="104.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
-            <Button fx:id="tallennaJaPoistu" layoutX="949.0" layoutY="87.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
+            <Button fx:id="tallennaJaPoistu" layoutX="949.0" layoutY="87.0" mnemonicParsing="false" onAction="#tallennaJaPoistu" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
             <Button fx:id="uusivaraus" layoutX="556.0" layoutY="150.0" mnemonicParsing="false" text="Uusi varaus" />
             <Label layoutX="471.0" layoutY="10.0" text="Mökin tietojen muokkaus">
                <font>
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
+            <TextArea fx:id="kuvaus" layoutX="104.0" layoutY="366.0" prefHeight="323.0" prefWidth="434.0" />
          </children>
       </Pane>
       <Pane fx:id="uusiMokki" layoutX="10.0" layoutY="10.0" style="-fx-background-color: skyblue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">

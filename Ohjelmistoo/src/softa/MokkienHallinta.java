@@ -22,6 +22,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
@@ -66,7 +67,7 @@ public class MokkienHallinta extends Menu {
     @FXML
     private ChoiceBox<String> varustelu;
     @FXML
-    private TextField kuvaus;
+    private TextArea kuvaus;
     @FXML
     private Label id;
     @FXML
@@ -132,12 +133,12 @@ public class MokkienHallinta extends Menu {
 		toimialue1.setValue("Valitse toimipaikka");
 		toimialue1.setItems(FXCollections.observableArrayList(haePaikat()));
 		varustelu.setValue("Valitse varustelutaso");
-		varustelu.setItems(FXCollections.observableArrayList(haeVarustelut()));
+		varustelu.setItems(varustelut);
 		varustelu1.setValue("Valitse varustelutaso");
-		varustelu1.setItems(FXCollections.observableArrayList(haeVarustelut()));
+		varustelu1.setItems(varustelut);
 	}
     
-	//takaisin menuun painamalla 'peruuta'
+	//takaisin menuun painamalla 'takaisin'
 	public void menu(ActionEvent event) throws IOException {
         changeScene("Menu.fxml");
         }
@@ -145,7 +146,7 @@ public class MokkienHallinta extends Menu {
 	//takaisin kaikkiin mökkeihin yksittäisestä mökistä
 	public void takaisinMokkeihin (ActionEvent event) throws IOException {
 		changeScene("MokkienHallinta.fxml");
-	}
+		}
 	
 	// kaikkien mökkien näkyminen listassa painamalla 'näytä kaikki'
 	public void listapaivitys() {
@@ -154,7 +155,8 @@ public class MokkienHallinta extends Menu {
     		  
     		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
     			System.out.println("Tiedot saatu!");
-    			PreparedStatement preparedStatement=connection.prepareStatement("Select m.mokki_id, m.mokkinimi, t.nimi from mokki m join toimintaalue t using(toimintaalue_id);");
+    			PreparedStatement preparedStatement=connection.prepareStatement(
+    					"Select m.mokki_id, m.mokkinimi, t.nimi from mokki m join toimintaalue t using(toimintaalue_id);");
     	      
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        
@@ -190,7 +192,7 @@ public class MokkienHallinta extends Menu {
     			} catch (SQLException e) {
     			System.out.println("Error while connecting to the database");
     			}
-	   }
+    	}
 	
 	//dropdown-valikossa näkyvät toimipaikat
     private List<String> haePaikat() {
@@ -213,98 +215,71 @@ public class MokkienHallinta extends Menu {
 
             // Return the List
             return valinnat;
-
+ 
         } catch (SQLException e) {
 			System.out.println("Error while connecting to the database");
 			return null;
+			}
         }
-
-    }
     
     //dropdown-lista varusteluista
-    private List<String> haeVarustelut() {
-
-        List<String> valinnat = new ArrayList<>();
-
-        try {
-        	Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-        	System.out.println("Tiedot saatu!");
-        	PreparedStatement statement=connection.prepareStatement("Select varustelu from mokki");
-      
-            ResultSet set = statement.executeQuery();
-
-            while (set.next()) {
-                valinnat.add(set.getString("varustelu"));
-            }
-
-            statement.close();
-            set.close();
-
-            return valinnat;
-
-        } catch (SQLException e) {
-			System.out.println("Error while connecting to the database");
-			return null;
-        }
-
-    }
+    ObservableList<String> varustelut = FXCollections.
+			observableArrayList("Valitse varustelutaso", "Normaali", "Hyvä", "Luksus");
 	
 	// mökkien näyttäminen toimipaikoittain
-		public void hakuToimipaikoilla() {
-			String valittuToimipaikka = toimipaikkalistaus.getValue();
-			String toimialue_id;
-			System.out.println(valittuToimipaikka);
+	public void hakuToimipaikoilla() {
+		String valittuToimipaikka = toimipaikkalistaus.getValue();
+		String toimialue_id;
+		System.out.println(valittuToimipaikka);
 			
-	    	try {
-	    		lista.getItems().clear();
+	    try {
+	    	lista.getItems().clear();
 	    		  
-	    		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-	    			System.out.println("Tiedot saatu!");
-	    			PreparedStatement preparedStatement=connection.prepareStatement("Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
+	    	Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+	    	System.out.println("Tiedot saatu!");
+	    	PreparedStatement preparedStatement=connection.prepareStatement(
+	    			"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
 	    	      
-	    	        ResultSet toimialue_idResult=preparedStatement.executeQuery();
+	    	ResultSet toimialue_idResult=preparedStatement.executeQuery();
 	    	        
-	    	        toimialue_idResult.next();
-	    	        toimialue_id = toimialue_idResult.getString("toimintaalue_id");
+	    	toimialue_idResult.next();
+	    	toimialue_id = toimialue_idResult.getString("toimintaalue_id");
 	    	        
-	    	        preparedStatement = connection.prepareStatement("select * from mokki where toimintaalue_id = "+"'"+toimialue_id+"'");
-	                ResultSet resultSet = preparedStatement.executeQuery();
+	    	preparedStatement = connection.prepareStatement(
+	    			"Select * from mokki where toimintaalue_id = "+"'"+toimialue_id+"'");
+	        ResultSet resultSet = preparedStatement.executeQuery();
 	    	        
-	    	        while(resultSet.next()){
-	    	             String nimi=resultSet.getString("mokkinimi");
-	    	             String id=resultSet.getString("mokki_id");
+	    	while(resultSet.next()){
+	    	    String nimi=resultSet.getString("mokkinimi");
+	    	    String id=resultSet.getString("mokki_id");
 	    	        
-	    	             Button x=new Button(nimi+" "+"(" + id +")");
+	    	    Button x=new Button(nimi+" "+"(" + id +")");
 
-	    	             x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�	    	             
+	    	    x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�	    	             
 	    	             
-	    	             x.setOnAction((event) -> {
-	    	                System.out.println(x.getText());
+	    	    x.setOnAction((event) -> {
+	    	    	System.out.println(x.getText());
+	  	            iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
+	    	        hakutulos.setVisible(true);
 	  	                   
-	    	                iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
-	    	                
-	    	                hakutulos.setVisible(true);
-	  	                   
-						try {
-							paivita();
+					try {
+						paivita();
 						} catch (SQLException e) {
-							// TODO Auto-generated catch block
 							e.printStackTrace();
 							}
 	    	            });
 	    	
-	    	            lista.getItems().add(x);
-	    	            }
-	    	        
-	    			} catch (SQLException e) {
-	    			System.out.println("Error while connecting to the database");
-	    			}
-		   }
+	    	    lista.getItems().add(x);
+	    	    }
+	    	} catch (SQLException e) {
+	    		System.out.println("Error while connecting to the database");
+	    		}
+	    }
 	
 	//uuden mökin lisäysnäkymä
 	public void mokinLisays() {
 		uusiMokki.setVisible(true);
-	}
+		}
 	
 		
 	// mökkien haku nimellä, id:llä
@@ -312,30 +287,31 @@ public class MokkienHallinta extends Menu {
     	String hakutext=hakukentta.getText();
     	System.out.println(hakutext);
     	lista.getItems().clear();
- 	   try {
- 		   connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+    	
+    	try {
+    		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
  			System.out.println("Tiedot saatu!");
  			PreparedStatement preparedStatement=connection.prepareStatement(
- 					"select distinct * from mokki m, toimintaalue t where mokkinimi like "+"'%"+hakutext+"%'"
+ 					"Select distinct * from mokki m, toimintaalue t where mokkinimi like "+"'%"+hakutext+"%'"
  					+ " and m.toimintaalue_id=t.toimintaalue_id"
  					+ " or m.mokki_id="+"'"+hakutext+"'"
  					+ " and m.toimintaalue_id=t.toimintaalue_id");							
  	        
  	        ResultSet resultSet=preparedStatement.executeQuery();
- 	       
- 	       while(resultSet.next()){
-	             String id=resultSet.getString("mokki_id");
-	             String nimi=resultSet.getString("mokkinimi");
+ 	        
+ 	        while(resultSet.next()){
+ 	        	String id=resultSet.getString("mokki_id");
+	            String nimi=resultSet.getString("mokkinimi");
 	        
-	             Button x=new Button(nimi+" "+"(" + id +")");
-	             x.setMinWidth(150);
-	             x.setAlignment(Pos.CENTER_LEFT);
-	             x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�
+	            Button x=new Button(nimi+" "+"(" + id +")");
+	            x.setMinWidth(150);
+	            x.setAlignment(Pos.CENTER_LEFT);
+	            x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�
 	            
 	            x.setOnAction((event) -> {
-	                System.out.println(x.getText());
-                     String sisalto=x.getText();
-                     String[] sisaltoosissa= sisalto.split(" ");
+	            	System.out.println(x.getText());
+                    String sisalto=x.getText();
+                    String[] sisaltoosissa= sisalto.split(" ");
                    
                     iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
                    
@@ -344,103 +320,106 @@ public class MokkienHallinta extends Menu {
                    
 					try {
 						paivita();
-					} catch (SQLException e) {
-						// TODO Auto-generated catch block
+						} catch (SQLException e) {
 						e.printStackTrace();
-					}
-	            });
-	
+						}
+					});
+	            
 	            lista.getItems().add(x);
-	           
-	        }
+	            }
  	        
  			} catch (SQLException e) {
- 			System.out.println("Error while connecting to the database");
- 			}
-    }
+ 				System.out.println("Error while connecting to the database");
+ 				}
+    	}
 	   
 	   
-	   //mökin tarkemmat tiedot
-	    public void paivita() throws SQLException{
-	    	
-	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-			System.out.println("Tiedot saatu!");
+	//mökin tarkempien tietojen hakeminen kannasta näkyviin
+	public void paivita() throws SQLException{
+		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+		System.out.println("Tiedot saatu!");
 			
-			PreparedStatement preparedStatement2=connection.prepareStatement("Select * from mokki m join toimintaalue t using(toimintaalue_id) where mokki_id="+iddd);
+		PreparedStatement preparedStatement2=connection.prepareStatement(
+				"Select * from mokki m join toimintaalue t using(toimintaalue_id) where mokki_id="+iddd);
 		      
-		    ResultSet resultSet2=preparedStatement2.executeQuery();
-		    String postinumero=null;
+		ResultSet resultSet2=preparedStatement2.executeQuery();
+		String postinumero=null;
 
-		    while(resultSet2.next()){
-		    	mokkiID.setText(resultSet2.getString("mokki_id"));
-		    	mokinnimi.setText(resultSet2.getString("mokkinimi"));
-		    	toimialue.setValue(resultSet2.getString("nimi"));
-		    	osoite.setText(resultSet2.getString("katuosoite"));
-		    	postinro.setText(resultSet2.getString("postinro"));
-		    	kuvaus.setText(resultSet2.getString("kuvaus"));
-		    	hlo.setText(resultSet2.getString("henkilomaara"));
-		    	varustelu.setValue(resultSet2.getString("varustelu"));
-	            hinta.setText(resultSet2.getString("hinta"));
-	            
-	            postinumero=resultSet2.getString("postinro");
-		
+		while(resultSet2.next()){
+			mokkiID.setText(resultSet2.getString("mokki_id"));
+		    mokinnimi.setText(resultSet2.getString("mokkinimi"));
+		    toimialue.setValue(resultSet2.getString("nimi"));
+		    osoite.setText(resultSet2.getString("katuosoite"));
+		    postinro.setText(resultSet2.getString("postinro"));
+		    kuvaus.setText(resultSet2.getString("kuvaus"));
+		    hlo.setText(resultSet2.getString("henkilomaara"));
+		    varustelu.setValue(resultSet2.getString("varustelu"));
+	        hinta.setText(resultSet2.getString("hinta"));
+	        
+	        postinumero=resultSet2.getString("postinro");
+	        
 		    }			
 			
-			 PreparedStatement preparedStatement=connection.prepareStatement("Select postinro, toimipaikka from posti where postinro= '"+postinumero+"'");
-			 ResultSet resultSet=preparedStatement.executeQuery();
-			 while(resultSet.next()){			    	
-			    				    
-		        toim.setText(resultSet.getString("toimipaikka"));
-		            
-		            }		    
-			    
-			    }
-	    
-	    //tallentaminen
-	    public void tallenna() throws SQLException {
-	    	
-	    	System.out.println(iddd);
-	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-			System.out.println("Tiedot saatu!");
-			
-			String mokkinimi=mokinnimi.getText();
-			String os=osoite.getText();
-			String nro=postinro.getText();
-			String kaupunki=toim.getText();
-			String henkilot=hlo.getText();
-			String varusteet=varustelu.getAccessibleText();
-			String eurot=hinta.getText();
-			String teksti=kuvaus.getText();
-			String alue=toimialue.getAccessibleText();
-					
-			PreparedStatement preparedStatement=connection.prepareStatement(
-				   "insert into mokki set mokkinimi ='"+mokkinimi+"', katuosoite='"+os+"', kuvaus='"+teksti+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot+"' where mokki_id="+iddd);
-			preparedStatement.executeUpdate();
-
-				   
-			// postinro ja toimialueen tallentaminen eri lailla, toimialueen id pitää saada talteen
-				   
-			//PreparedStatement preparedStatement2=connection.prepareStatement("insert into toimintaalue set nimi='"+alue+"' where toimintaalue_id="+);
-				   
-				   
-				   Alert b = new Alert(AlertType.INFORMATION);
-					 b.setContentText("Tiedot päivitetty!");
-					 b.setTitle("Huomio");
-					 b.show();
-				
-			
+		PreparedStatement preparedStatement=connection.prepareStatement(
+				"Select postinro, toimipaikka from posti where postinro= '"+postinumero+"'");
+		ResultSet resultSet=preparedStatement.executeQuery();
 		
-	    PreparedStatement preparedStatement2=connection.prepareStatement(
-	    		"update mokki set mokkinimi ='"+mokkinimi+"', katuosoite='"+os+"', kuvaus='"+teksti+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot+"' where mokki_id="+iddd);
-	   preparedStatement2.executeUpdate();
-	    tallenna.setText("Tallennettu");
-	    tallenna.setStyle("-fx-background-color: #00ff00");
+		while(resultSet.next()){
+			toim.setText(resultSet.getString("toimipaikka"));
+			}
+		}
+
+	//muutosten tallentaminen olemassaolevaan mökkiin
+	public void tallenna() throws SQLException {
+		System.out.println(iddd);
+	    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+		System.out.println("Tiedot saatu!");
 			
+		String mokkinimi=mokinnimi.getText();
+		String os=osoite.getText();
+		String nro=postinro.getText();
+		String kaupunki=toim.getText();
+		String henkilot=hlo.getText();
+		String varusteet=varustelu.getValue();
+		String eurot=hinta.getText();
+		String teksti=kuvaus.getText();
 			
-	    }
+		PreparedStatement preparedStatement=connection.prepareStatement(
+				"update mokki set mokkinimi ='"+mokkinimi+"', katuosoite='"+os+"', postinro='"+nro+"', kuvaus='"+teksti
+				+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot
+				+"' where mokki_id="+iddd);
+		
+		preparedStatement.executeUpdate();
+		
+		String valittuToimipaikka = toimialue.getValue();
+		String toimialue_id;
+		
+		PreparedStatement preparedStatement2=connection.prepareStatement(
+				"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
+	    	      
+	    ResultSet toimialue_idResult=preparedStatement2.executeQuery();
+	    	        
+	    toimialue_idResult.next();
+	    toimialue_id = toimialue_idResult.getString("toimintaalue_id");
+	    	        
+	    PreparedStatement preparedStatement3 = connection.prepareStatement(
+	    		"Update mokki set toimintaalue_id='"+toimialue_id+"' where mokki_id="+iddd);
+	    preparedStatement3.executeUpdate();
 	    
+		tallenna.setText("Tallennettu");
+		tallenna.setStyle("-fx-background-color: #00ff00");
+			    
+	    }
+	
+	//tallentaminen ja poistuminen saman tien takaisin mökkienhallintaan
+	public void tallennaJaPoistu() throws SQLException, IOException {
+		tallenna();
+		changeScene("MokkienHallinta.fxml");
+	}
+		
 	    
 }
+
     	   
 
    
