@@ -261,6 +261,39 @@ public void listap‰ivitys1(){
 		   list1.getItems().clear();
 		   
 		  
+		   
+		   
+		   
+		   
+		   
+		   
+		  
+		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+			System.out.println("Tiedot saatu!");
+			PreparedStatement preparedStatement=connection.prepareStatement("SELECT varauksen_palvelut.palvelu_id,varaus.varaus_id,sum(lkm) as m‰‰r‰,palvelu.toimintaalue_id,toimintaalue.nimi"
+					+ " as palvelu,palvelu.nimi,varattu_alkupvm,varattu_loppupvm FROM vn.toimintaalue,vn.varaus,vn.palvelu,vn.varauksen_palvelut"
+					+"where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id"
+							+ " and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"+alue
+					+" group by palvelu_id");
+	      
+	        ResultSet resultSet=preparedStatement.executeQuery();
+	        
+	        while(resultSet.next()){
+	             String palvelu=resultSet.getString("palvelu");
+	             String aluee=resultSet.getString("nimi");
+	             String m‰‰r‰=resultSet.getString("m‰‰r‰");
+	        
+	             Text x=new Text(palvelu+": "+m‰‰r‰+"       ("+aluee+")");
+	            
+            
+                    
+                     
+                     
+             
+	
+	            list1.getItems().add(x);
+	           
+	        }
 	        
 	        // P‰ivitet‰‰n kokonaism‰‰r‰ viel‰...
 	        
