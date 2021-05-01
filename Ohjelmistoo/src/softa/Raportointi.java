@@ -41,7 +41,8 @@ public class Raportointi extends Menu {
 	@FXML
     private Button p‰ivit‰;
 	static int iddd=1;
-private String a;
+private String a="lol";
+private String a2;
 
 
 	@FXML
@@ -51,8 +52,13 @@ private String a;
 	@FXML
 	private Button koko;
 	@FXML
+	private Button koko1;
+	@FXML
 	private ListView<Text> list;
-	
+	@FXML
+	private ListView<Text> list1;
+	@FXML
+	private Pane palve;
 	@FXML
 	private Pane maj;
 	@FXML
@@ -60,13 +66,23 @@ private String a;
 	@FXML
 	private Label kaikki;
 	@FXML
+	private Label kaikki2;
+	@FXML
 	private TextField v‰li1;
 	@FXML
 	private TextField v‰li2;
 	@FXML
+	private TextField v‰lii;
+	@FXML
+	private TextField v‰lii2;
+	@FXML
 	private ChoiceBox<String> alue;
 	@FXML
+	private ChoiceBox<String> alue1;
+	@FXML
 	private PieChart ympyr‰;
+	@FXML
+	private PieChart ympyr‰1;
 	
 	public void menu(ActionEvent event) throws IOException {
         changeScene("Menu.fxml");
@@ -81,14 +97,20 @@ private String a;
       
        
     }
-	public void palv() throws IOException {
-      
+	public void palv() throws IOException, SQLException {
+		  palve.setVisible(true);
+	      valinta.setVisible(false);
+	       p‰ivit‰alueet1();
+	       listap‰ivitys1();
+	       
+	      
        
         
     }
 public void takas() throws IOException {
       
 	 maj.setVisible(false);
+	 palve.setVisible(false);
      valinta.setVisible(true);
         
     }
@@ -118,9 +140,31 @@ public void p‰ivit‰alueet() throws SQLException{
    alue.setValue("Kaikki");
 }
 
-
-
-
+public void p‰ivit‰alueet1() throws SQLException{
+	 alue1.getItems().clear();
+	 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
+		System.out.println("Tiedot saatu!");
+	
+  PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from toimintaalue");
+    
+  ResultSet resultSet=preparedStatement.executeQuery();
+  String tt = new String("Kaikki");
+  alue1.getItems().add(tt);
+  while(resultSet.next()){
+       String nimi=resultSet.getString("nimi");
+       String t = new String(nimi);
+      alue1.getItems().add(t);
+      
+  }
+  alue1.setOnAction((event) -> {
+	   a2=alue1.getValue().toString();
+  	   listap‰ivitys1();
+  	   
+     
+     
+  });
+  alue1.setValue("Kaikki");
+}
 public void listap‰ivitys(){ 
 	String alue;
 	 String alkaa = v‰li1.getText();
@@ -187,6 +231,47 @@ public void listap‰ivitys(){
 	        while(resultSet2.next()){
 	             String kaik=resultSet2.getString("m‰‰r‰");
 	        kaikki.setText(kaik);
+	        }
+	        
+			} catch (SQLException e) {
+			System.out.println("Error while connecting to the database");
+			}
+	   
+	  
+}
+
+public void listap‰ivitys1(){ 
+	String alue;
+	 String alkaa = v‰lii.getText();
+	 String loppuu = v‰lii2.getText();
+	 String v‰li=" varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	 if(v‰lii.getText().equals("") || v‰lii2.getText().equals("")) {
+		  v‰li="";
+	  }
+	  else  {
+		 v‰li= " varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	  }
+	 if(a2.equals("Kaikki")) {
+		  alue="";
+	  }
+	  else  {
+		  alue= " and toimintaalue.nimi='"+a2+"'";
+	  }
+	   try {
+		   list1.getItems().clear();
+		   
+		  
+	        
+	        // P‰ivitet‰‰n kokonaism‰‰r‰ viel‰...
+	        
+	        PreparedStatement preparedStatement2=connection.prepareStatement("SELECT varauksen_palvelut.palvelu_id,varaus.varaus_id,sum(lkm) as m‰‰r‰,palvelu.toimintaalue_id,toimintaalue.nimi as palvelu,palvelu.nimi,varattu_alkupvm,varattu_loppupvm FROM vn.toimintaalue,vn.varaus,vn.palvelu,vn.varauksen_palvelut"
+					+"where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"+alue
+					+" order by m‰‰r‰");
+	      
+	        ResultSet resultSet2=preparedStatement2.executeQuery();
+	        while(resultSet2.next()){
+	             String kaik=resultSet2.getString("m‰‰r‰");
+	        kaikki2.setText(kaik);
 	        }
 	        
 			} catch (SQLException e) {

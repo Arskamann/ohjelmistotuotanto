@@ -204,7 +204,8 @@ public class Uusivaraus extends Menu {
 			System.out.println("Tiedot saatu!");
 		
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement(
-	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE nimi='"+nimi+"'and vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id" +ajanjakso);
+	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE nimi='"+nimi
+	    		+"'and vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id" +ajanjakso);
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
