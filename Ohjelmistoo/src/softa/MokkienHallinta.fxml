@@ -54,7 +54,7 @@
             </Label>
             <Button fx:id="poista" layoutX="950.0" layoutY="11.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
             <Button fx:id="tallenna" layoutX="950.0" layoutY="49.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="26.0" prefWidth="122.0" text="Tallenna" />
-            <Label layoutX="556.0" layoutY="118.0" text="Tulevat varaukset">
+            <Label layoutX="554.0" layoutY="153.0" text="Tulevat varaukset">
                <font>
                   <Font size="18.0" />
                </font>
@@ -65,7 +65,6 @@
             <Label layoutX="65.0" layoutY="334.0" text="Hinta" />
             <TextField fx:id="hinta" layoutX="104.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
             <Button fx:id="tallennaJaPoistu" layoutX="949.0" layoutY="87.0" mnemonicParsing="false" onAction="#tallennaJaPoistu" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
-            <Button fx:id="uusivaraus" layoutX="556.0" layoutY="150.0" mnemonicParsing="false" text="Uusi varaus" />
             <Label layoutX="471.0" layoutY="10.0" text="Mökin tietojen muokkaus">
                <font>
                   <Font name="System Bold" size="24.0" />
@@ -100,7 +99,7 @@
                </font>
             </Label>
             <Button fx:id="tallenna1" layoutX="964.0" layoutY="12.0" mnemonicParsing="false" text="Tallenna muutokset" />
-            <Label layoutX="553.0" layoutY="126.0" text="Tulevat varaukset">
+            <Label layoutX="554.0" layoutY="161.0" text="Tulevat varaukset">
                <font>
                   <Font size="18.0" />
                </font></Label>
@@ -115,7 +114,6 @@
             <ChoiceBox fx:id="varustelu1" layoutX="238.0" layoutY="297.0" prefHeight="26.0" prefWidth="133.0" />
             <Label layoutX="65.0" layoutY="335.0" text="Hinta" />
             <TextField fx:id="hinta1" layoutX="103.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
-            <Button fx:id="uusivaraus1" layoutX="555.0" layoutY="157.0" mnemonicParsing="false" text="Uusi varaus" />
          </children>
       </Pane>
    </children>

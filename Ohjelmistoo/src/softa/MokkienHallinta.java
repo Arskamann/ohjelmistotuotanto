@@ -2,10 +2,15 @@ package softa;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +76,6 @@ public class MokkienHallinta extends Menu {
     @FXML
     private Label id;
     @FXML
-    private Button uusivaraus;
-    @FXML
     private ChoiceBox<String> toimialue;
 	@FXML
 	private TextField hinta;
@@ -109,7 +112,7 @@ public class MokkienHallinta extends Menu {
     @FXML
     private Button tallenna1;
     @FXML
-    private ListView<?> tulevatVaraukset1;
+    private ListView<Button> tulevatVaraukset1;
     @FXML
     private Button lisaaVaraus1;
     @FXML
@@ -119,7 +122,7 @@ public class MokkienHallinta extends Menu {
     @FXML
     private ChoiceBox<String> varustelu1;
 	
-    //mökin id:n poimimista varten
+    //mökin id:n poimimista varten, toimipaikan id:n poimimista varten
     static int iddd=1;
     static int paikanID=1;
 	
@@ -213,7 +216,6 @@ public class MokkienHallinta extends Menu {
             statement.close();
             set.close();
 
-            // Return the List
             return valinnat;
  
         } catch (SQLException e) {
@@ -306,14 +308,14 @@ public class MokkienHallinta extends Menu {
 	            Button x=new Button(nimi+" "+"(" + id +")");
 	            x.setMinWidth(150);
 	            x.setAlignment(Pos.CENTER_LEFT);
-	            x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�
+	            x.setAccessibleText(id);               //  napin id talteen
 	            
 	            x.setOnAction((event) -> {
 	            	System.out.println(x.getText());
                     String sisalto=x.getText();
                     String[] sisaltoosissa= sisalto.split(" ");
                    
-                    iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
+                    iddd=Integer.parseInt(x.getAccessibleText()); // poimitaan id
                    
                     list.setVisible(false);
                     hakutulos.setVisible(true);
@@ -339,35 +341,59 @@ public class MokkienHallinta extends Menu {
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
 			
-		PreparedStatement preparedStatement2=connection.prepareStatement(
+		PreparedStatement preparedStatement=connection.prepareStatement(
 				"Select * from mokki m join toimintaalue t using(toimintaalue_id) where mokki_id="+iddd);
 		      
-		ResultSet resultSet2=preparedStatement2.executeQuery();
+		ResultSet resultSet=preparedStatement.executeQuery();
 		String postinumero=null;
 
-		while(resultSet2.next()){
-			mokkiID.setText(resultSet2.getString("mokki_id"));
-		    mokinnimi.setText(resultSet2.getString("mokkinimi"));
-		    toimialue.setValue(resultSet2.getString("nimi"));
-		    osoite.setText(resultSet2.getString("katuosoite"));
-		    postinro.setText(resultSet2.getString("postinro"));
-		    kuvaus.setText(resultSet2.getString("kuvaus"));
-		    hlo.setText(resultSet2.getString("henkilomaara"));
-		    varustelu.setValue(resultSet2.getString("varustelu"));
-	        hinta.setText(resultSet2.getString("hinta"));
+		while(resultSet.next()){
+			mokkiID.setText(resultSet.getString("mokki_id"));
+		    mokinnimi.setText(resultSet.getString("mokkinimi"));
+		    toimialue.setValue(resultSet.getString("nimi"));
+		    osoite.setText(resultSet.getString("katuosoite"));
+		    postinro.setText(resultSet.getString("postinro"));
+		    kuvaus.setText(resultSet.getString("kuvaus"));
+		    hlo.setText(resultSet.getString("henkilomaara"));
+		    varustelu.setValue(resultSet.getString("varustelu"));
+	        hinta.setText(resultSet.getString("hinta"));
 	        
-	        postinumero=resultSet2.getString("postinro");
+	        postinumero=resultSet.getString("postinro");
 	        
 		    }			
 			
-		PreparedStatement preparedStatement=connection.prepareStatement(
+		PreparedStatement preparedStatement2=connection.prepareStatement(
 				"Select postinro, toimipaikka from posti where postinro= '"+postinumero+"'");
-		ResultSet resultSet=preparedStatement.executeQuery();
+		ResultSet resultSet2=preparedStatement2.executeQuery();
 		
-		while(resultSet.next()){
-			toim.setText(resultSet.getString("toimipaikka"));
+		while(resultSet2.next()){
+			toim.setText(resultSet2.getString("toimipaikka"));
 			}
+		
+		PreparedStatement preparedStatement3=connection.prepareStatement(
+				"Select * from varaus join asiakas using(asiakas_id) where mokki_mokki_id='"+iddd+"'");							
+        
+        ResultSet resultSet3=preparedStatement3.executeQuery(); //mökin tulevat varaukset haetaan erikseen
+        
+        while(resultSet3.next()){
+        	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        	Date alku=resultSet3.getDate("varattu_alkupvm");
+        	Date loppu=resultSet3.getDate("varattu_loppupvm");
+        	String asiakasID=resultSet3.getString("asiakas_id");
+        	String mokinID=resultSet3.getString("mokki_mokki_id");
+        	String etunimi=resultSet3.getString("etunimi");
+        	String sukunimi=resultSet3.getString("sukunimi");
+        	
+        	Button x=new Button(alku+"--"+loppu+" "+"("+etunimi+" "+sukunimi+")");
+        	x.setMinWidth(150);
+        	x.setAlignment(Pos.CENTER_LEFT);
+        	
+        	tulevatVaraukset.getItems().add(x);
+        	}
+		
 		}
+	
+	
 
 	//muutosten tallentaminen olemassaolevaan mökkiin
 	public void tallenna() throws SQLException {
