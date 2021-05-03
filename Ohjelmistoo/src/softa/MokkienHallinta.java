@@ -106,6 +106,8 @@ public class MokkienHallinta extends Menu {
     @FXML
     private TextField hlo1;
     @FXML
+    private TextField hinta1;
+    @FXML
     private TextField kuvaus1;
     @FXML
     private Label id1;
@@ -392,7 +394,6 @@ public class MokkienHallinta extends Menu {
         	}
 		
 		}
-	
 	
 
 	//muutosten tallentaminen olemassaolevaan mökkiin
