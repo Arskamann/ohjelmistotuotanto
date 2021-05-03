@@ -20,7 +20,7 @@
                   <Font name="System Bold" size="26.0" />
                </font>
             </Button>
-            <Button fx:id="palv" layoutX="604.0" layoutY="248.0" mnemonicParsing="false" onAction="#palv" prefHeight="205.0" prefWidth="377.0" text="Palvelut">
+            <Button fx:id="palv" layoutX="604.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#palv" prefHeight="205.0" prefWidth="377.0" text="Palvelut">
                <font>
                   <Font name="System Bold" size="26.0" />
                </font>
@@ -70,6 +70,51 @@
                </font>
             </Label>
             <PieChart fx:id="ympyrä" layoutX="497.0" layoutY="120.0" title="Varausten määrä toimialueittain" />
+         </children>
+      </Pane>
+      <Pane fx:id="palve" layoutX="10.0" layoutY="10.0" prefHeight="699.0" prefWidth="1099.0" visible="false">
+         <children>
+            <Button layoutX="37.0" layoutY="27.0" mnemonicParsing="false" onAction="#takas" prefHeight="25.0" prefWidth="45.0" scaleX="1.5" scaleY="1.5" text="&lt;" />
+            <ListView fx:id="list1" layoutX="26.0" layoutY="152.0" prefHeight="366.0" prefWidth="363.0" />
+            <Label layoutX="56.0" layoutY="97.0" text="Palveluiden jakauma">
+               <font>
+                  <Font size="31.0" />
+               </font>
+            </Label>
+            <TextField fx:id="välii" layoutX="598.0" layoutY="28.0" promptText="vvvv-kk-pp" />
+            <Label layoutX="500.0" layoutY="24.0" prefHeight="34.0" prefWidth="100.0" text="Aikaväli:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <TextField fx:id="välii2" layoutX="783.0" layoutY="28.0" promptText="vvvv-kk-pp" />
+            <Label layoutX="760.0" layoutY="23.0" prefHeight="34.0" prefWidth="23.0" text="-">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Button fx:id="koko1" layoutX="942.0" layoutY="17.0" mnemonicParsing="false" onAction="#ympyräpäivitys1" prefHeight="46.0" prefWidth="68.0" text="Hae">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Button>
+            <Label layoutX="26.0" layoutY="526.0" text="Yhteensä:">
+               <font>
+                  <Font size="30.0" />
+               </font>
+            </Label>
+            <ChoiceBox fx:id="alue1" layoutX="308.0" layoutY="27.0" onMouseReleased="#listapäivitys" prefWidth="150.0" />
+            <Label layoutX="200.0" layoutY="23.0" prefHeight="34.0" prefWidth="126.0" text="Toimialue:">
+               <font>
+                  <Font size="23.0" />
+               </font>
+            </Label>
+            <Label fx:id="kaikki2" layoutX="166.0" layoutY="527.0" text="d">
+               <font>
+                  <Font name="System Bold" size="29.0" />
+               </font>
+            </Label>
+            <PieChart fx:id="ympyrä1" layoutX="497.0" layoutY="120.0" title="Palveluiden määrä toimialueittain" />
          </children>
       </Pane>
    </children>
