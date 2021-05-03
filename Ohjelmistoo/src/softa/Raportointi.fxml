@@ -12,7 +12,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Raportointi">
    <children>
-      <Pane fx:id="valinta" layoutX="-1.0" layoutY="-1.0" prefHeight="700.0" prefWidth="1100.0" visible="false">
+      <Pane fx:id="valinta" layoutX="-1.0" layoutY="-1.0" prefHeight="700.0" prefWidth="1100.0">
          <children>
             <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#menu" prefHeight="49.0" prefWidth="87.0" text="&lt;" />
             <Button fx:id="majoit" layoutX="127.0" layoutY="248.0" mnemonicParsing="false" onMouseClicked="#majoit" prefHeight="205.0" prefWidth="377.0" text="Majoittuminen">
@@ -72,7 +72,7 @@
             <PieChart fx:id="ympyrä" layoutX="497.0" layoutY="120.0" title="Varausten määrä toimialueittain" />
          </children>
       </Pane>
-      <Pane fx:id="palve" layoutX="10.0" layoutY="10.0" prefHeight="699.0" prefWidth="1099.0">
+      <Pane fx:id="palve" layoutX="10.0" layoutY="10.0" prefHeight="699.0" prefWidth="1099.0" visible="false">
          <children>
             <Button layoutX="37.0" layoutY="27.0" mnemonicParsing="false" onAction="#takas" prefHeight="25.0" prefWidth="45.0" scaleX="1.5" scaleY="1.5" text="&lt;" />
             <ListView fx:id="list1" layoutX="26.0" layoutY="152.0" prefHeight="366.0" prefWidth="363.0" />
@@ -93,7 +93,7 @@
                   <Font size="23.0" />
                </font>
             </Label>
-            <Button fx:id="koko1" layoutX="942.0" layoutY="17.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="68.0" text="Hae">
+            <Button fx:id="koko1" layoutX="942.0" layoutY="17.0" mnemonicParsing="false" onAction="#ympyräpäivitys1" prefHeight="46.0" prefWidth="68.0" text="Hae">
                <font>
                   <Font size="15.0" />
                </font>
@@ -103,7 +103,7 @@
                   <Font size="30.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="alue1" layoutX="308.0" layoutY="27.0" onMouseReleased="#listapäivitys1" prefWidth="150.0" />
+            <ChoiceBox fx:id="alue1" layoutX="308.0" layoutY="27.0" onMouseReleased="#listapäivitys" prefWidth="150.0" />
             <Label layoutX="200.0" layoutY="23.0" prefHeight="34.0" prefWidth="126.0" text="Toimialue:">
                <font>
                   <Font size="23.0" />

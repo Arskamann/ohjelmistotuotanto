@@ -42,7 +42,7 @@ public class Raportointi extends Menu {
     private Button p‰ivit‰;
 	static int iddd=1;
 private String a="lol";
-private String a2;
+private String a2="Kaikki";
 
 
 	@FXML
@@ -102,7 +102,7 @@ private String a2;
 	      valinta.setVisible(false);
 	       p‰ivit‰alueet1();
 	       listap‰ivitys1();
-	       
+	       ympyr‰p‰ivitys1();
 	      
        
         
@@ -272,7 +272,7 @@ public void listap‰ivitys1(){
 			System.out.println("Tiedot saatu!");
 			PreparedStatement preparedStatement=connection.prepareStatement("SELECT varauksen_palvelut.palvelu_id,varaus.varaus_id,sum(lkm) as m‰‰r‰,palvelu.toimintaalue_id,toimintaalue.nimi"
 					+ " as palvelu,palvelu.nimi,varattu_alkupvm,varattu_loppupvm FROM vn.toimintaalue,vn.varaus,vn.palvelu,vn.varauksen_palvelut"
-					+"where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id"
+					+" where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id"
 							+ " and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"+alue
 					+" group by palvelu_id");
 	      
@@ -298,7 +298,7 @@ public void listap‰ivitys1(){
 	        // P‰ivitet‰‰n kokonaism‰‰r‰ viel‰...
 	        
 	        PreparedStatement preparedStatement2=connection.prepareStatement("SELECT varauksen_palvelut.palvelu_id,varaus.varaus_id,sum(lkm) as m‰‰r‰,palvelu.toimintaalue_id,toimintaalue.nimi as palvelu,palvelu.nimi,varattu_alkupvm,varattu_loppupvm FROM vn.toimintaalue,vn.varaus,vn.palvelu,vn.varauksen_palvelut"
-					+"where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"+alue
+					+" where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"+alue
 					+" order by m‰‰r‰");
 	      
 	        ResultSet resultSet2=preparedStatement2.executeQuery();
@@ -353,6 +353,50 @@ public void ympyr‰p‰ivitys() throws SQLException{
 	
 }
 
+
+public void ympyr‰p‰ivitys1() throws SQLException{
+	listap‰ivitys1();
+	String alkaa = v‰lii.getText();
+	 String loppuu = v‰lii2.getText();
+	
+	 String v‰li=" varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	 if(v‰lii.getText().equals("") || v‰lii2.getText().equals("")) {
+		  v‰li="";
+	  }
+	  else  {
+		 v‰li= " varattu_alkupvm between '"+alkaa+"' and '"+loppuu+"' and";
+	  }
+	
+	ympyr‰1.getData().clear();;
+	 ObservableList<PieChart.Data> pieChartData =
+             FXCollections.observableArrayList();
+     ympyr‰1.getData().addAll(pieChartData);
+     PreparedStatement preparedStatement=connection.prepareStatement("SELECT varauksen_palvelut.palvelu_id,varaus.varaus_id,sum(lkm) as m‰‰r‰,palvelu.toimintaalue_id,toimintaalue.nimi"
+				+ " as palvelu,palvelu.nimi,varattu_alkupvm,varattu_loppupvm FROM vn.toimintaalue,vn.varaus,vn.palvelu,vn.varauksen_palvelut"
+				+" where"+v‰li+" varaus.varaus_id=varauksen_palvelut.varaus_id and palvelu.palvelu_id=varauksen_palvelut.palvelu_id"
+						+ " and palvelu.toimintaalue_id=toimintaalue.toimintaalue_id"
+				+" group by toimintaalue_id");
+   
+     ResultSet resultSet2=preparedStatement.executeQuery();
+     
+     while(resultSet2.next()){
+          String nim=resultSet2.getString("palvelu");
+          int m‰‰r‰=resultSet2.getInt("m‰‰r‰");
+          pieChartData.add(new PieChart.Data(nim,m‰‰r‰));
+   
+     }
+	
+     ympyr‰1.getData().addAll(pieChartData);
+     pieChartData.forEach(data ->
+     data.nameProperty().bind(
+             Bindings.concat(
+                     data.getName(), " ",data.pieValueProperty().intValue(), " Varausta"
+             )
+     )
+);
+     
+	
+}
 }
 
     
