@@ -390,7 +390,7 @@ public void ympyräpäivitys1() throws SQLException{
      pieChartData.forEach(data ->
      data.nameProperty().bind(
              Bindings.concat(
-                     data.getName(), " ",data.pieValueProperty().intValue(), " Varausta"
+                     data.getName(), " ",data.pieValueProperty().intValue(), " Palvelua"
              )
      )
 );
