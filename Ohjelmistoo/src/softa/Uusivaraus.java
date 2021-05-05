@@ -156,6 +156,8 @@ public class Uusivaraus extends Menu {
 	 TextField loppu;
 	 @FXML
 	 ComboBox<String> alueet;
+	 @FXML
+	 ComboBox<String> hlomaara;
 	 
 	
 	 
@@ -169,16 +171,19 @@ public class Uusivaraus extends Menu {
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
              String nimi=resultSet.getString("nimi");
+            
              
             alueet.getItems().add(nimi);
-            
+           
 	    }
 	    alueet.setOnAction((event) -> {
             
            if(alueet.getValue().toString()!=""||alueet.getValue().toString()!="Toimialue") {
         	   try {
-				päivitämökit();
 				päivitäpalvelut();
+				päivitähenkilömäärä();
+				päivitämökit();
+				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -186,6 +191,38 @@ public class Uusivaraus extends Menu {
            }
            
 	    });
+	     
+	 }
+	 
+	 public void päivitähenkilömäärä() throws SQLException {
+		 hlomaara.getItems().clear();
+		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
+			System.out.println("Tiedot saatu!");
+			
+		PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from mokki order by henkilomaara asc");
+		
+		ResultSet resultSet=preparedStatement.executeQuery();
+		 while(resultSet.next()){
+             String henkilömäärä=resultSet.getString("henkilomaara");
+            
+             
+            hlomaara.getItems().add(henkilömäärä);
+	    }
+		 
+		 
+		 hlomaara.setOnAction((event) -> {
+	            
+	           if(hlomaara.getValue().toString()!="") {
+	        	   try {
+					päivitämökit();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	           }
+	           
+		    });
+		 
 	 }
 	 
 	 public void päivitämökit() throws SQLException{
@@ -199,13 +236,25 @@ public class Uusivaraus extends Menu {
 		 else {
 			 ajanjakso="";
 		 }
+		 	
+		 
 	    	String nimi=alueet.getValue().toString();
+	    	String valittuhlomäärä="";
+	    	String henkilömäärä=hlomaara.getValue().toString();
+	    	
+		    if(henkilömäärä!="") {
+		    	valittuhlomäärä= " and henkilomaara = '"+henkilömäärä+"'";
+		    }
+		    else {
+		    	valittuhlomäärä="";
+		    }
+		    
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
 		
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement(
 	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE nimi='"+nimi
-	    		+"'and vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id" +ajanjakso);
+	    		+"'and vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id" +ajanjakso +valittuhlomäärä);
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){

@@ -15,7 +15,7 @@
    <top>
       <AnchorPane prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button mnemonicParsing="false" onAction="#menu" prefHeight="39.0" prefWidth="72.0" text="&lt;" />
+            <Button layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#menu" prefHeight="39.0" prefWidth="72.0" text="&lt;" />
          </children>
       </AnchorPane>
    </top>
@@ -44,14 +44,14 @@
             <Text layoutX="46.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hintataso             Varustelu" />
             <CheckBox layoutX="46.0" layoutY="34.0" mnemonicParsing="false" text="50-100€" />
             <CheckBox layoutX="46.0" layoutY="58.0" mnemonicParsing="false" text="100-200€" />
-            <CheckBox layoutX="46.0" layoutY="84.0" mnemonicParsing="false" text="&gt;300€" />
-            <CheckBox layoutX="140.0" layoutY="34.0" mnemonicParsing="false" text="Perus" />
-            <CheckBox layoutX="140.0" layoutY="58.0" mnemonicParsing="false" prefWidth="63.0" text="Öky" />
+            <CheckBox layoutX="46.0" layoutY="84.0" mnemonicParsing="false" text="&gt;200€" />
+            <CheckBox layoutX="140.0" layoutY="34.0" mnemonicParsing="false" text="Normaali" />
+            <CheckBox layoutX="140.0" layoutY="58.0" mnemonicParsing="false" prefWidth="63.0" text="Luksus" />
             <ListView fx:id="mökit" layoutX="6.0" layoutY="212.0" prefHeight="441.0" prefWidth="622.0" />
             <Text layoutX="8.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mökin tiedot" />
             <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="85.0" promptText="vv-kk-pp" />
             <Text layoutX="6.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aikaväli" />
-            <ComboBox layoutX="444.0" layoutY="10.0" prefHeight="41.0" prefWidth="141.0" promptText="Henkilömäärä" />
+            <ComboBox fx:id="hlomaara" layoutX="444.0" layoutY="10.0" prefHeight="41.0" prefWidth="141.0" promptText="Henkilömäärä" />
             <ComboBox fx:id="alueet" layoutX="322.0" layoutY="10.0" onMouseReleased="#päivitämökit" prefHeight="41.0" prefWidth="120.0" promptText="Toimialue" />
             <Button layoutX="242.0" layoutY="12.0" mnemonicParsing="false" onAction="#päivitäalueet" prefHeight="37.0" prefWidth="73.0" text="Päivitä" />
             <Text layoutX="658.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Palvelut" />
@@ -63,8 +63,6 @@
          <children>
             <Button layoutX="106.0" layoutY="611.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="88.0" text="Varaa" />
             <ListView fx:id="palvelut" layoutX="-45.0" layoutY="17.0" prefHeight="279.0" prefWidth="243.0" />
-            <Button layoutX="107.0" layoutY="569.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="87.0" text="Poista varaus" />
-            <Button layoutX="83.0" layoutY="-19.0" mnemonicParsing="false" onAction="#päivitäpalvelut" prefHeight="32.0" prefWidth="109.0" text="Päivitä palvelut" />
             <Button layoutX="-45.0" layoutY="299.0" mnemonicParsing="false" onAction="#päivitäpalvelut" prefHeight="32.0" prefWidth="97.0" text="Nollaa valinnat" />
             <Label layoutX="-61.0" layoutY="508.0" prefHeight="35.0" prefWidth="177.0" text="Varauksen hinta:">
                <font>
