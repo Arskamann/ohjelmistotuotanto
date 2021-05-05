@@ -547,7 +547,7 @@ public class MokkienHallinta extends Menu {
 			}
 			
 		
-		//tarkistetaan että kaikki kentätä on täytetty uutta mökkiä luodessa
+		//tarkistetaan että kaikki kentät on täytetty uutta mökkiä luodessa
 		public boolean validoi() {
 
 	        StringBuilder virheet = new StringBuilder();
@@ -595,8 +595,3 @@ public class MokkienHallinta extends Menu {
 		}
 		
 }
-
-    	   
-
-   
-

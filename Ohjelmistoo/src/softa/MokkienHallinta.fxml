@@ -90,7 +90,7 @@
             <TextField fx:id="osoite1" layoutX="101.0" layoutY="191.0" prefHeight="26.0" prefWidth="270.0" />
             <TextField fx:id="postinro1" layoutX="102.0" layoutY="226.0" prefHeight="26.0" prefWidth="76.0" />
             <TextField fx:id="hlo1" layoutX="103.0" layoutY="296.0" prefHeight="26.0" prefWidth="59.0" />
-            <TextField fx:id="kuvaus1" layoutX="102.0" layoutY="367.0" prefHeight="323.0" prefWidth="434.0" />
+            <TextField fx:id="kuvaus1" layoutX="102.0" layoutY="367.0" prefHeight="323.0" prefWidth="970.0" />
             <Label fx:id="id1" layoutX="45.0" layoutY="102.0" />
             <Button layoutX="11.0" layoutY="10.0" mnemonicParsing="false" onAction="#takaisinMokkeihin" text="Peruuta" />
             <Label layoutX="100.0" layoutY="53.0" text="Mökin tiedot">
@@ -99,11 +99,6 @@
                </font>
             </Label>
             <Button fx:id="tallenna1" layoutX="1005.0" layoutY="11.0" mnemonicParsing="false" onAction="#luoUusi" text="Tallenna" />
-            <Label layoutX="554.0" layoutY="161.0" text="Tulevat varaukset">
-               <font>
-                  <Font size="18.0" />
-               </font></Label>
-            <ListView fx:id="tulevatVaraukset1" layoutX="553.0" layoutY="194.0" prefHeight="497.0" prefWidth="516.0" />
             <Label layoutX="513.0" layoutY="9.0" text="Uuden mökin lisäys">
                <font>
                   <Font name="System Bold" size="24.0" />
