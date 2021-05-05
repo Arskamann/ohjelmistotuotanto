@@ -52,7 +52,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="poista" layoutX="950.0" layoutY="11.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
+            <Button fx:id="poista" layoutX="950.0" layoutY="11.0" mnemonicParsing="false" onAction="#varmistus" prefHeight="26.0" prefWidth="122.0" text="Poista mökki" />
             <Button fx:id="tallenna" layoutX="950.0" layoutY="49.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="26.0" prefWidth="122.0" text="Tallenna" />
             <Label layoutX="554.0" layoutY="153.0" text="Tulevat varaukset">
                <font>
@@ -98,7 +98,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <Button fx:id="tallenna1" layoutX="964.0" layoutY="12.0" mnemonicParsing="false" text="Tallenna muutokset" />
+            <Button fx:id="tallenna1" layoutX="1005.0" layoutY="11.0" mnemonicParsing="false" onAction="#luoUusi" text="Tallenna" />
             <Label layoutX="554.0" layoutY="161.0" text="Tulevat varaukset">
                <font>
                   <Font size="18.0" />
@@ -109,7 +109,6 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <Button fx:id="tallennaJaPoistu1" layoutX="965.0" layoutY="51.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="122.0" text="Tallenna ja poistu" />
             <ChoiceBox fx:id="toimialue1" layoutX="101.0" layoutY="155.0" prefHeight="26.0" prefWidth="270.0" />
             <ChoiceBox fx:id="varustelu1" layoutX="238.0" layoutY="297.0" prefHeight="26.0" prefWidth="133.0" />
             <Label layoutX="65.0" layoutY="335.0" text="Hinta" />
