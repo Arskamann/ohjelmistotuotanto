@@ -142,8 +142,6 @@ public class Uusivaraus extends Menu {
  	   
 	}
 		
-	
-
 	 
 	 
 	 //mökin filtterit!!!
