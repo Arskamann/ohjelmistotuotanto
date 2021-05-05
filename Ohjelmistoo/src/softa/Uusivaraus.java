@@ -207,7 +207,6 @@ public class Uusivaraus extends Menu {
             hlomaara.getItems().add(henkilömäärä);
 	    }
 		 
-		 
 		 hlomaara.setOnAction((event) -> {
 	            
 	           if(hlomaara.getValue().toString()!="") {
