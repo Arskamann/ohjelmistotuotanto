@@ -12,6 +12,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,6 +31,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
+import javafx.util.Duration;
 
 
 public class MokkienHallinta extends Menu {
@@ -49,6 +53,8 @@ public class MokkienHallinta extends Menu {
     private Button paivita;
 	@FXML
 	private Pane list;
+	@FXML
+	private Label eituloksia;
 	
 	//mökin tietojen muokkauksen napit
 	@FXML
@@ -239,36 +245,40 @@ public class MokkienHallinta extends Menu {
 	    			"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
 	    	      
 	    	ResultSet toimialue_idResult=preparedStatement.executeQuery();
-	    	        
+    
 	    	toimialue_idResult.next();
 	    	toimialue_id = toimialue_idResult.getString("toimintaalue_id");
-	    	        
+
 	    	preparedStatement = connection.prepareStatement(
 	    			"Select * from mokki where toimintaalue_id = "+"'"+toimialue_id+"'");
-	        ResultSet resultSet = preparedStatement.executeQuery();
-	    	        
-	    	while(resultSet.next()){
-	    	    String nimi=resultSet.getString("mokkinimi");
-	    	    String id=resultSet.getString("mokki_id");
-	    	        
-	    	    Button x=new Button(nimi+" "+"(" + id +")");
-
-	    	    x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�	    	             
-	    	             
-	    	    x.setOnAction((event) -> {
-	    	    	System.out.println(x.getText());
-	  	            iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
-	    	        hakutulos.setVisible(true);
-	  	                   
-					try {
-						paivita();
-						} catch (SQLException e) {
-							e.printStackTrace();
-							}
-	    	            });
+	    	ResultSet resultSet = preparedStatement.executeQuery();
 	    	
-	    	    lista.getItems().add(x);
-	    	    }
+	    	if(!resultSet.isBeforeFirst()) {
+	    		System.out.println("Ei tuloksia");
+	    		eituloksia.setVisible(true);
+	    		eituloksia.setText("Ei hakutuloksia");
+	    		} else {
+	    			while(resultSet.next()){
+	    				eituloksia.setVisible(false);
+    		    		String nimi=resultSet.getString("mokkinimi");
+    		    	    String id=resultSet.getString("mokki_id");
+    		    	    Button x=new Button(nimi+" "+"(" + id +")");
+
+    		    	    x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�	    	             
+    		    	    x.setOnAction((event) -> {
+    		    	    	System.out.println(x.getText());
+    		    	  	    iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
+    		    	  	    hakutulos.setVisible(true);
+    		    	  	    
+    		    	  	    try {
+    		    	  	    	paivita();
+    		    	  	    	} catch (SQLException e) {
+    		    	  	    		e.printStackTrace();
+    		    	  	    		}
+    		    	  	    });
+    		    	    lista.getItems().add(x);
+    		    	    }
+	    			}
 	    	} catch (SQLException e) {
 	    		System.out.println("Error while connecting to the database");
 	    		}
@@ -300,6 +310,7 @@ public class MokkienHallinta extends Menu {
  	        while(resultSet.next()){
  	        	String id=resultSet.getString("mokki_id");
 	            String nimi=resultSet.getString("mokkinimi");
+	            
 	        
 	            Button x=new Button(nimi+" "+"(" + id +")");
 	            x.setMinWidth(150);
@@ -329,6 +340,7 @@ public class MokkienHallinta extends Menu {
  			} catch (SQLException e) {
  				System.out.println("Error while connecting to the database");
  				}
+    	
     	}
 	   
 	   
@@ -385,6 +397,7 @@ public class MokkienHallinta extends Menu {
         	x.setAlignment(Pos.CENTER_LEFT);
         	
         	tulevatVaraukset.getItems().add(x);
+        	
         	}
 		
 		}

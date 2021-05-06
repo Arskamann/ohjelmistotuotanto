@@ -26,6 +26,7 @@
             <TextField fx:id="hakukentta" layoutX="614.0" layoutY="83.0" prefHeight="26.0" prefWidth="281.0" />
             <Button fx:id="paivita" layoutX="615.0" layoutY="155.0" mnemonicParsing="false" onAction="#listapaivitys" text="Näytä kaikki" />
             <ListView fx:id="lista" layoutX="9.0" layoutY="81.0" prefHeight="609.0" prefWidth="591.0" />
+            <Label fx:id="eituloksia" layoutX="26.0" layoutY="101.0" />
          </children>
       </Pane>
       <Pane fx:id="hakutulos" prefHeight="700.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
