@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
@@ -40,21 +41,23 @@
       <AnchorPane prefHeight="661.0" prefWidth="554.0" BorderPane.alignment="CENTER">
          <children>
             <Text layoutX="145.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
-            <TextField fx:id="loppu" layoutX="154.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="88.0" promptText="vv-kk-pp" />
-            <Text layoutX="46.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hintataso             Varustelu" />
-            <CheckBox layoutX="46.0" layoutY="34.0" mnemonicParsing="false" text="50-100€" />
-            <CheckBox layoutX="46.0" layoutY="58.0" mnemonicParsing="false" text="100-200€" />
-            <CheckBox layoutX="46.0" layoutY="84.0" mnemonicParsing="false" text="&gt;200€" />
-            <CheckBox layoutX="140.0" layoutY="34.0" mnemonicParsing="false" text="Normaali" />
-            <CheckBox layoutX="140.0" layoutY="58.0" mnemonicParsing="false" prefWidth="63.0" text="Luksus" />
+            <TextField fx:id="loppu" layoutX="154.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="88.0" promptText="vvvv-kk-pp" />
+            <Text layoutX="46.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hinta/yö             Varustelu" />
+            <CheckBox fx:id="viiskyt" layoutX="46.0" layoutY="34.0" mnemonicParsing="false" onAction="#päivitämökit" text="50-100€" />
+            <CheckBox fx:id="sata" layoutX="46.0" layoutY="58.0" mnemonicParsing="false" onAction="#päivitämökit" text="100-200€" />
+            <CheckBox fx:id="kakssataa" layoutX="46.0" layoutY="84.0" mnemonicParsing="false" onAction="#päivitämökit" text="&gt;200€" />
             <ListView fx:id="mökit" layoutX="6.0" layoutY="212.0" prefHeight="441.0" prefWidth="622.0" />
             <Text layoutX="8.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mökin tiedot" />
-            <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="85.0" promptText="vv-kk-pp" />
+            <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="85.0" promptText="vvvv-kk-pp" />
             <Text layoutX="6.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aikaväli" />
-            <ComboBox fx:id="hlomaara" layoutX="444.0" layoutY="10.0" prefHeight="41.0" prefWidth="141.0" promptText="Henkilömäärä" />
-            <ComboBox fx:id="alueet" layoutX="322.0" layoutY="10.0" onMouseReleased="#päivitämökit" prefHeight="41.0" prefWidth="120.0" promptText="Toimialue" />
             <Button layoutX="242.0" layoutY="12.0" mnemonicParsing="false" onAction="#päivitäalueet" prefHeight="37.0" prefWidth="73.0" text="Päivitä" />
             <Text layoutX="658.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Palvelut" />
+            <ComboBox fx:id="alueet" layoutX="332.0" layoutY="13.0" prefHeight="36.0" prefWidth="106.0" />
+            <ComboBox fx:id="hlomaara" layoutX="449.0" layoutY="14.0" prefHeight="35.0" prefWidth="107.0" />
+            <Text layoutX="332.0" layoutY="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toiminta-alueet           Henkilömäärä" />
+            <RadioButton fx:id="normaali" layoutX="128.0" layoutY="34.0" mnemonicParsing="false" onAction="#päivitämökit" text="Normaali" />
+            <RadioButton fx:id="hyva" layoutX="128.0" layoutY="58.0" mnemonicParsing="false" onAction="#päivitämökit" text="Hyvä" />
+            <RadioButton fx:id="luksus" layoutX="128.0" layoutY="84.0" mnemonicParsing="false" onAction="#päivitämökit" text="Luksus" />
          </children>
       </AnchorPane>
    </center>
