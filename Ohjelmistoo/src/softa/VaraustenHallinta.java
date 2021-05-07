@@ -4,6 +4,7 @@ import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.Background;
@@ -15,6 +16,7 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,9 +24,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 
-public class VaraustenHallinta extends Menu {
+public class VaraustenHallinta extends Menu implements Initializable {
 
     //<editor-fold desc="FXML oliot">
     @FXML
@@ -489,6 +492,11 @@ public class VaraustenHallinta extends Menu {
             } catch (SQLException e) {
 
             }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        listapaivitys();
     }
 
 }
