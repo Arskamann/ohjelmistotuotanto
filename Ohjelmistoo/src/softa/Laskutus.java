@@ -36,9 +36,11 @@ public class Laskutus extends Menu {
 	static boolean uusiposti=true;
 
 
+	@FXML
+	private Button maks;
 	
-	
-	
+	@FXML
+	private Button muist;
 
 	
 	
@@ -64,12 +66,23 @@ public class Laskutus extends Menu {
     	        ResultSet resultSet=preparedStatement.executeQuery();
     	        
     	        while(resultSet.next()){
-    	        	String id=resultSet.getString("varaus_id");
+    	        	String t = null;
+    	        	String id=resultSet.getString("lasku_id");
     	        	String nimi =resultSet.getString("etunimi");
     	        	String snimi =resultSet.getString("sukunimi");
     	        	String summa=resultSet.getString("summa");
+    	        	String muist=resultSet.getString("muistutus");
     	        	String aika=resultSet.getString("varattu_loppupvm").substring(0,10);
-    	        	Text x = new Text("Laskutettava: "+nimi+" "+snimi+" Summa: "+summa+"€"+" | Varaus päättyi: "+aika);
+    	        String mui="";
+    	        if(muist.equals("true")) {
+    	        	mui=" Muistutus lähetetty.";
+    	        }
+    	    
+    	        	
+    	        
+    	        		t ="Laskutettava: "+nimi+" "+snimi+" Summa: "+summa+"€"+" | Varaus päättyi: "+aika+mui;
+    	        	
+    	        	Text x = new Text(t);
     	            x.setAccessibleText(id);
     	          
     	            
@@ -103,7 +116,7 @@ public class Laskutus extends Menu {
 	        	String nimi =resultSet.getString("etunimi");
 	        	String snimi =resultSet.getString("sukunimi");
 	        	String summa=resultSet.getString("summa");
-	        	String aika=resultSet.getString("varattu_loppupvm").substring(0,9);
+	        	String aika=resultSet.getString("varattu_loppupvm").substring(0,10);
 	        	Text x = new Text("Laskutettava: "+nimi+" "+snimi+" Summa: "+summa+"€"+" Varaus päättyi: "+aika);
 	            x.setAccessibleText(id);
 	          
@@ -163,10 +176,42 @@ public class Laskutus extends Menu {
     
     
 
-  
+  public void muist() throws SQLException{
+	  connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+	  Text id = lista.getSelectionModel().getSelectedItem();
+      String idd=id.getAccessibleText().toString();
+      String num = "";
+      PreparedStatement preparedStatement2=connection.prepareStatement(
+        		"SELECT sähköpostilla FROM lasku where lasku_id="+idd);
+      ResultSet resultSet2=preparedStatement2.executeQuery();
+	    while(resultSet2.next()){
+	    	num=resultSet2.getString("sähköpostilla");
+	    }
+      PreparedStatement preparedStatement=connection.prepareStatement(
+      		"update lasku set muistutus='true' where lasku_id="+idd);
+     preparedStatement.executeUpdate();
+     
+     if(num.equals("false")) {
+    	 Alert a = new Alert(AlertType.INFORMATION);
+    	 a.setContentText("Maksumuistutus tulostetaan paperisena...!");
+    	 a.setTitle("Huomio");
+    	 a.show();
+     }
+     else {
+    	 Alert a = new Alert(AlertType.INFORMATION);
+    	 a.setContentText("Maksumuistutus lähetetty asiakkaan sähköpostiin!");
+    	 a.setTitle("Huomio");
+    	 a.show();
+     }
+     Alert a = new Alert(AlertType.INFORMATION);
+	
+     listapäivitys();
+     }
     
   
- 
+ public void merk() {
+	 
+ }
     
    
     
