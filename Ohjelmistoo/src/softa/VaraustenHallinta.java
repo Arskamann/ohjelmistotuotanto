@@ -283,9 +283,17 @@ public class VaraustenHallinta extends Menu implements Initializable {
     }
     public void poista() {
         try {
+            PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where varaus_id="+iddd);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            a.setTitle("Huomio");
+            a.setContentText("Palveluiden poistaminen ei onnistunut");
+            a.show();
+        }
+        try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
             System.out.println("Tiedot saatu!");
-
 
 
             PreparedStatement preparedStatement=connection.prepareStatement("delete from varaus where varaus_id="+iddd);
@@ -296,11 +304,12 @@ public class VaraustenHallinta extends Menu implements Initializable {
             a.show();
             listapaivitys();
             takaisin();
-        }catch(Exception e) {
+        }catch(SQLException e) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText("Virhe");
             a.setTitle("Huomio");
+            a.setContentText("Poistaminen ei onnistunut");
             a.show();
+            e.printStackTrace();
         }
     }
     public void paivita() throws SQLException, ParseException {
