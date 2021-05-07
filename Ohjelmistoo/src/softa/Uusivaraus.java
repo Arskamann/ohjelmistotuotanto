@@ -49,6 +49,8 @@ public class Uusivaraus extends Menu {
     @FXML
     TextField toim;
     @FXML
+  	RadioButton lask;
+    @FXML
     Label hinta;
     
     
