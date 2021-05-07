@@ -47,6 +47,8 @@ public class Uusivaraus extends Menu {
     @FXML
     TextField pos;
     @FXML
+    TextField toim;
+    @FXML
     Label hinta;
     
     
@@ -77,18 +79,28 @@ public class Uusivaraus extends Menu {
 	           String mail=resultSet.getString("email");
 	          String osoi=resultSet.getString("lahiosoite");
 	         String poss=resultSet.getString("postinro");
+	         
+	         
+	         PreparedStatement preparedStatement2=connection.prepareStatement("select * from vn.asiakas,vn.posti where asiakas_id="+id+" and posti.postinro= '"+poss+"'");
+	         
+	         ResultSet resultSet2=preparedStatement2.executeQuery();
+	         while(resultSet2.next()){
+	           String toimi=(resultSet2.getString("toimipaikka"));
+	         
 	             Button x=new Button(etuu+" "+suku);
 	            x.setOnAction((event) -> {
+	            	
 	            etu.setText(etuu);
 	   	        suk.setText(suku);
 	   	        puh.setText(nro);
 	   	        säh.setText(mail);
 	   	        oso.setText(osoi);
 	   	        pos.setText(poss);
+	   	     toim.setText(toimi);
 	            });
 	
 	            lista.getItems().add(x);
-	           
+	         }
 	        }
  	        
  			} catch (SQLException e) {
