@@ -5,16 +5,10 @@ import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
-
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
@@ -36,16 +30,6 @@ public class VaraustenHallinta extends Menu implements Initializable {
     TextField asiakasID;
     @FXML
     TextField mokkiID;
-    /* Jätän siltä varalta että jotai hajoo mut kalenterin pitäs toimia
-    @FXML
-    TextField varattuPVM;
-    @FXML
-    TextField vahvistusPVM;
-    @FXML
-    TextField varauksenAlkuPVM;
-    @FXML
-    TextField varauksenLoppuPVM;
-     */
     @FXML
     Pane list;
     @FXML
@@ -55,23 +39,15 @@ public class VaraustenHallinta extends Menu implements Initializable {
     @FXML
     Button tallenna;
     @FXML
-    Button takaisin;
-    @FXML
     private ListView<Button> lista;
     @FXML
     private TextField haku;
     @FXML
     Button paivita;
     @FXML
-    Label d;
-    @FXML
-    Button poista;
-    @FXML
     ListView palveluList;
     @FXML
     Pane palvelu;
-    @FXML
-    Button lisaaPalvelu;
     @FXML
     TextField palveluIDText;
     @FXML
@@ -103,10 +79,6 @@ public class VaraustenHallinta extends Menu implements Initializable {
     public void menu(ActionEvent event) throws IOException { //tällä  toiminnolla pääsee takasin päävalikkoon. Tätä kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
     }
-    public void takaisin (){
-        varaus.setVisible(false);
-        palveluList.getItems().clear();
-    }
     public void listaHaku() {    //käytetään "Hae" nappulan painamisen yhteydessä
         ResultSet resultSet = null;
         String hakutext=haku.getText();
@@ -119,16 +91,19 @@ public class VaraustenHallinta extends Menu implements Initializable {
         lista.getItems().clear();
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+
+            //Tekee haun tietokantaan joka kerta kun kirjain kirjotetaan hakukenttään. Teen joskus pelkällä resultsetillä että ei tarvitse hakea tietokannasta joka kerta
             preparedStatement = connection.prepareStatement(
 
-                    "select asiakas_id from asiakas where etunimi  = "+" '"+hakutext+"' or sukunimi = "+" '"+hakutext+"'"
+                    "select asiakas_id from asiakas where etunimi like '"+'%' +hakutext+ '%' +"' or sukunimi like "+" '"+'%' +hakutext+ '%' +"'"
             );
 
-            ResultSet aIDResult = preparedStatement.executeQuery();
+            ResultSet aIDResult = preparedStatement.executeQuery(); //Pelkkä asiakasID resultset
 
             aIDResult.next();
             aID = aIDResult.getString("asiakas_id");
 
+            //Hakuja valittujen kriteereiden perusteella. Päivittyy myös klikatessa filttereistä
             if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
                 preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "'");
                 resultSet = preparedStatement.executeQuery();
@@ -144,6 +119,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
             ResultSet nimet = preparedStatement.executeQuery();
             try {
+                //tekee loopissa buttonit kaikille löydetyille tiedoille. Buttoneista pääsee käsittelemään kyseisiä tietoja.
                 while(resultSet.next()){
                     while (nimet.next()) {
                         if (aID.equals(nimet.getString("asiakas_id"))) {
@@ -163,12 +139,10 @@ public class VaraustenHallinta extends Menu implements Initializable {
                     x.setOnAction((event) -> {
                         iddd = Integer.parseInt(x.getAccessibleText());
                         try {
-                            paivita();
-                            palveluListapaivitys();
-                        } catch (SQLException | ParseException throwables) {
+                            changeScene("VaraustenHallinta_Varaus.fxml");
+                        } catch (IOException throwables) {
                             throwables.printStackTrace();
                         }
-                        varaus.setVisible(true);
                     });
     
                     lista.getItems().add(x);
@@ -177,6 +151,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             } catch (NullPointerException e) {
                 lista.getItems().clear();
             }
+            //Pieni animaatio hakutulokselle
             hakuTulos.setText("Haulla " + increment + " tulosta");
             hakuTulos.setVisible(true);
             Timeline timeline = new Timeline();
@@ -188,9 +163,6 @@ public class VaraustenHallinta extends Menu implements Initializable {
 
 
         } catch (SQLException e) {
-
-
-
             if(e.getMessage().equals("Illegal operation on empty result set.")) {
                 hakuTulos.setText("Haulla ei tuloksia");
                 hakuTulos.setVisible(true);
@@ -202,12 +174,13 @@ public class VaraustenHallinta extends Menu implements Initializable {
             }
             else {
                 System.out.println("Error while connecting to the database");
+                e.printStackTrace();
             }
         }
 
 
     }
-    public void listapaivitys(){    //käytetään "Näytä kaikki" nappulan painamisen yhteydessä
+    public void listapaivitys(){    //käytetään "Näytä kaikki" nappulan painamisen yhteydessä ja kun siirryttään varaustenhallinta ikkunaan
         String etunimi;
         String sukunimi;
         try {
@@ -239,18 +212,17 @@ public class VaraustenHallinta extends Menu implements Initializable {
 
                 Button x = new Button(etunimi +" "+ sukunimi);
 
-                x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+                x.setAccessibleText(id);
 
                 x.setOnAction((event) -> {
                     System.out.println(x.getText());
 
-                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+                    iddd=Integer.parseInt(x.getAccessibleText());
 
-                    varaus.setVisible(true);
+                    //Siirrytään Buttonin kautta seuraavaan ikkunaan
                     try {
-                        paivita();
-                        palveluListapaivitys();
-                    } catch (SQLException | ParseException e) {
+                        changeScene("VaraustenHallinta_Varaus.fxml");
+                    } catch (IOException e) {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
@@ -280,228 +252,6 @@ public class VaraustenHallinta extends Menu implements Initializable {
         }
 
 
-    }
-    public void poista() {
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where varaus_id="+iddd);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("Huomio");
-            a.setContentText("Palveluiden poistaminen ei onnistunut");
-            a.show();
-        }
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-            System.out.println("Tiedot saatu!");
-
-
-            PreparedStatement preparedStatement=connection.prepareStatement("delete from varaus where varaus_id="+iddd);
-            preparedStatement.executeUpdate();
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
-            a.setContentText("Varaus poistettu");
-            a.setTitle("Huomio");
-            a.show();
-            listapaivitys();
-            takaisin();
-        }catch(SQLException e) {
-            Alert a = new Alert(Alert.AlertType.ERROR);
-            a.setTitle("Huomio");
-            a.setContentText("Poistaminen ei onnistunut");
-            a.show();
-            e.printStackTrace();
-        }
-    }
-    public void paivita() throws SQLException, ParseException {
-
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-        System.out.println("Tiedot saatu!");
-
-        PreparedStatement preparedStatement=connection.prepareStatement("select * from varaus where varaus_id="+iddd);
-        ResultSet resultSet=preparedStatement.executeQuery();
-        resultSet.next();
-
-        preparedStatement = connection.prepareStatement("select mokkinimi from mokki where mokki_id = '"+resultSet.getString("mokki_mokki_id")+"'");
-        ResultSet mokkinimi =  preparedStatement.executeQuery();
-        mokkinimi.next();
-        System.out.println(mokkinimi.getString("mokkinimi"));
-
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
-        String sVarattuPVM = resultSet.getString("varattu_pvm");
-        String sVahvistusPVM = resultSet.getString("vahvistus_pvm");
-        String sVarauksenAlkuPVM = resultSet.getString("varattu_alkupvm");
-        String sVarauksenLoppuPVM = resultSet.getString("varattu_loppupvm");
-        Date dVarattuPVM = formatter.parse(sVarattuPVM);
-        Date dVahvistusPVM = formatter.parse(sVahvistusPVM);
-        Date dVarauksenAlkuPVM = formatter.parse(sVarauksenAlkuPVM);
-        Date dVarauksenLoppuPVM = formatter.parse(sVarauksenLoppuPVM);
-
-        System.out.println(sVarattuPVM);
-        System.out.println(dVarattuPVM);
-        varausID.setText(resultSet.getString("varaus_ID"));
-        asiakasID.setText(resultSet.getString("asiakas_id"));
-        mokkiID.setText(mokkinimi.getString("mokkinimi"));
-            /* Vanhojen textfieldien koodia
-            varattuPVM.setText(sVarattuPVM);
-            vahvistusPVM.setText(sVahvistusPVM);
-            varauksenAlkuPVM.setText(sVarauksenAlkuPVM);
-            varauksenLoppuPVM.setText(sVarauksenLoppuPVM);
-             */
-
-        varattuPVM.setValue(muunnaLocalDateksi(dVarattuPVM));
-        vahvistusPVM.setValue(muunnaLocalDateksi(dVahvistusPVM));
-        varauksenAlkuPVM.setValue(muunnaLocalDateksi(dVarauksenAlkuPVM));
-        varauksenLoppuPVM.setValue(muunnaLocalDateksi(dVarauksenLoppuPVM));
-
-        System.out.println(dVarattuPVM);
-        System.out.println(muunnaLocalDateksi(dVarattuPVM));
-
-
-
-    }
-    public LocalDate muunnaLocalDateksi (Date dateToConvert) {
-        return Instant.ofEpochMilli(dateToConvert.getTime())
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-    }
-    public void tallenna() throws SQLException {
-
-        System.out.println(iddd);
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-
-        String sVarausID = varausID.getText();
-        String sAsiakasID= asiakasID.getText();
-        String sMokkiNimi= mokkiID.getText();
-
-        System.out.println(varattuPVM.getValue());
-
-        String sVarattuPVM = varattuPVM.getValue().toString();
-        String sVahvistusPVM = vahvistusPVM.getValue().toString();
-        String sVarauksenAlkuPVM = varauksenAlkuPVM.getValue().toString();
-        String sVarauksenLoppuPVM = varauksenLoppuPVM.getValue().toString();
-
-        PreparedStatement preparedStatement = connection.prepareStatement("select mokki_id from mokki where mokkinimi = '"+mokkiID.getText()+"'");
-        ResultSet mokkinimi =  preparedStatement.executeQuery();
-        try {
-            mokkinimi.next();
-            preparedStatement = connection.prepareStatement(
-                    "update varaus set mokki_mokki_id='"+mokkinimi.getString("mokki_id")+"',varattu_pvm='"+sVarattuPVM+"', vahvistus_pvm='"+sVahvistusPVM+"', varattu_alkupvm='"+sVarauksenAlkuPVM+"', varattu_loppupvm ='"+sVarauksenLoppuPVM+"' where asiakas_id="+iddd);
-            preparedStatement.executeUpdate();
-
-            tallenna.setText("Tallennettu");
-            tallenna.setStyle("-fx-background-color: #00ff00");
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-            System.out.println("Feilas");
-        }
-    }
-    public void palveluListapaivitys() throws SQLException {
-
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-        PreparedStatement preparedStatement1=connection.prepareStatement(
-
-                "select palvelu_id, lkm from varauksen_palvelut where varaus_id  = "+" '"+Integer.parseInt(varausID.getText())+"'"
-        );
-        ResultSet varauksenPalvelut = preparedStatement1.executeQuery();
-
-        while(varauksenPalvelut.next()) {
-            preparedStatement1 = connection.prepareStatement(
-
-                    "select palvelu_id, nimi from palvelu where palvelu_id = " + " '" + varauksenPalvelut.getString("palvelu_id") + "'"
-            );
-            ResultSet palveluNimet = preparedStatement1.executeQuery();
-            palveluNimet.next();
-
-
-
-            Text x = new Text(palveluNimet.getString("nimi") + " x " + varauksenPalvelut.getString("lkm"));
-            x.setAccessibleText(palveluNimet.getString("palvelu_id"));
-            palveluList.getItems().add(x);
-
-        }
-    }
-    public void poistaVarauksenPalvelu () throws SQLException {
-        Text id = (Text) palveluList.getSelectionModel().getSelectedItem();
-        String idd=id.getAccessibleText();
-        System.out.println(idd);
-
-        connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-
-        try {
-            PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where palvelu_id ="+ Integer.parseInt(idd));
-            preparedStatement.executeUpdate();
-            palveluList.getItems().remove(palveluList.getSelectionModel().getSelectedItem());
-        } catch (SQLIntegrityConstraintViolationException e) {
-            e.printStackTrace();
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-    }
-    public void palveluIkkuna() {
-        varausIDText.setText(varausID.getText());
-        list.setVisible(false);
-        varaus.setVisible(false);
-        palvelu.setVisible(true);
-    }
-    public void lisaaPalvelu() throws SQLException {
-        int palvelu_id = 0;
-        int lkm = -1;
-        try {
-            palvelu_id = Integer.parseInt(palveluIDText.getText());
-            lkm = Integer.parseInt(lkmText.getText());
-        } catch (IllegalArgumentException e) {
-
-        } catch (NullPointerException e) {
-            System.out.println("Tyhjiä kenttiä");
-        }
-        try {
-            PreparedStatement preparedStatement2=connection.prepareStatement(
-                    "insert into varauksen_palvelut set varaus_id ='"+Integer.parseInt(varausIDText.getText())+"', palvelu_id='"+palvelu_id+"',"+"lkm='"+lkm+"'");
-            preparedStatement2.executeUpdate();
-            preparedStatement2 = connection.prepareStatement("Insert into palvelu set nimi = '"+palvelunNimiText.getText()+"'");
-
-            palveluStatus.setText("Lisäys onnistui");
-            palveluStatus.setVisible(true);
-            palveluStatus.setStyle("-fx-background-color: #00ff00");
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(3000),
-                            new KeyValue(palveluStatus.visibleProperty(), false)));
-            timeline.play();
-
-            System.out.println("Tiedot tallennetu");
-
-        } catch (SQLIntegrityConstraintViolationException throwables) {
-            palveluStatus.setText("Palvelu on jo olemassa valitussa varauksessa!");
-            palveluStatus.setVisible(true);
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(3000),
-                            new KeyValue(palveluStatus.visibleProperty(), false)));
-            timeline.play();
-            throwables.printStackTrace();
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        } catch (MysqlDataTruncation e) {
-            palveluStatus.setText("Palvelua ei löytynyt tietokannasta. Lisää palvelu ensin!");
-            palveluStatus.setVisible(true);
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(3000),
-                            new KeyValue(palveluStatus.visibleProperty(), false)));
-        }
-    }
-    public void paivitaPalvelut() {
-            try{
-                palveluIDText.clear();
-                PreparedStatement ps = connection.prepareStatement("select palvelu_id from palvelu where nimi ='"+palvelunNimiText.getText()+"' ");
-                ResultSet rs = ps.executeQuery();
-                rs.next();
-                palveluIDText.setText(rs.getString("palvelu_id"));
-            } catch (SQLException e) {
-
-            }
     }
 
     @Override

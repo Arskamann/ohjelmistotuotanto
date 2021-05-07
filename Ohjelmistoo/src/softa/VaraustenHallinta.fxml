@@ -2,78 +2,23 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="700.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallinta">
    <Pane id="listPane" fx:id="list" layoutY="4.0" prefHeight="700.0" prefWidth="1100.0">
       <Button layoutX="14.0" layoutY="5.0" mnemonicParsing="false" onAction="#menu" prefHeight="51.0" prefWidth="75.0" text="&lt;" />
       <Text layoutX="211.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Varaukset" wrappingWidth="63.708984375" />
-      <TextField fx:id="haku" alignment="CENTER" layoutX="623.0" layoutY="85.0" prefHeight="25.0" prefWidth="172.0" promptText="Hae nimellä" />
+      <TextField fx:id="haku" alignment="CENTER" layoutX="623.0" layoutY="85.0" onKeyTyped="#listaHaku" prefHeight="25.0" prefWidth="172.0" promptText="Hae nimellä" />
       <ListView fx:id="lista" layoutX="211.0" layoutY="162.0" prefHeight="377.0" prefWidth="679.0" />
       <Button fx:id="paivita" layoutX="805.0" layoutY="85.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="51.0" prefWidth="85.0" text="Hae" />
       <Button fx:id="paivita" layoutX="507.0" layoutY="84.0" mnemonicParsing="false" onAction="#listapaivitys" prefHeight="51.0" prefWidth="106.0" text="Näytä kaikki" />
       <Label fx:id="hakuTulos" layoutX="497.0" layoutY="22.0" visible="false" />
       <CheckBox fx:id="naytaTulevat" layoutX="623.0" layoutY="110.0" mnemonicParsing="false" onAction="#listaHaku" selected="true" text="Näytä tulevat varaukset" />
       <CheckBox fx:id="naytaVanhat" layoutX="623.0" layoutY="131.0" mnemonicParsing="false" onAction="#listaHaku" selected="true" text="Näytä vanhat varaukset" />
-   </Pane>
-   <Pane id="varausPane" fx:id="varaus" prefHeight="704.0" prefWidth="1100.0" style="-fx-background-color: skyblue;" visible="false">
-      <Label layoutX="46.0" layoutY="64.0" text="id:">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Label>
-      <Label fx:id="d" layoutX="61.0" layoutY="64.0" text="d">
-         <font>
-            <Font size="11.0" />
-         </font>
-      </Label>
-      <TextField id="varausID" fx:id="varausID" disable="true" editable="false" layoutX="285.0" layoutY="155.0" prefHeight="25.0" prefWidth="251.0" />
-      <Label layoutX="214.0" layoutY="159.0" text="VarausID" />
-      <Label layoutX="212.0" layoutY="215.0" text="AsiakasID" />
-      <TextField id="asiakasID" fx:id="asiakasID" disable="true" editable="false" layoutX="285.0" layoutY="211.0" prefHeight="25.0" prefWidth="251.0" />
-      <Label layoutX="216.0" layoutY="274.0" text="MökkiID" />
-      <TextField id="mokkiID" fx:id="mokkiID" layoutX="285.0" layoutY="270.0" prefHeight="25.0" prefWidth="251.0" />
-      <Label layoutX="198.0" layoutY="329.0" text="VarattuPVM" />
-      <Label layoutX="183.0" layoutY="447.0" text="Varauksen alku" />
-      <Label layoutX="186.0" layoutY="386.0" text="VahvistusPVM" />
-      <!-- Vanhat Textfieldit ennen kalenteria
-      <TextField id="varattuPVM" fx:id="varattuPVM" layoutX="825.0" layoutY="468.0" prefHeight="25.0" prefWidth="251.0" />
-      <TextField id="vahvistusPVM" fx:id="vahvistusPVM" layoutX="825.0" layoutY="510.0" prefHeight="25.0" prefWidth="251.0" />
-      <TextField id="varattuAlkuPVM" fx:id="varauksenAlkuPVM" layoutX="825.0" layoutY="557.0" prefHeight="25.0" prefWidth="251.0" />
-      <TextField id="varattuLoppuPVM" fx:id="varauksenLoppuPVM" layoutX="825.0" layoutY="602.0" prefHeight="25.0" prefWidth="251.0" />
-      -->
-      <Label layoutX="178.0" layoutY="501.0" text="Varauksen loppu" />
-      <Button layoutX="17.0" layoutY="11.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="32.0" prefWidth="58.0" text="&lt;" />
-      <Button fx:id="poista" layoutX="964.0" layoutY="27.0" mnemonicParsing="false" onAction="#poista" prefHeight="45.0" prefWidth="112.0" style="-fx-background-color: red;" text="Poista varaus" />
-      <Button fx:id="tallenna" layoutX="186.0" layoutY="80.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="45.0" prefWidth="112.0" text="Tallenna" />
-      <ListView fx:id="palveluList" layoutX="606.0" layoutY="155.0" prefHeight="365.0" prefWidth="191.0" />
-      <Button layoutX="606.0" layoutY="532.0" mnemonicParsing="false" onAction="#palveluIkkuna" text="Lisää palvelu" />
-      <Button layoutX="708.0" layoutY="532.0" mnemonicParsing="false" onAction="#poistaVarauksenPalvelu" text="Poista palvelu" />
-      <DatePicker fx:id="varattuPVM" layoutX="285.0" layoutY="325.0" />
-      <DatePicker fx:id="varauksenLoppuPVM" layoutX="285.0" layoutY="497.0" />
-      <DatePicker fx:id="vahvistusPVM" layoutX="285.0" layoutY="382.0" />
-      <DatePicker fx:id="varauksenAlkuPVM" layoutX="285.0" layoutY="443.0" />
-   </Pane>
-   <Pane fx:id="palvelu" prefHeight="704.0" prefWidth="1100.0" visible="false">
-      <children>
-         <TextField fx:id="varausIDText" disable="true" editable="false" layoutX="437.0" layoutY="183.0" />
-         <TextField fx:id="palveluIDText" disable="true" layoutX="437.0" layoutY="230.0" />
-         <TextField fx:id="lkmText" layoutX="437.0" layoutY="327.0" />
-         <Label layoutX="374.0" layoutY="187.0" text="VarausID" />
-         <Label layoutX="362.0" layoutY="331.0" text="Lukumäärä" />
-         <Label layoutX="373.0" layoutY="234.0" text="PalveluID" />
-         <Button fx:id="lisaaPalvelu" layoutX="468.0" layoutY="361.0" mnemonicParsing="false" onAction="#lisaaPalvelu" prefHeight="25.0" prefWidth="118.0" text="Lisää Palvelu" />
-         <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#menu" prefHeight="32.0" prefWidth="58.0" text="&lt;" />
-         <TextField fx:id="palvelunNimiText" layoutX="437.0" layoutY="277.0" onKeyTyped="#paivitaPalvelut" />
-         <Label layoutX="350.0" layoutY="281.0" text="Palvelun nimi" />
-         <Label fx:id="palveluStatus" layoutX="483.0" layoutY="97.0" text=" " visible="false" />
-      </children>
    </Pane>
 </AnchorPane>
