@@ -286,7 +286,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             PreparedStatement preparedStatement=connection.prepareStatement("delete from varauksen_palvelut where varaus_id="+iddd);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            Alert a = new Alert(Alert.AlertType.ERROR);
             a.setTitle("Huomio");
             a.setContentText("Palveluiden poistaminen ei onnistunut");
             a.show();
@@ -305,7 +305,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             listapaivitys();
             takaisin();
         }catch(SQLException e) {
-            Alert a = new Alert(Alert.AlertType.INFORMATION);
+            Alert a = new Alert(Alert.AlertType.ERROR);
             a.setTitle("Huomio");
             a.setContentText("Poistaminen ei onnistunut");
             a.show();
