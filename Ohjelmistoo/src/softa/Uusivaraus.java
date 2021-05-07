@@ -7,10 +7,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
@@ -19,6 +22,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.text.Text;
 
 
@@ -33,6 +37,8 @@ public class Uusivaraus extends Menu {
 	@FXML
     private Button päivitä;
 	static int iddd=1;
+	private String mokkiid="";
+	private String asiakasid="";
 	
 	@FXML
     TextField etu;
@@ -73,7 +79,7 @@ public class Uusivaraus extends Menu {
  	        ResultSet resultSet=preparedStatement.executeQuery();
  	        
  	       while(resultSet.next()){
-	             int id=resultSet.getInt("asiakas_id");
+	             String id=resultSet.getString("asiakas_id");
 	             String etuu=resultSet.getString("etunimi");
 	             String suku=resultSet.getString("sukunimi");
 	           
@@ -90,6 +96,7 @@ public class Uusivaraus extends Menu {
 	           String toimi=(resultSet2.getString("toimipaikka"));
 	         
 	             Button x=new Button(etuu+" "+suku);
+	             x.setAccessibleText(id);
 	            x.setOnAction((event) -> {
 	            	
 	            etu.setText(etuu);
@@ -99,6 +106,7 @@ public class Uusivaraus extends Menu {
 	   	        oso.setText(osoi);
 	   	        pos.setText(poss);
 	   	     toim.setText(toimi);
+	   	  asiakasid=x.getAccessibleText();
 	            });
 	
 	            lista.getItems().add(x);
@@ -367,6 +375,7 @@ public class Uusivaraus extends Menu {
                System.out.println("mökin id:"+x.getAccessibleText());
                 mökkihinta=Integer.parseInt(hin);
                 hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+                mokkiid=x.getAccessibleText();
            });
           
                   
@@ -430,7 +439,80 @@ public class Uusivaraus extends Menu {
 	    hinta.setText((Double.toString(palveluthinta+mökkihinta)));
 	    
 	 }
-	
+	 
+	 //varauksen luominen
+	 
+	 
+	 @FXML
+		private Button varaa;
+	 
+	 private void varaus() throws SQLException {
+		 
+		 try {
+			 
+			 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
+				System.out.println("Tiedot saatu!");
+				
+				
+				
+				//asiakkaan tiedot (id)
+				
+	 	       String asiakasiidee = asiakasid;
+	 	       
+				//aikaväli
+	 	       
+	 	       String alkupvm = alku.getText();
+	 	       String loppupvm = loppu.getText();
+				
+				//valittu mökki
+	 	       
+	 	       String mokkiidee = mokkiid;
+	 	     
+	 		    
+				//hinta
+				
+				String hintaa = hinta.getText();
+				
+				//tämänhetkinen päivä
+				long millisInDay = 60 * 60 * 24 * 1000;
+				long currentTime = new Date().getTime();
+				long dateOnly = (currentTime / millisInDay) * millisInDay;
+				Date clearDate = new Date(dateOnly);
+				
+				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!="") {
+					
+				
+					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
+							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+clearDate+"'");
+
+					preparedStatement.executeUpdate();
+					   Alert a = new Alert(AlertType.INFORMATION);
+						 a.setContentText("Uusi varaus luotu!");
+						 a.setTitle("Huomio");
+						 a.show();
+						 changeScene("Uusivaraus.fxml");
+					 
+				}
+				
+				else {
+					Alert a = new Alert(AlertType.INFORMATION);
+					 a.setContentText("Täytä kaikki pakolliset kentät!");
+					 a.setTitle("Huomio");
+					 a.show();
+				}
+				
+				
+		 } catch (Exception e) {
+			 Alert a = new Alert(AlertType.INFORMATION);
+			 a.setContentText("Virhe!");
+			 a.setTitle("Huomio");
+			 a.show();
+		 }
+		 
+		 
+		 
+	 }
+	 
 	 }
 
 
