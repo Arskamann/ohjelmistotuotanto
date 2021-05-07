@@ -103,7 +103,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
     public void menu(ActionEvent event) throws IOException { //t‰ll‰  toiminnolla p‰‰see takasin p‰‰valikkoon. T‰t‰ kutsutaan uusivaraus.xml tiedostossa
         changeScene("Menu.fxml");
     }
-    public void takaisin (ActionEvent event){
+    public void takaisin (){
         varaus.setVisible(false);
         palveluList.getItems().clear();
     }
@@ -295,6 +295,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             a.setTitle("Huomio");
             a.show();
             listapaivitys();
+            takaisin();
         }catch(Exception e) {
             Alert a = new Alert(Alert.AlertType.INFORMATION);
             a.setContentText("Virhe");
