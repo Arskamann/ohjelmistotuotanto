@@ -9,19 +9,22 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightgrey;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.Laskutus">
    <children>
-      <Pane fx:id="list" layoutX="-1.0" layoutY="-1.0" prefHeight="700.0" prefWidth="1100.0">
+      <Pane fx:id="list" prefHeight="700.0" prefWidth="1100.0">
          <children>
             <Button layoutX="23.0" layoutY="13.0" mnemonicParsing="false" onAction="#menu" prefHeight="49.0" prefWidth="87.0" text="&lt;" />
-            <ListView fx:id="lista" layoutX="328.0" layoutY="282.0" prefHeight="255.0" prefWidth="444.0" scaleX="1.5" scaleY="1.5" />
-            <Button fx:id="päivitä" layoutX="217.0" layoutY="124.0" mnemonicParsing="false" onAction="#listapäivitys" prefHeight="63.0" prefWidth="169.0" text="Maksamattomat">
+            <ListView fx:id="lista" layoutX="328.0" layoutY="282.0" prefHeight="255.0" prefWidth="540.0" scaleX="1.5" scaleY="1.5" />
+            <Button fx:id="päivitä" layoutX="193.0" layoutY="124.0" mnemonicParsing="false" onAction="#listapäivitys" prefHeight="63.0" prefWidth="169.0" text="Maksamattomat">
                <font>
                   <Font size="17.0" />
                </font></Button>
-            <Button layoutX="743.0" layoutY="124.0" mnemonicParsing="false" onAction="#listapäivitys2" prefHeight="63.0" prefWidth="140.0" text="Maksetut">
+            <Button layoutX="863.0" layoutY="124.0" mnemonicParsing="false" onAction="#listapäivitys2" prefHeight="63.0" prefWidth="140.0" text="Maksetut">
                <font>
                   <Font size="17.0" />
                </font>
             </Button>
+            <Button fx:id="muist" layoutX="23.0" layoutY="246.0" mnemonicParsing="false" onAction="#muist" text="Lähetä maksumuistutus" />
+            <Label layoutX="23.0" layoutY="218.0" text="Valinta:" />
+            <Button fx:id="maks" layoutX="23.0" layoutY="279.0" mnemonicParsing="false" text="Merkitse maksetuksi" />
          </children>
       </Pane>
       <Pane fx:id="henk" layoutY="-1.0" prefHeight="699.0" prefWidth="1099.0" visible="false">

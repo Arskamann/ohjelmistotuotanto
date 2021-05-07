@@ -12,9 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
@@ -43,6 +46,10 @@ public class Uusivaraus extends Menu {
     TextField oso;
     @FXML
     TextField pos;
+    @FXML
+    TextField toim;
+    @FXML
+  	RadioButton lask;
     @FXML
     Label hinta;
     
@@ -74,18 +81,28 @@ public class Uusivaraus extends Menu {
 	           String mail=resultSet.getString("email");
 	          String osoi=resultSet.getString("lahiosoite");
 	         String poss=resultSet.getString("postinro");
+	         
+	         
+	         PreparedStatement preparedStatement2=connection.prepareStatement("select * from vn.asiakas,vn.posti where asiakas_id="+id+" and posti.postinro= '"+poss+"'");
+	         
+	         ResultSet resultSet2=preparedStatement2.executeQuery();
+	         while(resultSet2.next()){
+	           String toimi=(resultSet2.getString("toimipaikka"));
+	         
 	             Button x=new Button(etuu+" "+suku);
 	            x.setOnAction((event) -> {
+	            	
 	            etu.setText(etuu);
 	   	        suk.setText(suku);
 	   	        puh.setText(nro);
 	   	        s‰h.setText(mail);
 	   	        oso.setText(osoi);
 	   	        pos.setText(poss);
+	   	     toim.setText(toimi);
 	            });
 	
 	            lista.getItems().add(x);
-	           
+	         }
 	        }
  	        
  			} catch (SQLException e) {
@@ -153,11 +170,25 @@ public class Uusivaraus extends Menu {
 	 @FXML
 	 TextField loppu;
 	 @FXML
-	 ComboBox<String> alueet;
+	 private ComboBox<String> alueet;
 	 @FXML
-	 ComboBox<String> hlomaara;
+	 private ComboBox<String> hlomaara;
+	 @FXML
+	 private CheckBox viiskyt;
+	 @FXML
+	 private CheckBox sata;
+	 @FXML
+	 private CheckBox kakssataa;
+	 @FXML
+	 private RadioButton normaali;
+	 @FXML
+	 private RadioButton hyva;
+	 @FXML
+	 private RadioButton luksus;
 	 
-	
+	 private String a = ".";
+	 private String h = ".";
+	 
 	 
 	 public void p‰ivit‰alueet() throws SQLException{
 		 alueet.getItems().clear();
@@ -167,20 +198,24 @@ public class Uusivaraus extends Menu {
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from toimintaalue");
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
+	    String tt = new String("Kaikki");
+	    alueet.getItems().add(tt);
 	    while(resultSet.next()){
              String nimi=resultSet.getString("nimi");
-            
+             String t = new String(nimi);
              
-            alueet.getItems().add(nimi);
+            alueet.getItems().add(t);
            
 	    }
 	    alueet.setOnAction((event) -> {
             
            if(alueet.getValue().toString()!=""||alueet.getValue().toString()!="Toimialue") {
         	   try {
+        		a = alueet.getValue().toString();
 				p‰ivit‰palvelut();
-				p‰ivit‰henkilˆm‰‰r‰();
 				p‰ivit‰mˆkit();
+				p‰ivit‰henkilˆm‰‰r‰();
+				
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -189,7 +224,7 @@ public class Uusivaraus extends Menu {
            }
            
 	    });
-	     
+	     alueet.setValue("Kaikki");
 	 }
 	 
 	 public void p‰ivit‰henkilˆm‰‰r‰() throws SQLException {
@@ -200,18 +235,22 @@ public class Uusivaraus extends Menu {
 		PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from mokki order by henkilomaara asc");
 		
 		ResultSet resultSet=preparedStatement.executeQuery();
+		String xx = new String("2");
+		hlomaara.getItems().add(xx);
 		 while(resultSet.next()){
              String henkilˆm‰‰r‰=resultSet.getString("henkilomaara");
+             String x = new String(henkilˆm‰‰r‰);
             
              
-            hlomaara.getItems().add(henkilˆm‰‰r‰);
+            hlomaara.getItems().add(x);
 	    }
 		 
 		 hlomaara.setOnAction((event) -> {
 	            
 	           if(hlomaara.getValue().toString()!="") {
 	        	   try {
-					p‰ivit‰mˆkit();
+	        		   h = hlomaara.getValue().toString();
+	        		   p‰ivit‰mˆkit();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -219,7 +258,7 @@ public class Uusivaraus extends Menu {
 	           }
 	           
 		    });
-		 
+		 hlomaara.setValue("2");
 	 }
 	 
 	 public void p‰ivit‰mˆkit() throws SQLException{
@@ -235,23 +274,81 @@ public class Uusivaraus extends Menu {
 		 }
 		 	
 		 
-	    	String nimi=alueet.getValue().toString();
-	    	String valittuhlom‰‰r‰="";
-	    	String henkilˆm‰‰r‰=hlomaara.getValue().toString();
+	    	String nimi;
 	    	
-		    if(henkilˆm‰‰r‰!="") {
-		    	valittuhlom‰‰r‰= " and henkilomaara = '"+henkilˆm‰‰r‰+"'";
+	    	if(a.equals("Kaikki")) {
+	  		  nimi="";
+	  	  }
+	  	  else  {
+	  		  nimi= " and toimintaalue.nimi='"+a+"'";
+	  	  }
+	    	
+	    	
+	    	String valittuhlomaara;
+	    	
+		    if(h.equals("2")) {
+		    	valittuhlomaara="";
 		    }
 		    else {
-		    	valittuhlom‰‰r‰="";
+		    	valittuhlomaara=" and mokki.henkilomaara>='"+h+"'";
+		    }
+		    
+		    String hint;
+		    
+		    if(viiskyt.isSelected()) {
+		    	hint=" mokki.hinta between 50 and 100 and";
+		    }
+		    else if(sata.isSelected()) {
+		    	hint=" mokki.hinta between 100 and 200 and";
+		    }
+		    else if(kakssataa.isSelected()) {
+		    	hint=" mokki.hinta between 200 and 1000 and";
+		    }
+		    else {
+		    	hint="";
+		    }
+		    
+		    if(viiskyt.isSelected()&&sata.isSelected()) {
+		    	hint=" mokki.hinta between 50 and 200 and";
+		    }
+		    else if(sata.isSelected()&&kakssataa.isSelected()) {
+		    	hint=" mokki.hinta between 100 and 1000 and";
+		    }
+		    else if(viiskyt.isSelected()&&kakssataa.isSelected()) {
+		    	hint=" mokki.hinta not between 100 and 200 and";
+		    }
+		    
+		    if(viiskyt.isSelected()&&sata.isSelected()&&kakssataa.isSelected()) {
+		    	hint=" mokki.hinta between 50 and 1000 and";
+		    }
+		  
+		    
+		    String varust;
+		    if(normaali.isSelected()) {
+		    	varust=" and mokki.varustelu = 'normaali'";
+		    	hyva.setSelected(false);
+		    	luksus.setSelected(false);
+		    }
+		    else if(hyva.isSelected()) {
+		    	varust=" and mokki.varustelu = 'hyv‰'";
+		    	normaali.setSelected(false);
+		    	luksus.setSelected(false);
+		    }
+		    else if(luksus.isSelected()) {
+		    	varust=" and mokki.varustelu = 'luksus'";
+		    	hyva.setSelected(false);
+		    	normaali.setSelected(false);
+		    }
+		    else {
+		    	varust="";
 		    }
 		    
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
 		
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement(
-	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE nimi='"+nimi
-	    		+"'and vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id" +ajanjakso +valittuhlom‰‰r‰);
+	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE "+hint+" vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id"
+	    		+nimi +ajanjakso +valittuhlomaara +varust);
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
@@ -292,11 +389,19 @@ public class Uusivaraus extends Menu {
 	 public void p‰ivit‰palvelut() throws SQLException {
 		 palvelut.getItems().clear();
 		 
-		 String nimi=alueet.getValue().toString();
+		 String nimi;
+	    	
+	    	if(a.equals("Kaikki")) {
+	  		  nimi="";
+	  	  }
+	  	  else  {
+	  		  nimi= " and t.nimi='"+a+"'";
+	  	  }
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
 		
-	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select p.palvelu_id, p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where t.nimi = '"+nimi+"' and p.toimintaalue_id = t.toimintaalue_id;");
+	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select p.palvelu_id, p.nimi, p.kuvaus, p.hinta, p.alv from vn.palvelu p, vn.toimintaalue t where p.toimintaalue_id = t.toimintaalue_id"
+	    																	+nimi);
 	    
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()) {
