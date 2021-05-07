@@ -193,7 +193,7 @@ public class Laskutus extends Menu {
      
      if(num.equals("false")) {
     	 Alert a = new Alert(AlertType.INFORMATION);
-    	 a.setContentText("Maksumuistutus tulostetaan paperisena...!");
+    	 a.setContentText("Maksumuistutus tulostetaan paperisena!");
     	 a.setTitle("Huomio");
     	 a.show();
      }
