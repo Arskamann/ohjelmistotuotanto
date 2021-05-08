@@ -446,7 +446,7 @@ public class Uusivaraus extends Menu {
 	 @FXML
 		private Button varaa;
 	 
-	 private void varaus() throws SQLException {
+	 public void varaus() throws SQLException {
 		 
 		 try {
 			 
