@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javafx.event.ActionEvent;
@@ -474,16 +475,15 @@ public class Uusivaraus extends Menu {
 				String hintaa = hinta.getText();
 				
 				//tämänhetkinen päivä
-				long millisInDay = 60 * 60 * 24 * 1000;
-				long currentTime = new Date().getTime();
-				long dateOnly = (currentTime / millisInDay) * millisInDay;
-				Date clearDate = new Date(dateOnly);
+				Date date = new Date();  
+			    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");  
+			    String strDate= formatter.format(date);  
 				
 				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!="") {
 					
 				
 					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
-							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+clearDate+"'");
+							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 					preparedStatement.executeUpdate();
 					   Alert a = new Alert(AlertType.INFORMATION);
