@@ -40,8 +40,8 @@ public class Uusivaraus extends Menu {
 	static int iddd=1;
 	private String mokkiid="";
 	private String asiakasid="";
-	static boolean uusiasiakas=true;
 	static boolean uusiposti=true;
+	static boolean uusiasiakas=true;
 	
 	@FXML
     TextField etu;
@@ -453,8 +453,8 @@ public class Uusivaraus extends Menu {
 		 
 		 try {
 			 
-			 //uusiasiakas = true;
-			 //uusiposti = true;
+			 uusiposti = true;
+			 uusiasiakas = true;
 			 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 				System.out.println("Tiedot saatu!");
 				
@@ -493,21 +493,67 @@ public class Uusivaraus extends Menu {
 				
 				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!=""&&etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {	
 					
-				
+					
 					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
 							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 					preparedStatement.executeUpdate();
 					
-					/*PreparedStatement preparedStatement2=connection.prepareStatement("");
-					
-					preparedStatement2.executeUpdate();*/
 					   Alert a = new Alert(AlertType.INFORMATION);
 						 a.setContentText("Uusi varaus luotu!");
 						 a.setTitle("Huomio");
 						 a.show();
 						 changeScene("Uusivaraus.fxml");
 						 	
+				}
+				
+				//jos uusi asiakas
+				
+				else if(asiakasiidee==""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!=""&&etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {
+					
+					PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM posti");
+					preparedStatement.executeQuery();
+					
+					 ResultSet resultSet=preparedStatement.executeQuery();
+					    while(resultSet.next()){
+					    	String num =resultSet.getString("postinro");
+					    	
+					        if(num.equals(posti)) {
+					        	uusiposti=false;
+					        }
+					    }
+					    if(uusiposti==true) {
+							
+							
+							PreparedStatement preparedStatement3=connection.prepareStatement(
+						    		"insert into posti set postinro ='"+posti+"',toimipaikka= '"+toimip+"'");
+						   preparedStatement3.executeUpdate();
+						}
+					    
+					    PreparedStatement preparedStatement2=connection.prepareStatement(
+					    		"insert into asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
+					    				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
+					   preparedStatement2.executeUpdate();
+					   
+					   PreparedStatement preparedStatement5=connection.prepareStatement("SELECT * FROM asiakas WHERE etunimi ='"+etunimi+"' and sukunimi ='"+sukunimi+"' and puhelinnro ='"+numero+"'");
+						preparedStatement5.executeQuery();
+						
+						 ResultSet resultSet2=preparedStatement5.executeQuery();
+						    while(resultSet2.next()){
+						    	String idd =resultSet2.getString("asiakas_id");
+						    	
+						    	PreparedStatement preparedStatement6=connection.prepareStatement("insert into varaus set asiakas_id ='"+idd+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
+										+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
+
+								preparedStatement6.executeUpdate();
+								
+								   Alert a = new Alert(AlertType.INFORMATION);
+									 a.setContentText("Uusi varaus luotu!");
+									 a.setTitle("Huomio");
+									 a.show();
+									 changeScene("Uusivaraus.fxml");
+						    }
+					   
 				}
 				
 				
