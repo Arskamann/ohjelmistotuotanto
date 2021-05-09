@@ -40,6 +40,8 @@ public class Uusivaraus extends Menu {
 	static int iddd=1;
 	private String mokkiid="";
 	private String asiakasid="";
+	static boolean uusiasiakas=true;
+	static boolean uusiposti=true;
 	
 	@FXML
     TextField etu;
@@ -451,6 +453,8 @@ public class Uusivaraus extends Menu {
 		 
 		 try {
 			 
+			 //uusiasiakas = true;
+			 //uusiposti = true;
 			 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 				System.out.println("Tiedot saatu!");
 				
@@ -459,6 +463,14 @@ public class Uusivaraus extends Menu {
 				//asiakkaan tiedot (id)
 				
 	 	       String asiakasiidee = asiakasid;
+	 	       
+	 	       String etunimi=etu.getText();
+	 	       String sukunimi=suk.getText();
+	 	       String numero=puh.getText();
+	 	       String sähköposti=säh.getText();
+	 	       String osoite=oso.getText();
+	 	       String posti=pos.getText();
+	 	       String toimip = toim.getText();
 	 	       
 				//aikaväli
 	 	       
@@ -479,20 +491,25 @@ public class Uusivaraus extends Menu {
 			    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");  
 			    String strDate= formatter.format(date);  
 				
-				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!="") {
+				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!=""&&etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {	
 					
 				
 					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
 							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 					preparedStatement.executeUpdate();
+					
+					/*PreparedStatement preparedStatement2=connection.prepareStatement("");
+					
+					preparedStatement2.executeUpdate();*/
 					   Alert a = new Alert(AlertType.INFORMATION);
 						 a.setContentText("Uusi varaus luotu!");
 						 a.setTitle("Huomio");
 						 a.show();
 						 changeScene("Uusivaraus.fxml");
-					 
+						 	
 				}
+				
 				
 				else {
 					Alert a = new Alert(AlertType.INFORMATION);
