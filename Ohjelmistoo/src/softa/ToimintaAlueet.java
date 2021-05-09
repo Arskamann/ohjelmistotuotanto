@@ -26,7 +26,7 @@ public class ToimintaAlueet extends Menu {
 	@FXML
 	private ListView<Button> lista;
 	@FXML
-    private Button päivitä;
+    private Button paivita;
 	static int iddd=1;
 	static int id2=1;
 	
@@ -54,8 +54,8 @@ public class ToimintaAlueet extends Menu {
 			palveluikkuna.setVisible(false);
 	       alue.setVisible(false);
 	       list.setVisible(true);
-	       listapäivitys();
-	       palvelupäivitys();
+	       listapaivitys();
+	       palvelupaivitys();
 	       tallenna.setStyle("-fx-background-color: #FFFFFF");
 	       tallenna.setText("Tallenna");
 	       tallenna2.setStyle("-fx-background-color: #FFFFFF");
@@ -64,7 +64,7 @@ public class ToimintaAlueet extends Menu {
 	        
 	    }
 	
-	public void listapäivitys(){
+	public void listapaivitys(){
  	   try {
  		   lista.getItems().clear();
  		  
@@ -81,20 +81,20 @@ public class ToimintaAlueet extends Menu {
  	             Button x=new Button(nimi);
  	             x.setMinWidth(150);
  	             x.setAlignment(Pos.CENTER_LEFT);
- 	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+ 	             x.setAccessibleText(id);               //  nain saahaan se napin ID talteen ilman etta sita naytetaan siina
  	            
  	            x.setOnAction((event) -> {
  	                System.out.println(x.getText());
-	                     String sisältö=x.getText();
-	                     String[] sisältöosissa= sisältö.split(" ");
+	                     String sisalto=x.getText();
+	                     String[] sisaltoosissa= sisalto.split(" ");
 	                   
-	                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+	                    iddd=Integer.parseInt(x.getAccessibleText()); // talleen saahaan se id sielta sit poimittua
 	                   
 	                  list.setVisible(false);
 					alue.setVisible(true);
 					try {
-						päivitä();
-						palvelupäivitys();
+						paivita();
+						palvelupaivitys();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -117,7 +117,7 @@ public class ToimintaAlueet extends Menu {
  	   
 	}
 	
-	public void listaHaku(){            // tässä haetaan id:n ja nimen perusteella asiakkaita
+	public void listaHaku(){            // tassa haetaan id:n ja nimen perusteella asiakkaita
     	String hakutext=hae.getText();
     	System.out.println(hakutext);
     	lista.getItems().clear();
@@ -138,19 +138,19 @@ public class ToimintaAlueet extends Menu {
 	             Button x=new Button(nimi);
 	             x.setMinWidth(150);
 	             x.setAlignment(Pos.CENTER_LEFT);
-	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+	             x.setAccessibleText(id);               //  nain saahaan se napin ID talteen ilman etta sita naytetaan siina
 	            
 	            x.setOnAction((event) -> {
 	                System.out.println(x.getText());
-                     String sisältö=x.getText();
-                     String[] sisältöosissa= sisältö.split(" ");
+                     String sisalto=x.getText();
+                     String[] sisaltoosissa= sisalto.split(" ");
                    
-                    iddd=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+                    iddd=Integer.parseInt(x.getAccessibleText()); // talleen saahaan se id sielta sit poimittua
                    
                     list.setVisible(false);
 					alue.setVisible(true);
 					try {
-						päivitä();
+						paivita();
 					} catch (SQLException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -175,7 +175,7 @@ public class ToimintaAlueet extends Menu {
 	}
 	
 	
-	// yksittäinen toiminta-alue
+	// yksittainen toiminta-alue
 	
 	 @FXML
 	    Button ut;
@@ -201,7 +201,7 @@ public class ToimintaAlueet extends Menu {
 			
 	    }
 	 
-	 public void päivitä() throws SQLException{
+	 public void paivita() throws SQLException{
 	    	
 	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 			System.out.println("Tiedot saatu!");
@@ -268,7 +268,7 @@ public class ToimintaAlueet extends Menu {
 		a.setTitle("Huomio");
 		a.show();
 		takas();
-		listapäivitys();
+		listapaivitys();
 			}catch(Exception e) {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("Virhe poistaessa toiminta-aluetta. Poista aktiiviset palvelut ensin!");
@@ -293,7 +293,7 @@ public class ToimintaAlueet extends Menu {
 	 @FXML
 		private ListView<Button> plista;
 	 
-	 public void palvelupäivitys(){
+	 public void palvelupaivitys(){
 	 	   try {
 	 		   plista.getItems().clear();
 	 		  String nim=nimiii.getText();
@@ -316,20 +316,20 @@ public class ToimintaAlueet extends Menu {
 	 	             Button x=new Button(nimi+" "+tyyppi+" "+kuvaus+" "+hinta+"€ "+alv+"% ");
 	 	             x.setMinWidth(150);
 	 	             x.setAlignment(Pos.CENTER_LEFT);
-	 	             x.setAccessibleText(id);               //  näin saahaan se napin ID talteen ilman että sitä näytetään siinä
+	 	             x.setAccessibleText(id);               //  nain saahaan se napin ID talteen ilman etta sita naytetaan siina
 	 	            
 	 	            x.setOnAction((event) -> {
 	 	                System.out.println(x.getText());
-		                     String sisältö=x.getText();
-		                     String[] sisältöosissa= sisältö.split(" ");
+		                     String sisalto=x.getText();
+		                     String[] sisaltoosissa= sisalto.split(" ");
 		                   
-		                    id2=Integer.parseInt(x.getAccessibleText()); // tälleen saahaan se id sieltä sit poimittua
+		                    id2=Integer.parseInt(x.getAccessibleText()); // talleen saahaan se id sielta sit poimittua
 		                    
 		                    
 							alue.setVisible(false);
 							palveluikkuna.setVisible(true);
 						try {
-							päivitä2();
+							paivita2();
 						} catch (SQLException e) {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
@@ -353,7 +353,7 @@ public class ToimintaAlueet extends Menu {
 	 	   
 		}
 	 
-	 public void päivitä2() throws SQLException{
+	 public void paivita2() throws SQLException{
 	    	
 	    	connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 			System.out.println("Tiedot saatu!");
@@ -413,7 +413,7 @@ public class ToimintaAlueet extends Menu {
 		a.setTitle("Huomio");
 		a.show();
 		takas();
-		palvelupäivitys();
+		palvelupaivitys();
 			}catch(Exception e) {
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("Virhe poistaessa palvelua");

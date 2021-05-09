@@ -38,7 +38,7 @@ public class Uusivaraus extends Menu {
 	@FXML
 	private ListView<Button> lista;
 	@FXML
-    private Button päivitä;
+    private Button paivita;
 	static int iddd=1;
 	private String mokkiid="";
 	private String asiakasid="";
@@ -51,7 +51,7 @@ public class Uusivaraus extends Menu {
     @FXML
     TextField puh;
     @FXML
-    TextField säh;
+    TextField sah;
     @FXML
     TextField oso;
     @FXML
@@ -65,14 +65,14 @@ public class Uusivaraus extends Menu {
     
     
     static Double palveluthinta=0.0;
-    static int mökkihinta=0;
+    static int mokkihinta=0;
     
 	public void menu(ActionEvent event) throws IOException { 
 		changeScene("Menu.fxml");
 
 	}
 	
-	public void listapäivitys(){
+	public void listapaivitys(){
  	   try {
  		   lista.getItems().clear();
  		  
@@ -106,7 +106,7 @@ public class Uusivaraus extends Menu {
 	            etu.setText(etuu);
 	   	        suk.setText(suku);
 	   	        puh.setText(nro);
-	   	        säh.setText(mail);
+	   	        sah.setText(mail);
 	   	        oso.setText(osoi);
 	   	        pos.setText(poss);
 	   	     toim.setText(toimi);
@@ -124,7 +124,7 @@ public class Uusivaraus extends Menu {
  	   
 	}
 	
-	public void listaHaku(){            // tässä haetaan id:n ja nimen perusteella asiakkaita
+	public void listaHaku(){            // tassa haetaan id:n ja nimen perusteella asiakkaita
     	String hakutext=hae.getText();
     	System.out.println(hakutext);
     	lista.getItems().clear();
@@ -155,7 +155,7 @@ public class Uusivaraus extends Menu {
  	            etu.setText(etuu);
  	   	        suk.setText(suku);
  	   	        puh.setText(nro);
- 	   	        säh.setText(mail);
+ 	   	        sah.setText(mail);
  	   	        oso.setText(osoi);
  	   	        pos.setText(poss);
 	            });
@@ -173,10 +173,10 @@ public class Uusivaraus extends Menu {
 		
 	 
 	 
-	 //mökin filtterit!!!
+	 //mokin filtterit!!!
 	 
 	 @FXML
-	private ListView<Button> mökit;
+	private ListView<Button> mokit;
 	 @FXML
 	 TextField alku;
 	 @FXML
@@ -202,7 +202,7 @@ public class Uusivaraus extends Menu {
 	 private String h = ".";
 	 
 	 
-	 public void päivitäalueet() throws SQLException{
+	 public void paivitaalueet() throws SQLException{
 		 alueet.getItems().clear();
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
@@ -224,9 +224,9 @@ public class Uusivaraus extends Menu {
            if(alueet.getValue().toString()!=""||alueet.getValue().toString()!="Toimialue") {
         	   try {
         		a = alueet.getValue().toString();
-				päivitäpalvelut();
-				päivitämökit();
-				päivitähenkilömäärä();
+				paivitapalvelut();
+				paivitamokit();
+				paivitahenkilomaara();
 				
 				
 			} catch (SQLException e) {
@@ -239,7 +239,7 @@ public class Uusivaraus extends Menu {
 	     alueet.setValue("Kaikki");
 	 }
 	 
-	 public void päivitähenkilömäärä() throws SQLException {
+	 public void paivitahenkilomaara() throws SQLException {
 		 hlomaara.getItems().clear();
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
@@ -250,8 +250,8 @@ public class Uusivaraus extends Menu {
 		String xx = new String("2");
 		hlomaara.getItems().add(xx);
 		 while(resultSet.next()){
-             String henkilömäärä=resultSet.getString("henkilomaara");
-             String x = new String(henkilömäärä);
+             String henkilomaara=resultSet.getString("henkilomaara");
+             String x = new String(henkilomaara);
             
              
             hlomaara.getItems().add(x);
@@ -262,7 +262,7 @@ public class Uusivaraus extends Menu {
 	           if(hlomaara.getValue().toString()!="") {
 	        	   try {
 	        		   h = hlomaara.getValue().toString();
-	        		   päivitämökit();
+	        		   paivitamokit();
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -273,8 +273,8 @@ public class Uusivaraus extends Menu {
 		 hlomaara.setValue("2");
 	 }
 	 
-	 public void päivitämökit() throws SQLException{
-		 mökit.getItems().clear();
+	 public void paivitamokit() throws SQLException{
+		 mokit.getItems().clear();
 		 String alkaa = alku.getText();
 		 String loppuu = loppu.getText();
 		 String ajanjakso="";
@@ -373,19 +373,19 @@ public class Uusivaraus extends Menu {
             String hin=resultSet.getString("hinta");
             String alue=resultSet.getString("nimi");
        
-            Button x=new Button(nim+" | Henkilömäärä:"+henk+" Varustelu:"+var+" Hinta/yö:"+hin+" Alue:"+alue);
+            Button x=new Button(nim+" | Henkilomaara:"+henk+" Varustelu:"+var+" Hinta/yo:"+hin+" Alue:"+alue);
           x.setAccessibleText(id);
           
           
            x.setOnAction((event) -> {
-               System.out.println("mökin id:"+x.getAccessibleText());
+               System.out.println("mokin id:"+x.getAccessibleText());
       		 
       		 LocalDate ldA = LocalDate.parse( alkaa );
       		 LocalDate ldB = LocalDate.parse( loppuu );
       		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
                
-                mökkihinta=Integer.parseInt(hin);
-                hinta.setText((Double.toString(palveluthinta+mökkihinta*daysBetween)));
+                mokkihinta=Integer.parseInt(hin);
+                hinta.setText((Double.toString(palveluthinta+mokkihinta*daysBetween)));
                 mokkiid=x.getAccessibleText();
            });
           
@@ -394,7 +394,7 @@ public class Uusivaraus extends Menu {
                    
            
 
-           mökit.getItems().add(x);
+           mokit.getItems().add(x);
           
        }
 	    
@@ -406,7 +406,7 @@ public class Uusivaraus extends Menu {
 	 @FXML
 	 private ListView<Button> palvelut;
 	 
-	 public void päivitäpalvelut() throws SQLException {
+	 public void paivitapalvelut() throws SQLException {
 		 palvelut.getItems().clear();
 		 
 		 String nimi;
@@ -440,20 +440,20 @@ public class Uusivaraus extends Menu {
 	      		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
 	    		
 	    	       System.out.println(x.getText());
-                   String sisältö=x.getText();
-                   String[] sisältöosissa= sisältö.split(" ");
+                   String sisalto=x.getText();
+                   String[] sisaltoosissa= sisalto.split(" ");
                    palveluthinta+=phinta;
-                   int määrä=Integer.parseInt(sisältö.substring(sisältö.lastIndexOf(" ")+1))+1;
-	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+määrä;
+                   int maara=Integer.parseInt(sisalto.substring(sisalto.lastIndexOf(" ")+1))+1;
+	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+maara;
 	         x.setText(y);
-	         hinta.setText((Double.toString(palveluthinta+mökkihinta*daysBetween)));
+	         hinta.setText((Double.toString(palveluthinta+mokkihinta*daysBetween)));
 				
 	            });
 	    	palvelut.getItems().add(x);
 	    }
 	    palveluthinta=0.0;
-	    mökkihinta=0;
-	    hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+	    mokkihinta=0;
+	    hinta.setText((Double.toString(palveluthinta+mokkihinta)));
 	    
 	 }
 	 
@@ -480,7 +480,7 @@ public class Uusivaraus extends Menu {
 	 	       String etunimi=etu.getText();
 	 	       String sukunimi=suk.getText();
 	 	       String numero=puh.getText();
-	 	       String sähköposti=säh.getText();
+	 	       String sahkoposti=sah.getText();
 	 	       String osoite=oso.getText();
 	 	       String posti=pos.getText();
 	 	       String toimip = toim.getText();
@@ -545,7 +545,7 @@ public class Uusivaraus extends Menu {
 					    
 					    PreparedStatement preparedStatement2=connection.prepareStatement(
 					    		"insert into asiakas set etunimi ='"+etunimi+"', sukunimi='"+sukunimi+"',"+"puhelinnro='"+numero+"'"
-					    				+ ", email='"+sähköposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
+					    				+ ", email='"+sahkoposti+"', lahiosoite='"+osoite+"', postinro='"+posti+"'");
 					   preparedStatement2.executeUpdate();
 					   
 					   PreparedStatement preparedStatement5=connection.prepareStatement("SELECT * FROM asiakas WHERE etunimi ='"+etunimi+"' and sukunimi ='"+sukunimi+"' and puhelinnro ='"+numero+"'");

@@ -26,11 +26,11 @@
             <ListView fx:id="lista" layoutX="5.0" layoutY="86.0" prefHeight="241.0" prefWidth="197.0" />
             <TextField fx:id="hae" layoutX="13.0" layoutY="38.0" prefHeight="34.0" prefWidth="133.0" promptText="Hae asiakkaita" />
             <Text layoutX="18.0" layoutY="384.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Uusi asiakas" />
-            <Button fx:id="päivitä" layoutX="147.0" layoutY="337.0" mnemonicParsing="false" onAction="#listapäivitys" prefHeight="34.0" prefWidth="62.0" text="Päivitä" />
+            <Button fx:id="paivita" layoutX="147.0" layoutY="337.0" mnemonicParsing="false" onAction="#listapaivitys" prefHeight="34.0" prefWidth="62.0" text="Päivitä" />
             <TextField fx:id="etu" layoutX="18.0" layoutY="388.0" prefHeight="25.0" prefWidth="184.0" promptText="Etunimi" />
             <TextField fx:id="suk" layoutX="19.0" layoutY="420.0" prefHeight="25.0" prefWidth="183.0" promptText="Sukunimi" />
             <TextField fx:id="puh" layoutX="20.0" layoutY="451.0" prefHeight="25.0" prefWidth="182.0" promptText="Puhelinnumero" />
-            <TextField fx:id="säh" layoutX="21.0" layoutY="483.0" prefHeight="25.0" prefWidth="180.0" promptText="Sähköposti" />
+            <TextField fx:id="sah" layoutX="21.0" layoutY="483.0" prefHeight="25.0" prefWidth="180.0" promptText="Sähköposti" />
             <TextField fx:id="oso" layoutX="22.0" layoutY="514.0" prefHeight="25.0" prefWidth="179.0" promptText="Osoite" />
             <TextField fx:id="pos" layoutX="22.0" layoutY="547.0" prefHeight="25.0" prefWidth="179.0" promptText="Postinumero" />
             <Button layoutX="150.0" layoutY="40.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="31.0" prefWidth="56.0" text="Hae" />
@@ -43,32 +43,32 @@
       <AnchorPane prefHeight="661.0" prefWidth="554.0" BorderPane.alignment="CENTER">
          <children>
             <Text layoutX="145.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" />
-            <TextField fx:id="loppu" layoutX="154.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="88.0" promptText="vvvv-kk-pp" />
+            <TextField fx:id="loppu" layoutX="154.0" layoutY="128.0" onKeyReleased="#paivitamokit" prefHeight="25.0" prefWidth="88.0" promptText="vvvv-kk-pp" />
             <Text layoutX="46.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hinta/yö             Varustelu" />
-            <CheckBox fx:id="viiskyt" layoutX="46.0" layoutY="34.0" mnemonicParsing="false" onAction="#päivitämökit" text="50-100€" />
-            <CheckBox fx:id="sata" layoutX="46.0" layoutY="58.0" mnemonicParsing="false" onAction="#päivitämökit" text="100-200€" />
-            <CheckBox fx:id="kakssataa" layoutX="46.0" layoutY="84.0" mnemonicParsing="false" onAction="#päivitämökit" text="&gt;200€" />
-            <ListView fx:id="mökit" layoutX="6.0" layoutY="212.0" prefHeight="441.0" prefWidth="622.0" />
+            <CheckBox fx:id="viiskyt" layoutX="46.0" layoutY="34.0" mnemonicParsing="false" onAction="#paivitamokit" text="50-100€" />
+            <CheckBox fx:id="sata" layoutX="46.0" layoutY="58.0" mnemonicParsing="false" onAction="#paivitamokit" text="100-200€" />
+            <CheckBox fx:id="kakssataa" layoutX="46.0" layoutY="84.0" mnemonicParsing="false" onAction="#paivitamokit" text="&gt;200€" />
+            <ListView fx:id="mokit" layoutX="6.0" layoutY="212.0" prefHeight="441.0" prefWidth="622.0" />
             <Text layoutX="8.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mökin tiedot" />
-            <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#päivitämökit" prefHeight="25.0" prefWidth="85.0" promptText="vvvv-kk-pp" />
+            <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#paivitamokit" prefHeight="25.0" prefWidth="85.0" promptText="vvvv-kk-pp" />
             <Text layoutX="6.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aikaväli" />
-            <Button layoutX="242.0" layoutY="12.0" mnemonicParsing="false" onAction="#päivitäalueet" prefHeight="37.0" prefWidth="73.0" text="Päivitä" />
+            <Button layoutX="242.0" layoutY="12.0" mnemonicParsing="false" onAction="#paivitaalueet" prefHeight="37.0" prefWidth="73.0" text="Päivitä" />
             <Text layoutX="658.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Palvelut" />
             <ComboBox fx:id="alueet" layoutX="332.0" layoutY="13.0" prefHeight="36.0" prefWidth="106.0" />
             <ComboBox fx:id="hlomaara" layoutX="449.0" layoutY="14.0" prefHeight="35.0" prefWidth="107.0" />
             <Text layoutX="332.0" layoutY="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toiminta-alueet           Henkilömäärä" />
-            <RadioButton fx:id="normaali" layoutX="128.0" layoutY="34.0" mnemonicParsing="false" onAction="#päivitämökit" text="Normaali" />
-            <RadioButton fx:id="hyva" layoutX="128.0" layoutY="58.0" mnemonicParsing="false" onAction="#päivitämökit" text="Hyvä" />
-            <RadioButton fx:id="luksus" layoutX="128.0" layoutY="84.0" mnemonicParsing="false" onAction="#päivitämökit" text="Luksus" />
+            <RadioButton fx:id="normaali" layoutX="128.0" layoutY="34.0" mnemonicParsing="false" onAction="#paivitamokit" text="Normaali" />
+            <RadioButton fx:id="hyva" layoutX="128.0" layoutY="58.0" mnemonicParsing="false" onAction="#paivitamokit" text="Hyvä" />
+            <RadioButton fx:id="luksus" layoutX="128.0" layoutY="84.0" mnemonicParsing="false" onAction="#paivitamokit" text="Luksus" />
          </children>
       </AnchorPane>
    </center>
    <right>
       <AnchorPane prefHeight="200.0" prefWidth="181.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="varaa" layoutX="106.0" layoutY="611.0" mnemonicParsing="false" onAction="#varaus" prefHeight="36.0" prefWidth="88.0" text="Varaa" />
+            <Button fx:id="varaa" layoutX="106.0" layoutY="604.0" mnemonicParsing="false" onAction="#varaus" prefHeight="43.0" prefWidth="88.0" text="Varaa" />
             <ListView fx:id="palvelut" layoutX="-45.0" layoutY="17.0" prefHeight="279.0" prefWidth="243.0" />
-            <Button layoutX="-45.0" layoutY="299.0" mnemonicParsing="false" onAction="#päivitäpalvelut" prefHeight="32.0" prefWidth="97.0" text="Nollaa valinnat" />
+            <Button layoutX="-45.0" layoutY="299.0" mnemonicParsing="false" onAction="#paivitapalvelut" prefHeight="32.0" prefWidth="97.0" text="Nollaa valinnat" />
             <Label layoutX="-61.0" layoutY="508.0" prefHeight="35.0" prefWidth="177.0" text="Varauksen hinta:">
                <font>
                   <Font name="System Bold" size="19.0" />
