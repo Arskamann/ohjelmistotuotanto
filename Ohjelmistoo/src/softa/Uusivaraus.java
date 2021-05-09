@@ -8,6 +8,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 
 import javafx.event.ActionEvent;
@@ -41,7 +43,6 @@ public class Uusivaraus extends Menu {
 	private String mokkiid="";
 	private String asiakasid="";
 	static boolean uusiposti=true;
-	static boolean uusiasiakas=true;
 	
 	@FXML
     TextField etu;
@@ -277,6 +278,7 @@ public class Uusivaraus extends Menu {
 		 String alkaa = alku.getText();
 		 String loppuu = loppu.getText();
 		 String ajanjakso="";
+		 
 		 if(alkaa!=""&&loppuu!="") {
 			 ajanjakso= " and mokki_id NOT IN (SELECT mokki_mokki_id FROM vn.varaus WHERE '"+alkaa+"'<= varattu_loppupvm AND '"+loppuu+"'>=varattu_alkupvm)";
 		 }
@@ -354,6 +356,7 @@ public class Uusivaraus extends Menu {
 		    	varust="";
 		    }
 		    
+		    
 		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 			System.out.println("Tiedot saatu!");
 		
@@ -376,8 +379,13 @@ public class Uusivaraus extends Menu {
           
            x.setOnAction((event) -> {
                System.out.println("mökin id:"+x.getAccessibleText());
+      		 
+      		 LocalDate ldA = LocalDate.parse( alkaa );
+      		 LocalDate ldB = LocalDate.parse( loppuu );
+      		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
+               
                 mökkihinta=Integer.parseInt(hin);
-                hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+                hinta.setText((Double.toString(palveluthinta+mökkihinta*daysBetween)));
                 mokkiid=x.getAccessibleText();
            });
           
@@ -425,6 +433,11 @@ public class Uusivaraus extends Menu {
 	    	Button x = new Button(pnimi+" "+pkuvaus+" "+phinta+"€ 0");
 	    	x.setAccessibleText(id);
 	    	 x.setOnAction((event) -> {
+	    		 String alkaa = alku.getText();
+	    		 String loppuu = loppu.getText();
+	    		 LocalDate ldA = LocalDate.parse( alkaa );
+	      		 LocalDate ldB = LocalDate.parse( loppuu );
+	      		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
 	    		
 	    	       System.out.println(x.getText());
                    String sisältö=x.getText();
@@ -433,12 +446,13 @@ public class Uusivaraus extends Menu {
                    int määrä=Integer.parseInt(sisältö.substring(sisältö.lastIndexOf(" ")+1))+1;
 	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+määrä;
 	         x.setText(y);
-	         hinta.setText((Double.toString(palveluthinta+mökkihinta)));
+	         hinta.setText((Double.toString(palveluthinta+mökkihinta*daysBetween)));
 				
 	            });
 	    	palvelut.getItems().add(x);
 	    }
 	    palveluthinta=0.0;
+	    mökkihinta=0;
 	    hinta.setText((Double.toString(palveluthinta+mökkihinta)));
 	    
 	 }
@@ -454,7 +468,6 @@ public class Uusivaraus extends Menu {
 		 try {
 			 
 			 uusiposti = true;
-			 uusiasiakas = true;
 			 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
 				System.out.println("Tiedot saatu!");
 				
