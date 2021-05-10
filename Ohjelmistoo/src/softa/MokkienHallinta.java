@@ -124,9 +124,10 @@ public class MokkienHallinta extends Menu {
     @FXML
     private ChoiceBox<String> varustelu1;
 	
-    //mökin id:n poimimista varten, toimipaikan id:n poimimista varten
+    //mökin id:n poimimista varten, toimipaikan id:n poimimista varten ja postinumeron tarkistus
     static int iddd=1;
     static int paikanID=1;
+    static boolean uusiposti=true;
 	
     //dropdown-listaukset
     @FXML
@@ -199,15 +200,15 @@ public class MokkienHallinta extends Menu {
     			}
     	}
 	
-	//dropdown-valikossa näkyvät toimipaikat
-    private List<String> haePaikat() {
+	//listassa näkyvät toimipaikat
+    public List<String> haePaikat() {
 
         List<String> valinnat = new ArrayList<>();
 
         try {
         	Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
         	System.out.println("Tiedot saatu!");
-        	PreparedStatement statement=connection.prepareStatement("Select nimi from toimintaalue");
+        	PreparedStatement statement=connection.prepareStatement("Select nimi from toimintaalue order by nimi asc");
       
             ResultSet set = statement.executeQuery();
 
@@ -217,6 +218,8 @@ public class MokkienHallinta extends Menu {
 
             statement.close();
             set.close();
+            
+            toimipaikkalistaus.setValue("Valitse toimialue...");
 
             return valinnat;
  
@@ -226,7 +229,7 @@ public class MokkienHallinta extends Menu {
 			}
         }
     
-    //dropdown-lista varusteluista
+    //lista varusteluista
     ObservableList<String> varustelut = FXCollections.
 			observableArrayList("Valitse varustelutaso", "Normaali", "Hyvä", "Luksus");
 	
@@ -287,6 +290,7 @@ public class MokkienHallinta extends Menu {
 	//uuden mökin lisäysnäkymä
 	public void mokinLisays() {
 		uusiMokki.setVisible(true);
+		haePaikat();
 		}
 	
 		
@@ -404,52 +408,101 @@ public class MokkienHallinta extends Menu {
 	
 
 	//muutosten tallentaminen olemassaolevaan mökkiin
-	public void tallenna() throws SQLException {
-		System.out.println(iddd);
-	    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-		System.out.println("Tiedot saatu!");
-			
-		String mokkinimi=mokinnimi.getText();
-		String os=osoite.getText();
-		String nro=postinro.getText();
-		String kaupunki=toim.getText();
-		String henkilot=hlo.getText();
-		String varusteet=varustelu.getValue();
-		String eurot=hinta.getText();
-		String teksti=kuvaus.getText();
-			
-		PreparedStatement preparedStatement=connection.prepareStatement(
-				"update mokki set mokkinimi ='"+mokkinimi+"', katuosoite='"+os+"', postinro='"+nro+"', kuvaus='"+teksti
-				+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot
-				+"' where mokki_id="+iddd);
-		
-		preparedStatement.executeUpdate();
-		
-		String valittuToimipaikka = toimialue.getValue();
-		String toimialue_id;
-		
-		PreparedStatement preparedStatement2=connection.prepareStatement(
-				"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
-	    	      
-	    ResultSet toimialue_idResult=preparedStatement2.executeQuery();
-	    	        
-	    toimialue_idResult.next();
-	    toimialue_id = toimialue_idResult.getString("toimintaalue_id");
-	    	        
-	    PreparedStatement preparedStatement3 = connection.prepareStatement(
-	    		"Update mokki set toimintaalue_id='"+toimialue_id+"' where mokki_id="+iddd);
-	    preparedStatement3.executeUpdate();
-	    
-		tallenna.setText("Tallennettu");
-		tallenna.setStyle("-fx-background-color: #00ff00");
+	public void tallenna() throws SQLException, IOException {
+		if (validoiTallentaessa()==true) {
+			try {
+				uusiposti=true;
+				System.out.println(iddd);
+			    connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+				System.out.println("Tiedot saatu!");
+					
+				String mokkinimi=mokinnimi.getText();
+				String os=osoite.getText();
+				String nro=postinro.getText();
+				String kaupunki=toim.getText();
+				String henkilot=hlo.getText();
+				String varusteet=varustelu.getValue();
+				String eurot=hinta.getText();
+				String teksti=kuvaus.getText();
+				
+				PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM posti");
+				preparedStatement.executeQuery();
+				
+				ResultSet resultSet=preparedStatement.executeQuery();
+				
+				while(resultSet.next()){
+					String num =resultSet.getString("postinro");
+					if(num.equals(nro)) {
+						uusiposti=false;
+						}
+					}
+				
+				if(uusiposti==true) {
+					PreparedStatement preparedStatement2=connection.prepareStatement(
+							"insert into posti set postinro ='"+nro+"',toimipaikka= '"+kaupunki+"'");
+					preparedStatement2.executeUpdate();
+					
+					Alert b = new Alert(AlertType.INFORMATION);
+					b.setContentText("Postitietoja lisätty tietokantaan!");
+					b.setTitle("Huomio");
+					b.setHeaderText("Huomio:");
+					b.show();
+					}
+				 
+				PreparedStatement preparedStatement3=connection.prepareStatement(
+						"update mokki set mokkinimi ='"+mokkinimi+"', katuosoite='"+os+"', postinro='"+nro+"', kuvaus='"+teksti
+						+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot
+						+"' where mokki_id="+iddd);
+				
+				preparedStatement3.executeUpdate();
+				
+				String valittuToimipaikka = toimialue.getValue();
+				String toimialue_id;
+				
+				PreparedStatement preparedStatement4=connection.prepareStatement(
+						"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
+			    	      
+			    ResultSet toimialue_idResult=preparedStatement4.executeQuery();
+			    	        
+			    toimialue_idResult.next();
+			    toimialue_id = toimialue_idResult.getString("toimintaalue_id");
+			    	        
+			    PreparedStatement preparedStatement5 = connection.prepareStatement(
+			    		"Update mokki set toimintaalue_id='"+toimialue_id+"' where mokki_id="+iddd);
+			    preparedStatement5.executeUpdate();
 			    
-	    }
+				tallenna.setText("Tallennettu");
+				tallenna.setStyle("-fx-background-color: #00ff00");
+				
+				} catch (Exception e) {
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setContentText("Virhe!");
+					a.setHeaderText("Huomio:");
+					a.setTitle("Huomio");
+					a.show();
+					}
+			}
+		}
+			
+
+			
+			
 	
 	//tallentaminen ja poistuminen saman tien takaisin mökkienhallintaan
 	public void tallennaJaPoistu() throws SQLException, IOException {
-		tallenna();
-		changeScene("MokkienHallinta.fxml");
-	}
+		if (validoiTallentaessa()==true) {
+			try {
+				tallenna();
+				changeScene("MokkienHallinta.fxml");
+				} catch (Exception e) {
+					Alert a = new Alert(AlertType.INFORMATION);
+					a.setContentText("Virhe!");
+					a.setHeaderText("Huomio:");
+					a.setTitle("Huomio");
+					a.show();
+					}
+			}
+		}
 	
 	//varmistus ennen mökin poistamista
 	@FXML
@@ -503,7 +556,8 @@ public class MokkienHallinta extends Menu {
 	//uuden mökin luominen
 		public void luoUusi() throws SQLException, IOException {
 			if (validoi()) {
-				try { 
+				try {
+					uusiposti=true;
 					connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 					System.out.println("Tiedot saatu!");
 						
@@ -515,27 +569,51 @@ public class MokkienHallinta extends Menu {
 					String varusteet=varustelu1.getValue();
 					String eurot=hinta1.getText();
 					String teksti=kuvaus1.getText();
+					
+					PreparedStatement preparedStatement=connection.prepareStatement("SELECT * FROM posti");
+					preparedStatement.executeQuery();
+					
+					ResultSet resultSet=preparedStatement.executeQuery();
+					
+					while(resultSet.next()){
+						String num =resultSet.getString("postinro");
+						if(num.equals(nro)) {
+							uusiposti=false;
+							}
+						}
+					
+					if(uusiposti==true) {
+						PreparedStatement preparedStatement2=connection.prepareStatement(
+								"insert into posti set postinro ='"+nro+"',toimipaikka= '"+kaupunki+"'");
+						preparedStatement2.executeUpdate();
 						
-					PreparedStatement preparedStatement=connection.prepareStatement(
+						Alert b = new Alert(AlertType.INFORMATION);
+						b.setContentText("Postitietoja lisätty tietokantaan!");
+						b.setTitle("Huomio");
+						b.setHeaderText("Huomio:");
+						b.show();
+						}
+						
+					PreparedStatement preparedStatement3=connection.prepareStatement(
 							"insert into mokki set mokkinimi='"+mokkinimi+"', katuosoite='"+os+"', postinro='"+nro+"', kuvaus='"
 									+teksti+"', henkilomaara='"+henkilot+"', varustelu='"+varusteet+"', hinta='"+eurot+"'");
 					
-					preparedStatement.executeUpdate();
+					preparedStatement3.executeUpdate();
 					
 					String valittuToimipaikka = toimialue1.getValue();
 					String toimialue_id;
 					
-					PreparedStatement preparedStatement2=connection.prepareStatement(
+					PreparedStatement preparedStatement4=connection.prepareStatement(
 							"Select toimintaalue_id from toimintaalue where nimi="+"'"+valittuToimipaikka+"'");
 				    	      
-				    ResultSet toimialue_idResult=preparedStatement2.executeQuery();
+				    ResultSet toimialue_idResult=preparedStatement4.executeQuery();
 				    	        
 				    toimialue_idResult.next();
 				    toimialue_id = toimialue_idResult.getString("toimintaalue_id");
 				    	        
-				    PreparedStatement preparedStatement3 = connection.prepareStatement(
+				    PreparedStatement preparedStatement5 = connection.prepareStatement(
 				    		"Update mokki set toimintaalue_id='"+toimialue_id+"' where mokkinimi='"+mokkinimi+"'");
-				    preparedStatement3.executeUpdate();
+				    preparedStatement5.executeUpdate();
 				    
 				    validoi();
 					tallenna1.setText("Tallennettu");
@@ -607,4 +685,50 @@ public class MokkienHallinta extends Menu {
 	        return true;
 		}
 		
+		//tarkistetaan että kaikki kentät on täytetty tallentaessa
+				public boolean validoiTallentaessa() {
+
+			        StringBuilder virheet = new StringBuilder();
+
+			        if (mokinnimi.getText().trim().isEmpty()) {
+			            virheet.append("Syötä mökin nimi.\n");
+			        }
+			        if (toimialue.getValue().trim().isEmpty()) {
+			            virheet.append("Valitse toimialue.\n");
+			        }
+			        if (osoite.getText().trim().isEmpty()) {
+			            virheet.append("Syötä osoite.\n");
+			        }
+			        if (postinro.getText().trim().isEmpty()) {
+			            virheet.append("Syötä postinumero.\n");
+			        }
+			        if (toim.getText().trim().isEmpty()) {
+			            virheet.append("Syötä toimipaikka.\n");
+			        }
+			        if (hlo.getText().trim().isEmpty()) {
+			            virheet.append("Syötä henkilöiden määrä.\n");
+			        }
+			        if (varustelu.getValue().trim().isEmpty()) {
+			            virheet.append("Valitse varustelu.\n");
+			        }
+			        if (hinta.getText().trim().isEmpty()) {
+			            virheet.append("Syötä hinta/yö.\n");
+			        }
+			        if (kuvaus.getText().trim().isEmpty()) {
+			            virheet.append("Syötä kuvaus mökistä.\n");
+			        }
+
+			        if (virheet.length() > 0) {
+			            Alert alert = new Alert(Alert.AlertType.WARNING);
+			            alert.setTitle("Huomio");
+			            alert.setHeaderText("Tyhjiä kenttiä");
+			            alert.setContentText(virheet.toString());
+
+			            alert.showAndWait();
+			            return false;
+			        }
+
+			        // ei virheitä
+			        return true;
+				}
 }
