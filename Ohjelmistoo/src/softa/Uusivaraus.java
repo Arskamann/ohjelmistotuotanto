@@ -63,7 +63,7 @@ public class Uusivaraus extends Menu {
     @FXML
     Label hinta;
     
-    
+    int daysBetween;
     static Double palveluthinta=0.0;
     static int mokkihinta=0;
     
@@ -200,7 +200,7 @@ public class Uusivaraus extends Menu {
 	 
 	 private String a = ".";
 	 private String h = ".";
-	 
+		String IIDEE = null;
 	 
 	 public void paivitaalueet() throws SQLException{
 		 alueet.getItems().clear();
@@ -382,10 +382,10 @@ public class Uusivaraus extends Menu {
       		 
       		 LocalDate ldA = LocalDate.parse( alkaa );
       		 LocalDate ldB = LocalDate.parse( loppuu );
-      		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
+      		 daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
                
                 mokkihinta=Integer.parseInt(hin);
-                hinta.setText((Double.toString(palveluthinta+mokkihinta*daysBetween)));
+                hinta.setText((Double.toString(palveluthinta+(mokkihinta*daysBetween))));
                 mokkiid=x.getAccessibleText();
            });
           
@@ -437,7 +437,7 @@ public class Uusivaraus extends Menu {
 	    		 String loppuu = loppu.getText();
 	    		 LocalDate ldA = LocalDate.parse( alkaa );
 	      		 LocalDate ldB = LocalDate.parse( loppuu );
-	      		 long daysBetween = ChronoUnit.DAYS.between( ldA , ldB );
+	      		 daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
 	    		
 	    	       System.out.println(x.getText());
                    String sisalto=x.getText();
@@ -446,7 +446,7 @@ public class Uusivaraus extends Menu {
                    int maara=Integer.parseInt(sisalto.substring(sisalto.lastIndexOf(" ")+1))+1;
 	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+maara;
 	         x.setText(y);
-	         hinta.setText((Double.toString(palveluthinta+mokkihinta*daysBetween)));
+	         hinta.setText((Double.toString(palveluthinta+(mokkihinta*daysBetween))));
 				
 	            });
 	    	palvelut.getItems().add(x);
@@ -506,11 +506,49 @@ public class Uusivaraus extends Menu {
 				
 				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!=""&&etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {	
 					
-					
+				
 					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
 							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 					preparedStatement.executeUpdate();
+					
+					//---------------------------------
+					
+					 PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+"' and varattu_loppupvm ='"+loppupvm+"' and varattu_pvm = '"+strDate+"'");
+				      
+					    ResultSet resultSet3=preparedStatement3.executeQuery();
+					    while(resultSet3.next()){
+					    	IIDEE=resultSet3.getString("varaus_id");
+					    
+					
+					    }
+					
+					
+					
+					String sähkk;
+					if(lask.isSelected()) {
+						sähkk="kyllä";
+					}
+					else {
+						sähkk="ei";
+					}
+					
+					
+					
+					PreparedStatement preparedStatement2=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+palveluthinta+(mokkihinta*daysBetween)+", alv ="+0.17+
+							 ", maksettu ='ei', sähköpostilla = '"+sähkk+"', muistutus = 'false'");
+
+					preparedStatement2.executeUpdate();
+					
+					
+					
+					
+					
+					//-----------------------------
+					
+					
+				
+					
 					
 					   Alert a = new Alert(AlertType.INFORMATION);
 						 a.setContentText("Uusi varaus luotu!");
@@ -566,6 +604,35 @@ public class Uusivaraus extends Menu {
 									 a.show();
 									 changeScene("Uusivaraus.fxml");
 						    }
+						    
+						    PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+"' and varattu_loppupvm ='"+loppupvm+"' and varattu_pvm = '"+strDate+"'");
+						      
+						    ResultSet resultSet3=preparedStatement3.executeQuery();
+						    while(resultSet3.next()){
+						    	IIDEE=resultSet3.getString("varaus_id");
+						    
+						
+						    }
+						
+						
+						
+						String sähkk;
+						if(lask.isSelected()) {
+							sähkk="kyllä";
+						}
+						else {
+							sähkk="ei";
+						}
+						
+						
+						
+						PreparedStatement preparedStatement4=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+palveluthinta+(mokkihinta*daysBetween)+", alv ="+0.17+
+								 ", maksettu ='ei', sähköpostilla = '"+sähkk+"', muistutus = 'false'");
+
+						preparedStatement4.executeUpdate();
+						
+						
+						
 					   
 				}
 				
