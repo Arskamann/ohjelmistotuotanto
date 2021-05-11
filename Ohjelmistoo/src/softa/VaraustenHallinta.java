@@ -89,93 +89,97 @@ public class VaraustenHallinta extends Menu implements Initializable {
         int increment = 0;
         PreparedStatement preparedStatement;
         lista.getItems().clear();
-        try {
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-
-            //Tekee haun tietokantaan joka kerta kun kirjain kirjotetaan hakukenttään. Teen joskus pelkällä resultsetillä että ei tarvitse hakea tietokannasta joka kerta
-            preparedStatement = connection.prepareStatement(
-
-                    "select asiakas_id from asiakas where etunimi like '"+'%' +hakutext+ '%' +"' or sukunimi like "+" '"+'%' +hakutext+ '%' +"'"
-            );
-
-            ResultSet aIDResult = preparedStatement.executeQuery(); //Pelkkä asiakasID resultset
-
-            aIDResult.next();
-            aID = aIDResult.getString("asiakas_id");
-
-            //Hakuja valittujen kriteereiden perusteella. Päivittyy myös klikatessa filttereistä
-            if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
-                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "'");
-                resultSet = preparedStatement.executeQuery();
-            }
-            else if (naytaVanhat.isSelected()) {
-                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm <= current_date()");
-                resultSet = preparedStatement.executeQuery();
-            }
-            else if (naytaTulevat.isSelected()) {
-                preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm >= current_date()");
-                resultSet = preparedStatement.executeQuery();
-            }
-            preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
-            ResultSet nimet = preparedStatement.executeQuery();
+        if (!haku.getText().isBlank()) {
             try {
-                //tekee loopissa buttonit kaikille löydetyille tiedoille. Buttoneista pääsee käsittelemään kyseisiä tietoja.
-                while(resultSet.next()){
-                    while (nimet.next()) {
-                        if (aID.equals(nimet.getString("asiakas_id"))) {
-                            kokonimi = nimet.getString("etunimi") + " " + nimet.getString("sukunimi");
-                            System.out.println("nimi onnistu");
-                            System.out.println(kokonimi);
-                        }
-                    }
-                    increment++;
-                    vID = resultSet.getString("varaus_id");
-                    aID = resultSet.getString("asiakas_ID");
-                    mID = resultSet.getString("mokki_mokki_id");
-    
-                    Button x=new Button(kokonimi + " Varaus: " + increment + " || " +  "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
-                    x.setAccessibleText(vID);
-    
-                    x.setOnAction((event) -> {
-                        iddd = Integer.parseInt(x.getAccessibleText());
-                        try {
-                            changeScene("VaraustenHallinta_Varaus.fxml");
-                        } catch (IOException throwables) {
-                            throwables.printStackTrace();
-                        }
-                    });
-    
-                    lista.getItems().add(x);
-    
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+
+                //Tekee haun tietokantaan joka kerta kun kirjain kirjotetaan hakukenttään. Teen joskus pelkällä resultsetillä että ei tarvitse hakea tietokannasta joka kerta
+                preparedStatement = connection.prepareStatement(
+
+                        "select asiakas_id from asiakas where etunimi like '"+'%' +hakutext+ '%' +"' or sukunimi like "+" '"+'%' +hakutext+ '%' +"'"
+                );
+
+                ResultSet aIDResult = preparedStatement.executeQuery(); //Pelkkä asiakasID resultset
+
+                aIDResult.next();
+                aID = aIDResult.getString("asiakas_id");
+
+                //Hakuja valittujen kriteereiden perusteella. Päivittyy myös klikatessa filttereistä
+                if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
+                    preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "'");
+                    resultSet = preparedStatement.executeQuery();
                 }
-            } catch (NullPointerException e) {
-                lista.getItems().clear();
-            }
-            //Pieni animaatio hakutulokselle
-            hakuTulos.setText("Haulla " + increment + " tulosta");
-            hakuTulos.setVisible(true);
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(3000),
-                            new KeyValue(hakuTulos.visibleProperty(), false)));
-            timeline.play();
-            System.out.println("Tiedot saatu!");
+                else if (naytaVanhat.isSelected()) {
+                    preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm <= current_date()");
+                    resultSet = preparedStatement.executeQuery();
+                }
+                else if (naytaTulevat.isSelected()) {
+                    preparedStatement = connection.prepareStatement("select * from varaus where asiakas_id = " + "'" + aID + "' and varattu_alkupvm >= current_date()");
+                    resultSet = preparedStatement.executeQuery();
+                }
+                preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
+                ResultSet nimet = preparedStatement.executeQuery();
+                try {
+                    //tekee loopissa buttonit kaikille löydetyille tiedoille. Buttoneista pääsee käsittelemään kyseisiä tietoja.
+                    while(resultSet.next()){
+                        while (nimet.next()) {
+                            if (aID.equals(nimet.getString("asiakas_id"))) {
+                                kokonimi = nimet.getString("etunimi") + " " + nimet.getString("sukunimi");
+                                System.out.println("nimi onnistu");
+                                System.out.println(kokonimi);
+                            }
+                        }
+                        increment++;
+                        vID = resultSet.getString("varaus_id");
+                        aID = resultSet.getString("asiakas_ID");
+                        mID = resultSet.getString("mokki_mokki_id");
 
+                        Button x=new Button(kokonimi + " Varaus: " + increment + " || " +  "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
+                        x.setAccessibleText(vID);
 
-        } catch (SQLException e) {
-            if(e.getMessage().equals("Illegal operation on empty result set.")) {
-                hakuTulos.setText("Haulla ei tuloksia");
+                        x.setOnAction((event) -> {
+                            iddd = Integer.parseInt(x.getAccessibleText());
+                            try {
+                                changeScene("VaraustenHallinta_Varaus.fxml");
+                            } catch (IOException throwables) {
+                                throwables.printStackTrace();
+                            }
+                        });
+
+                        lista.getItems().add(x);
+
+                    }
+                } catch (NullPointerException e) {
+                    lista.getItems().clear();
+                }
+                //Pieni animaatio hakutulokselle
+                hakuTulos.setText("Haulla " + increment + " tulosta");
                 hakuTulos.setVisible(true);
                 Timeline timeline = new Timeline();
                 timeline.getKeyFrames().add(
                         new KeyFrame(Duration.millis(3000),
                                 new KeyValue(hakuTulos.visibleProperty(), false)));
                 timeline.play();
+                System.out.println("Tiedot saatu!");
+
+
+            } catch (SQLException e) {
+                if(e.getMessage().equals("Illegal operation on empty result set.")) {
+                    hakuTulos.setText("Haulla ei tuloksia");
+                    hakuTulos.setVisible(true);
+                    Timeline timeline = new Timeline();
+                    timeline.getKeyFrames().add(
+                            new KeyFrame(Duration.millis(3000),
+                                    new KeyValue(hakuTulos.visibleProperty(), false)));
+                    timeline.play();
+                }
+                else {
+                    System.out.println("Error while connecting to the database");
+                    e.printStackTrace();
+                }
             }
-            else {
-                System.out.println("Error while connecting to the database");
-                e.printStackTrace();
-            }
+        } else if (naytaTulevat.isSelected() || naytaVanhat.isSelected()){
+            listapaivitys();
         }
 
 
@@ -186,16 +190,28 @@ public class VaraustenHallinta extends Menu implements Initializable {
         try {
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
             lista.getItems().clear();
+            PreparedStatement preparedStatement;
+            ResultSet resultSet;
+            String sql = "select * from varaus";
 
-            PreparedStatement preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
+            if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
+                sql = "select * from varaus";
+            }
+            else if (naytaVanhat.isSelected()) {
+                sql = "select * from varaus where varattu_alkupvm <= current_date()";
+            }
+            else if (naytaTulevat.isSelected()) {
+                sql = "select * from varaus where varattu_alkupvm >= current_date()";
+            }
+
+            preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
 
             ResultSet nimet = preparedStatement.executeQuery();
             nimet.next();
 
-            preparedStatement=connection.prepareStatement("select * from varaus");
+            preparedStatement=connection.prepareStatement(sql);
 
-            ResultSet resultSet=preparedStatement.executeQuery();
-            System.out.println("Tiedot saatu!");
+            resultSet = preparedStatement.executeQuery();
 
             while(resultSet.next()){ //tekee nappulat tietokannasta haetuilla tiedoilla
 

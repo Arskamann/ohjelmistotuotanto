@@ -35,13 +35,18 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
     TextField varausIDText;
     @FXML
     Label palveluStatus;
+    @FXML
+    ComboBox palveluNimiDrop;
     //</editor-fold>
     public void lisaaPalvelu() throws SQLException {
         int palvelu_id = 0;
         int lkm = -1;
         try {
             palvelu_id = Integer.parseInt(palveluIDText.getText());
-            lkm = Integer.parseInt(lkmText.getText());
+            if (lkmText.getText().isBlank()) {
+                lkm = 1;
+            }
+            else lkm = Integer.parseInt(lkmText.getText());
         } catch (IllegalArgumentException e) {
 
         } catch (NullPointerException e) {
@@ -65,13 +70,25 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
             System.out.println("Tiedot tallennetu");
 
         } catch (SQLIntegrityConstraintViolationException throwables) {
-            palveluStatus.setText("Palvelu on jo olemassa valitussa varauksessa!");
-            palveluStatus.setVisible(true);
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().add(
-                    new KeyFrame(Duration.millis(3000),
-                            new KeyValue(palveluStatus.visibleProperty(), false)));
-            timeline.play();
+            String palveluTyhjä = "Cannot add or update a child row: a foreign key constraint fails (`vn`.`varauksen_palvelut`, CONSTRAINT `fk_palvelu` FOREIGN KEY (`palvelu_id`) REFERENCES `palvelu` (`palvelu_id`) ON DELETE RESTRICT ON UPDATE RESTRICT)";
+
+            if(throwables.getMessage().equals(palveluTyhjä)) {
+                palveluStatus.setText("Ei valittua palvelua!");
+                palveluStatus.setVisible(true);
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(3000),
+                                new KeyValue(palveluStatus.visibleProperty(), false)));
+                timeline.play();
+            } else {
+                palveluStatus.setText("Palvelu on jo olemassa valitussa varauksessa!");
+                palveluStatus.setVisible(true);
+                Timeline timeline = new Timeline();
+                timeline.getKeyFrames().add(
+                        new KeyFrame(Duration.millis(3000),
+                                new KeyValue(palveluStatus.visibleProperty(), false)));
+                timeline.play();
+            }
             throwables.printStackTrace();
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -84,10 +101,16 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
                             new KeyValue(palveluStatus.visibleProperty(), false)));
         }
     }
-    public void paivitaPalvelut() {
+    public void paivitaPalvelut() throws SQLException {
+        ResultSet rs = connection.prepareStatement("select nimi from palvelu").executeQuery();
+        while (rs.next()) {
+            palveluNimiDrop.getItems().add(rs.getString("nimi"));
+        }
+    }
+    public void palveluIDOnAction() {
         try{
             palveluIDText.clear();
-            PreparedStatement ps = connection.prepareStatement("select palvelu_id from palvelu where nimi ='"+palvelunNimiText.getText()+"' ");
+            PreparedStatement ps = connection.prepareStatement("select palvelu_id from palvelu where nimi ='"+palveluNimiDrop.getSelectionModel().getSelectedItem().toString()+"' ");
             ResultSet rs = ps.executeQuery();
             rs.next();
             palveluIDText.setText(rs.getString("palvelu_id"));
@@ -101,6 +124,11 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        try {
+            paivitaPalvelut();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
         varausIDText.setText(String.valueOf(iddd));
     }
 }

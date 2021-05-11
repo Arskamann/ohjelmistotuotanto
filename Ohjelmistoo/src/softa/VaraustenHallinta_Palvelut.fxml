@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="softa.VaraustenHallintaPalvelut">
    <children>
       <Pane fx:id="palvelu" prefHeight="714.0" prefWidth="1110.0">
          <children>
-            <TextField fx:id="varausIDText" disable="true" editable="false" layoutX="437.0" layoutY="183.0" />
-            <TextField fx:id="palveluIDText" disable="true" layoutX="437.0" layoutY="230.0" />
-            <TextField fx:id="lkmText" layoutX="437.0" layoutY="327.0" />
-            <Label layoutX="374.0" layoutY="187.0" text="VarausID" />
-            <Label layoutX="362.0" layoutY="331.0" text="Lukumäärä" />
-            <Label layoutX="373.0" layoutY="234.0" text="PalveluID" />
-            <Button fx:id="lisaaPalvelu" layoutX="468.0" layoutY="361.0" mnemonicParsing="false" onAction="#lisaaPalvelu" prefHeight="25.0" prefWidth="118.0" text="Lisää Palvelu" />
+            <TextField fx:id="varausIDText" disable="true" editable="false" layoutX="481.0" layoutY="183.0" />
+            <TextField fx:id="palveluIDText" disable="true" layoutX="921.0" layoutY="230.0" visible="false" />
+            <TextField fx:id="lkmText" accessibleText="1" layoutX="481.0" layoutY="327.0" promptText="1" />
+            <Label layoutX="413.0" layoutY="187.0" text="VarausID" />
+            <Label layoutX="408.0" layoutY="331.0" text="Lukumäärä" />
+            <Label layoutX="859.0" layoutY="234.0" text="PalveluID" visible="false" />
+            <Button fx:id="lisaaPalvelu" layoutX="496.0" layoutY="388.0" mnemonicParsing="false" onAction="#lisaaPalvelu" prefHeight="25.0" prefWidth="118.0" text="Lisää Palvelu" />
             <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="32.0" prefWidth="58.0" text="&lt;" />
-            <TextField fx:id="palvelunNimiText" layoutX="437.0" layoutY="277.0" onKeyTyped="#paivitaPalvelut" />
-            <Label layoutX="350.0" layoutY="281.0" text="Palvelun nimi" />
+            <TextField fx:id="palvelunNimiText" layoutX="481.0" layoutY="552.0" onKeyTyped="#palveluIDOnAction" />
+            <Label layoutX="402.0" layoutY="259.0" text="Palvelun nimi" />
             <Label fx:id="palveluStatus" layoutX="483.0" layoutY="97.0" text=" " visible="false" />
+            <ComboBox fx:id="palveluNimiDrop" layoutX="480.0" layoutY="255.0" onAction="#palveluIDOnAction" prefWidth="150.0" />
          </children>
       </Pane>
    </children>
