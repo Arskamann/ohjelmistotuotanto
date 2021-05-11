@@ -24,7 +24,7 @@
             </Button>
             <Button fx:id="muist" layoutX="23.0" layoutY="246.0" mnemonicParsing="false" onAction="#muist" text="Lähetä maksumuistutus" />
             <Label layoutX="23.0" layoutY="218.0" text="Valinta:" />
-            <Button fx:id="maks" layoutX="23.0" layoutY="279.0" mnemonicParsing="false" text="Merkitse maksetuksi" />
+            <Button fx:id="maks" layoutX="23.0" layoutY="279.0" mnemonicParsing="false" onAction="#merk" text="Merkitse maksetuksi" />
          </children>
       </Pane>
       <Pane fx:id="henk" layoutY="-1.0" prefHeight="699.0" prefWidth="1099.0" visible="false">

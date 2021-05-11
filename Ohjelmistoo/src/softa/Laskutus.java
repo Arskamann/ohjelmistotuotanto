@@ -209,8 +209,19 @@ public class Laskutus extends Menu {
      }
     
   
- public void merk() {
-	 
+ public void merk() throws SQLException {
+	 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+	  Text id = lista.getSelectionModel().getSelectedItem();
+     String idd=id.getAccessibleText().toString();
+
+     PreparedStatement preparedStatement=connection.prepareStatement(
+     		"update lasku set maksettu='kyllä' where lasku_id="+idd);
+    preparedStatement.executeUpdate();
+    Alert a = new Alert(AlertType.INFORMATION);
+	 a.setContentText("Lasku merkitty maksetuksi!");
+	 a.setTitle("Huomio");
+	 a.show();
+	 listapäivitys();
  }
     
    
