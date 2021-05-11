@@ -132,9 +132,11 @@ public class VaraustenHallinta extends Menu implements Initializable {
                         increment++;
                         vID = resultSet.getString("varaus_id");
                         aID = resultSet.getString("asiakas_ID");
-                        mID = resultSet.getString("mokki_mokki_id");
+                        Date vAlkuPvm = resultSet.getDate("varattu_alkuPVM");
+                        Date vLoppuPvm = resultSet.getDate("varattu_loppuPVM");
 
-                        Button x=new Button(kokonimi + " Varaus: " + increment + " || " +  "VarausID: " + vID + " " + "AsiakasID: " + aID + " " + "MokkiID: " + mID);
+
+                        Button x=new Button(kokonimi + " Varaus: " + increment + " || " + vAlkuPvm + " - " + vLoppuPvm);
                         x.setAccessibleText(vID);
 
                         x.setOnAction((event) -> {
@@ -215,9 +217,9 @@ public class VaraustenHallinta extends Menu implements Initializable {
 
             while(resultSet.next()){ //tekee nappulat tietokannasta haetuilla tiedoilla
 
-                String id=resultSet.getString("varaus_id");
-                String asiakasID =resultSet.getString("asiakas_id");
-                String mokkiID =resultSet.getString("mokki_mokki_id");
+                String id = resultSet.getString("varaus_id");
+                String asiakasID = resultSet.getString("asiakas_id");
+                String mokkiID = resultSet.getString("mokki_mokki_id");
 
                 if(!asiakasID.equals(nimet.getString("asiakas_id"))) { //pidetään sama nimi nappuloissa jos varaus on samalta henkilöltä
                     nimet.next();
@@ -225,8 +227,11 @@ public class VaraustenHallinta extends Menu implements Initializable {
 
                 etunimi = nimet.getString("etunimi");
                 sukunimi = nimet.getString("sukunimi");
+                Date vAlkuPvm = resultSet.getDate("varattu_alkupvm");
+                Date vLoppuPvm = resultSet.getDate("varattu_loppupvm");
+                System.out.println("Alku: " + vAlkuPvm + " Loppu: " + vLoppuPvm);
 
-                Button x = new Button(etunimi +" "+ sukunimi);
+                Button x = new Button(etunimi +" "+ sukunimi + " || " + vAlkuPvm + " - " + vLoppuPvm);
 
                 x.setAccessibleText(id);
 
