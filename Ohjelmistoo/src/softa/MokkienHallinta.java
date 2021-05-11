@@ -9,9 +9,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import javafx.collections.FXCollections;
@@ -35,11 +33,7 @@ import javafx.stage.Modality;
 
 public class MokkienHallinta extends Menu {
 	
-	//ensimmäisen näkymät napit ja listat
-	@FXML
-	Button takaisin;
-	@FXML
-	Button haku;
+	//ensimmäisen näkymän tarpeelliset napit, listat ja kentät
 	@FXML
 	Button lisaaMokki;
 	@FXML
@@ -49,13 +43,11 @@ public class MokkienHallinta extends Menu {
 	@FXML
 	private TextField hakukentta;
 	@FXML
-    private Button paivita;
-	@FXML
 	private Pane list;
 	@FXML
 	private Label eituloksia;
 	
-	//mökin tietojen muokkauksen napit
+	//mökin tietojen muokkauksen napit, listat ja kentät
 	@FXML
 	private Pane hakutulos;
 	@FXML
@@ -83,17 +75,11 @@ public class MokkienHallinta extends Menu {
 	@FXML
 	private TextField hinta;
 	@FXML
-	private Button poista;
-	@FXML
-	private Button tallenna;
-	@FXML
-	private Button tallennaJaPoistu;
-	@FXML
 	private ListView<Text> tulevatVaraukset;
 	@FXML
-	private Button back;
+	private Button tallenna;
 	
-	//uuden mökin napit
+	//uuden mökin napit, listat ja kentät
 	@FXML
     private Pane uusiMokki;
     @FXML
@@ -115,31 +101,71 @@ public class MokkienHallinta extends Menu {
     @FXML
     private Label id1;
     @FXML
-    private Button tallenna1;
-    @FXML
     private ChoiceBox<String> toimialue1;
     @FXML
     private ChoiceBox<String> varustelu1;
+    @FXML
+    private Button tallenna1;
 	
-    //mökin id:n poimimista varten, toimipaikan id:n poimimista varten ja postinumeron tarkistus
+    //muuttujat mökin id:n ja toimipaikan id:n poimimista varten sekä postinumeron tarkistusta varten
     static int iddd=1;
     static int paikanID=1;
     static boolean uusiposti=true;
 	
-    //dropdown-listaukset
+    //choicebox-listat (mökkien haku, mökin lisäys, mökin muokkaus)
     @FXML
-	private void initialize() {
-    	toimipaikkalistaus.setValue("Valitse toimipaikka");
-    	toimipaikkalistaus.setItems(FXCollections.observableArrayList(haePaikat()));
-    	toimialue.setValue("Valitse toimipaikka");
-		toimialue.setItems(FXCollections.observableArrayList(haePaikat()));
-		toimialue1.setValue("Valitse toimipaikka");
-		toimialue1.setItems(FXCollections.observableArrayList(haePaikat()));
+	private void initialize() throws SQLException {
+    	toimipaikkalistaus.getItems().clear();
+		Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
+		System.out.println("Tiedot saatu!");
+		
+		PreparedStatement preparedStatement=Menu.connection.prepareStatement(
+				"select nimi from toimintaalue order by nimi asc");
+	     
+		ResultSet resultSet=preparedStatement.executeQuery();
+		String ensin = new String("Valitse toiminta-alue");
+		toimipaikkalistaus.getItems().add(ensin);
+		
+		while(resultSet.next()){
+	        String nimi=resultSet.getString("nimi");
+	        String t = new String(nimi);
+	        toimipaikkalistaus.getItems().add(t);
+
+	        toimipaikkalistaus.setValue("Valitse toiminta-alue");
+	       	}
+		
+		toimialue.getItems().clear();
+	     
+		ResultSet resultSet2=preparedStatement.executeQuery();
+		toimialue.getItems().add(ensin);
+		
+		while(resultSet2.next()){
+	        String nimi=resultSet2.getString("nimi");
+	        String t = new String(nimi);
+	        toimialue.getItems().add(t);
+
+	        toimialue.setValue("Valitse toiminta-alue");
+	       	}
+		
+		toimialue1.getItems().clear();
+	     
+		ResultSet resultSet3=preparedStatement.executeQuery();
+		toimialue1.getItems().add(ensin);
+		
+		while(resultSet3.next()){
+	        String nimi=resultSet3.getString("nimi");
+	        String t = new String(nimi);
+	        toimialue1.getItems().add(t);
+
+	        toimialue1.setValue("Valitse toiminta-alue");
+	       	}
+		
 		varustelu.setValue("Valitse varustelutaso");
 		varustelu.setItems(varustelut);
 		varustelu1.setValue("Valitse varustelutaso");
 		varustelu1.setItems(varustelut);
 	}
+    
     
 	//takaisin menuun painamalla 'takaisin'
 	public void menu(ActionEvent event) throws IOException {
@@ -151,10 +177,17 @@ public class MokkienHallinta extends Menu {
 		changeScene("MokkienHallinta.fxml");
 		}
 	
+	//uuden mökin lisäysnäkymä
+	public void mokinLisays() throws SQLException {
+		uusiMokki.setVisible(true);
+		}
+	
+	
 	// kaikkien mökkien näkyminen listassa painamalla 'näytä kaikki'
 	public void listapaivitys() {
     	try {
     		lista.getItems().clear();
+    		eituloksia.setVisible(false);
     		  
     		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
     			System.out.println("Tiedot saatu!");
@@ -184,14 +217,11 @@ public class MokkienHallinta extends Menu {
 					try {
 						paivita();
 					} catch (SQLException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 						} catch (ParseException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
-					}
+						}
     	            });
-    	
     	            lista.getItems().add(x);
     	            }
     	        
@@ -199,39 +229,12 @@ public class MokkienHallinta extends Menu {
     			System.out.println("Error while connecting to the database");
     			}
     	}
+
 	
-	//listassa näkyvät toimipaikat
-    public List<String> haePaikat() {
-
-        List<String> valinnat = new ArrayList<>();
-
-        try {
-        	Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-        	System.out.println("Tiedot saatu!");
-        	PreparedStatement statement=connection.prepareStatement("Select nimi from toimintaalue order by nimi asc");
-      
-            ResultSet set = statement.executeQuery();
-
-            while (set.next()) {
-                valinnat.add(set.getString("nimi"));
-            }
-
-            statement.close();
-            set.close();
-            
-            toimipaikkalistaus.setValue("Valitse toimialue...");
-
-            return valinnat;
- 
-        } catch (SQLException e) {
-			System.out.println("Error while connecting to the database");
-			return null;
-			}
-        }
-    
     //lista varusteluista
     ObservableList<String> varustelut = FXCollections.
 			observableArrayList("Valitse varustelutaso", "Normaali", "Hyvä", "Luksus");
+    
 	
 	// mökkien näyttäminen toimipaikoittain
 	public void hakuToimipaikoilla() {
@@ -290,14 +293,8 @@ public class MokkienHallinta extends Menu {
 	    		}
 	    }
 	
-	//uuden mökin lisäysnäkymä
-	public void mokinLisays() {
-		uusiMokki.setVisible(true);
-		haePaikat();
-		}
-	
 		
-	// mökkien haku nimellä, id:llä
+	// mökkien haku nimellä tai id:llä
     public void hakuMokeista () {
     	String hakutext=hakukentta.getText();
     	System.out.println(hakutext);
@@ -350,11 +347,10 @@ public class MokkienHallinta extends Menu {
  			} catch (SQLException e) {
  				System.out.println("Error while connecting to the database");
  				}
-    	
     	}
     
     
-	//mökin tarkempien tietojen hakeminen kannasta näkyviin
+	//yksittäisen mökin tarkempien tietojen hakeminen kannasta näkyviin
 	public void paivita() throws SQLException, ParseException{
 		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
 		System.out.println("Tiedot saatu!");
@@ -412,7 +408,6 @@ public class MokkienHallinta extends Menu {
 		
 		}
 	
-
 	//muutosten tallentaminen olemassaolevaan mökkiin
 	public void tallenna() throws SQLException, IOException {
 		if (validoiTallentaessa()==true) {
@@ -490,7 +485,6 @@ public class MokkienHallinta extends Menu {
 			}
 		}
 			
-	
 	//tallentaminen ja poistuminen saman tien takaisin mökkienhallintaan
 	public void tallennaJaPoistu() throws SQLException, IOException {
 		if (validoiTallentaessa()==true) {
@@ -552,10 +546,11 @@ public class MokkienHallinta extends Menu {
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.setContentText("Mökkiin on kiinnitetty varauksia! Poista varaukset ensin.");
 			a.setTitle("Huomio");
+			a.setHeaderText("Huomio");
 			a.show();
 		}
 	}
-		
+
 	//uuden mökin luominen
 	public void luoUusi() throws SQLException, IOException {
 		if (validoi()) {
@@ -593,7 +588,7 @@ public class MokkienHallinta extends Menu {
 					Alert b = new Alert(AlertType.INFORMATION);
 					b.setContentText("Postitietoja lisätty tietokantaan!");
 					b.setTitle("Huomio");
-					b.setHeaderText("Huomio:");
+					b.setHeaderText("Huomio");
 					b.show();
 					}
 				
@@ -624,7 +619,7 @@ public class MokkienHallinta extends Menu {
 					
 				Alert a = new Alert(AlertType.INFORMATION);
 				a.setContentText("Uusi mökki luotu!");
-				a.setHeaderText("Huomio:");
+				a.setHeaderText("Huomio");
 				a.setTitle("Huomio");
 				a.show();
 					 
@@ -633,103 +628,102 @@ public class MokkienHallinta extends Menu {
 				 } catch (Exception e) {
 					 Alert a = new Alert(AlertType.INFORMATION);
 					 a.setContentText("Virhe!");
-					 a.setHeaderText("Huomio:");
+					 a.setHeaderText("Huomio");
 					 a.setTitle("Huomio");
 					 a.show();
 					 }
 				 }
 			}
-			
+	
+	//tarkistetaan että kaikki kentät on täytetty uutta mökkiä luodessa
+	public boolean validoi() {
+		StringBuilder virheet = new StringBuilder();
 		
-		//tarkistetaan että kaikki kentät on täytetty uutta mökkiä luodessa
-		public boolean validoi() {
-
-	        StringBuilder virheet = new StringBuilder();
-
-	        if (mokkinimi1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä mökin nimi.\n");
+		if (mokkinimi1.getText().trim().isEmpty()) {
+			virheet.append("Syötä mökin nimi.\n");
 	        }
-	        if (toimialue1.getValue().trim().isEmpty()) {
-	            virheet.append("Valitse toimialue.\n");
+	    if (toimialue1.getValue().trim().equals("Valitse toiminta-alue")) {
+	        virheet.append("Valitse toimialue.\n");
 	        }
-	        if (osoite1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä osoite.\n");
+	    if (osoite1.getText().trim().isEmpty()) {
+	    	virheet.append("Syötä osoite.\n");
 	        }
-	        if (postinro1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä postinumero.\n");
+	    if (postinro1.getText().trim().isEmpty()) {
+	        virheet.append("Syötä postinumero.\n");
 	        }
-	        if (alue1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä toimipaikka.\n");
+	    if (alue1.getText().trim().isEmpty()) {
+	        virheet.append("Syötä toimipaikka.\n");
 	        }
-	        if (hlo1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä henkilöiden määrä.\n");
+	    if (hlo1.getText().trim().isEmpty()) {
+	        virheet.append("Syötä henkilöiden määrä.\n");
 	        }
-	        if (varustelu1.getValue().trim().isEmpty()) {
-	            virheet.append("Valitse varustelu.\n");
+	    if (varustelu1.getValue().trim().equals("Valitse varustelutaso")) {
+	        virheet.append("Valitse varustelu.\n");
 	        }
-	        if (hinta1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä hinta/yö.\n");
+	    if (hinta1.getText().trim().isEmpty()) {
+	        virheet.append("Syötä hinta/yö.\n");
 	        }
-	        if (kuvaus1.getText().trim().isEmpty()) {
-	            virheet.append("Syötä kuvaus mökistä.\n");
+	    if (kuvaus1.getText().trim().isEmpty()) {
+	        virheet.append("Syötä kuvaus mökistä.\n");
 	        }
 
-	        if (virheet.length() > 0) {
-	            Alert alert = new Alert(Alert.AlertType.WARNING);
-	            alert.setTitle("Huomio");
-	            alert.setHeaderText("Tyhjiä kenttiä");
-	            alert.setContentText(virheet.toString());
+	    if (virheet.length() > 0) {
+	    	Alert alert = new Alert(Alert.AlertType.WARNING);
+	        alert.setTitle("Huomio");
+	        alert.setHeaderText("Tyhjiä kenttiä");
+	        alert.setContentText(virheet.toString());
 
-	            alert.showAndWait();
-	            return false;
+	        alert.showAndWait();
+	        return false;
 	        }
-
-	        // ei virheitä
-	        return true;
+	    
+	    // ei virheitä
+	    return true;
 		}
 		
-		//tarkistetaan että kaikki kentät on täytetty tallentaessa
-		public boolean validoiTallentaessa() {
-			StringBuilder virheet = new StringBuilder();
+	//tarkistetaan että kaikki kentät on täytetty tallentaessa
+	public boolean validoiTallentaessa() {
+		StringBuilder virheet = new StringBuilder();
 
-			if (mokinnimi.getText().trim().isEmpty()) {
-				virheet.append("Syötä mökin nimi.\n");
-				}
-			if (toimialue.getValue().trim().isEmpty()) {
-				virheet.append("Valitse toimialue.\n");
-				}
-			if (osoite.getText().trim().isEmpty()) {
-				virheet.append("Syötä osoite.\n");
-			    }
-			if (postinro.getText().trim().isEmpty()) {
-			    virheet.append("Syötä postinumero.\n");
-			    }
-			if (toim.getText().trim().isEmpty()) {
-			    virheet.append("Syötä toimipaikka.\n");
-			    }
-			if (hlo.getText().trim().isEmpty()) {
-				virheet.append("Syötä henkilöiden määrä.\n");
-				}
-			if (varustelu.getValue().trim().isEmpty()) {
-			    virheet.append("Valitse varustelu.\n");
-			    }
-			if (hinta.getText().trim().isEmpty()) {
-			    virheet.append("Syötä hinta/yö.\n");
-			    }
-			if (kuvaus.getText().trim().isEmpty()) {
-			    virheet.append("Syötä kuvaus mökistä.\n");
-			    }
-			
-			if (virheet.length() > 0) {
-				Alert alert = new Alert(Alert.AlertType.WARNING);
-			    alert.setTitle("Huomio");
-			    alert.setHeaderText("Tyhjiä kenttiä");
-			    alert.setContentText(virheet.toString());
-
-			    alert.showAndWait();
-			    return false;
-			    }
-			// ei virheitä
-			return true;
+		if (mokinnimi.getText().trim().isEmpty()) {
+			virheet.append("Syötä mökin nimi.\n");
 			}
+		if (toimialue.getValue().equals("Valitse toiminta-alue")) {
+			virheet.append("Valitse toimialue.\n");
+			}
+		if (osoite.getText().trim().isEmpty()) {
+			virheet.append("Syötä osoite.\n");
+			}
+		if (postinro.getText().trim().isEmpty()) {
+			virheet.append("Syötä postinumero.\n");
+			}
+		if (toim.getText().trim().isEmpty()) {
+			virheet.append("Syötä toimipaikka.\n");
+			}
+		if (hlo.getText().trim().isEmpty()) {
+			virheet.append("Syötä henkilöiden määrä.\n");
+			}
+		if (varustelu.getValue().equals("Valitse varustelutaso")) {
+			virheet.append("Valitse varustelu.\n");
+			}
+		if (hinta.getText().trim().isEmpty()) {
+			virheet.append("Syötä hinta/yö.\n");
+			}
+		if (kuvaus.getText().trim().isEmpty()) {
+			virheet.append("Syötä kuvaus mökistä.\n");
+			}
+			
+		if (virheet.length() > 0) {
+			Alert alert = new Alert(Alert.AlertType.WARNING);
+			alert.setTitle("Huomio");
+			alert.setHeaderText("Tyhjiä kenttiä");
+			alert.setContentText(virheet.toString());
+
+			alert.showAndWait();
+			return false;
+			}
+		
+		// ei virheitä
+		return true;
 		}
+	}
