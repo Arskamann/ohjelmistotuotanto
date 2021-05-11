@@ -229,15 +229,12 @@ public class VaraustenHallinta extends Menu implements Initializable {
                 sukunimi = nimet.getString("sukunimi");
                 Date vAlkuPvm = resultSet.getDate("varattu_alkupvm");
                 Date vLoppuPvm = resultSet.getDate("varattu_loppupvm");
-                System.out.println("Alku: " + vAlkuPvm + " Loppu: " + vLoppuPvm);
 
                 Button x = new Button(etunimi +" "+ sukunimi + " || " + vAlkuPvm + " - " + vLoppuPvm);
 
                 x.setAccessibleText(id);
 
                 x.setOnAction((event) -> {
-                    System.out.println(x.getText());
-
                     iddd=Integer.parseInt(x.getAccessibleText());
 
                     //Siirryt‰‰n Buttonin kautta seuraavaan ikkunaan

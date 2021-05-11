@@ -67,7 +67,7 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
                             new KeyValue(palveluStatus.visibleProperty(), false)));
             timeline.play();
 
-            System.out.println("Tiedot tallennetu");
+            System.out.println("Tiedot tallennettu");
 
         } catch (SQLIntegrityConstraintViolationException throwables) {
             String palveluTyhjä = "Cannot add or update a child row: a foreign key constraint fails (`vn`.`varauksen_palvelut`, CONSTRAINT `fk_palvelu` FOREIGN KEY (`palvelu_id`) REFERENCES `palvelu` (`palvelu_id`) ON DELETE RESTRICT ON UPDATE RESTRICT)";
