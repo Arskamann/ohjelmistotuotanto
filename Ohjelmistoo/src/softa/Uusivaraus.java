@@ -226,8 +226,6 @@ public class Uusivaraus extends Menu {
         		a = alueet.getValue().toString();
 				paivitapalvelut();
 				paivitamokit();
-				paivitahenkilomaara();
-				
 				
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
@@ -237,6 +235,7 @@ public class Uusivaraus extends Menu {
            
 	    });
 	     alueet.setValue("Kaikki");
+	     paivitahenkilomaara();
 	 }
 	 
 	 public void paivitahenkilomaara() throws SQLException {
