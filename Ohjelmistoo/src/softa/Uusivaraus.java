@@ -2,6 +2,7 @@ package softa;
 
 
 import java.io.IOException;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -11,25 +12,23 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.text.Text;
 
 
-public class Uusivaraus extends Menu {
+public class Uusivaraus extends Menu implements Initializable {
 	
 	@FXML
     private TextField hae;
@@ -66,7 +65,12 @@ public class Uusivaraus extends Menu {
     int daysBetween;
     static Double palveluthinta=0.0;
     static int mokkihinta=0;
-    
+
+	@Override
+	public void initialize(URL url, ResourceBundle resourceBundle) {
+		listapaivitys();
+	}
+
 	public void menu(ActionEvent event) throws IOException { 
 		changeScene("Menu.fxml");
 

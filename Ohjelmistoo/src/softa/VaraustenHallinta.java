@@ -196,6 +196,7 @@ public class VaraustenHallinta extends Menu implements Initializable {
             ResultSet resultSet;
             String sql = "select * from varaus";
 
+            //Haetaan vain valitut varaukset
             if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
                 sql = "select distinct  * from varaus,asiakas where varaus.asiakas_id=asiakas.asiakas_id";
             }
