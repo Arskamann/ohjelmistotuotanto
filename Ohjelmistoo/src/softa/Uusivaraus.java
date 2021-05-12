@@ -530,7 +530,7 @@ public class Uusivaraus extends Menu {
 					
 					
 					
-					PreparedStatement preparedStatement2=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+palveluthinta+(mokkihinta*daysBetween)+", alv ="+0.17+
+					PreparedStatement preparedStatement2=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+Double.parseDouble(hintaa.replace("€",""))+", alv ="+0.17+
 							 ", maksettu ='ei', sähköpostilla = '"+sähkk+"', muistutus = 'false'");
 
 					preparedStatement2.executeUpdate();
@@ -621,7 +621,7 @@ public class Uusivaraus extends Menu {
 						
 						
 						
-						PreparedStatement preparedStatement4=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+palveluthinta+(mokkihinta*daysBetween)+", alv ="+0.17+
+						PreparedStatement preparedStatement4=connection.prepareStatement("insert into lasku set varaus_id ='"+IIDEE+"', summa ="+Double.parseDouble(hintaa.replace("€",""))+", alv ="+0.17+
 								 ", maksettu ='ei', sähköpostilla = '"+sähkk+"', muistutus = 'false'");
 
 						preparedStatement4.executeUpdate();
