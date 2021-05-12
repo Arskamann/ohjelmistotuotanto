@@ -197,19 +197,17 @@ public class VaraustenHallinta extends Menu implements Initializable {
             String sql = "select * from varaus";
 
             if (naytaTulevat.isSelected() && naytaVanhat.isSelected()) {
-                sql = "select * from varaus";
+                sql = "select distinct  * from varaus,asiakas where varaus.asiakas_id=asiakas.asiakas_id";
             }
             else if (naytaVanhat.isSelected()) {
-                sql = "select * from varaus where varattu_alkupvm <= current_date()";
+                sql = "select distinct  * from varaus,asiakas where varaus.asiakas_id=asiakas.asiakas_id and varattu_alkupvm <= current_date()";
             }
             else if (naytaTulevat.isSelected()) {
-                sql = "select * from varaus where varattu_alkupvm >= current_date()";
+                sql = "select distinct  * from varaus,asiakas where varaus.asiakas_id=asiakas.asiakas_id and varattu_alkupvm >= current_date()";
             }
 
-            preparedStatement = connection.prepareStatement("select asiakas_id, etunimi, sukunimi from asiakas");
+          
 
-            ResultSet nimet = preparedStatement.executeQuery();
-            nimet.next();
 
             preparedStatement=connection.prepareStatement(sql);
 
@@ -221,13 +219,11 @@ public class VaraustenHallinta extends Menu implements Initializable {
                 String asiakasID = resultSet.getString("asiakas_id");
                 String mokkiID = resultSet.getString("mokki_mokki_id");
 
-                if(!asiakasID.equals(nimet.getString("asiakas_id"))) { //pidetään sama nimi nappuloissa jos varaus on samalta henkilöltä
-                    nimet.next();
-                }
+              
 
-                etunimi = nimet.getString("etunimi");
-                sukunimi = nimet.getString("sukunimi");
-                Date vAlkuPvm = resultSet.getDate("varattu_alkupvm");
+                etunimi = resultSet.getString("etunimi");
+                sukunimi = resultSet.getString("sukunimi");
+               Date vAlkuPvm = resultSet.getDate("varattu_alkupvm");
                 Date vLoppuPvm = resultSet.getDate("varattu_loppupvm");
 
                 Button x = new Button(etunimi +" "+ sukunimi + " || " + vAlkuPvm + " - " + vLoppuPvm);
