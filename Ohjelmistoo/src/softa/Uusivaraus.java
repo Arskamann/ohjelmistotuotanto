@@ -274,7 +274,7 @@ public class Uusivaraus extends Menu {
 		 String ajanjakso="";
 		 
 		 if(alkaa!=""&&loppuu!="") {
-			 ajanjakso= " and mokki_id NOT IN (SELECT mokki_mokki_id FROM vn.varaus WHERE '"+alkaa+"'<= varattu_loppupvm AND '"+loppuu+"'>=varattu_alkupvm)";
+			 ajanjakso= " and mokki_id NOT IN (SELECT mokki_mokki_id FROM vn.varaus WHERE '"+alkaa+" 14:00:00'<= varattu_loppupvm AND '"+loppuu+" 12:00:00'>=varattu_alkupvm)";
 		 }
 		 else {
 			 ajanjakso="";
@@ -502,14 +502,14 @@ public class Uusivaraus extends Menu {
 				if(asiakasiidee!=""&&alkupvm!=""&&loppupvm!=""&&mokkiidee!=""&&hintaa!=""&&etunimi!=""&&sukunimi!=""&&posti!=""&&toimip!=""&&osoite!="") {	
 					
 				
-					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
-							+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
+					PreparedStatement preparedStatement=connection.prepareStatement("insert into varaus set asiakas_id ='"+asiakasiidee+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+" 14:00:00'"
+							+ ", varattu_loppupvm ='"+loppupvm+" 12:00:00', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 					preparedStatement.executeUpdate();
 					
 					//---------------------------------
 					
-					 PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+"' and varattu_loppupvm ='"+loppupvm+"' and varattu_pvm = '"+strDate+"'");
+					 PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+" 14:00:00' and varattu_loppupvm ='"+loppupvm+" 12:00:00' and varattu_pvm = '"+strDate+"'");
 				      
 					    ResultSet resultSet3=preparedStatement3.executeQuery();
 					    while(resultSet3.next()){
@@ -588,8 +588,8 @@ public class Uusivaraus extends Menu {
 						    while(resultSet2.next()){
 						    	String idd =resultSet2.getString("asiakas_id");
 						    	
-						    	PreparedStatement preparedStatement6=connection.prepareStatement("insert into varaus set asiakas_id ='"+idd+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+"'"
-										+ ", varattu_loppupvm ='"+loppupvm+"', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
+						    	PreparedStatement preparedStatement6=connection.prepareStatement("insert into varaus set asiakas_id ='"+idd+"', mokki_mokki_id ="+mokkiidee+", varattu_alkupvm ='"+alkupvm+" 14:00:00'"
+										+ ", varattu_loppupvm ='"+loppupvm+" 12:00:00', varattu_pvm = '"+strDate+"', vahvistus_pvm = '"+strDate+"'");
 
 								preparedStatement6.executeUpdate();
 								
@@ -600,7 +600,7 @@ public class Uusivaraus extends Menu {
 									 changeScene("Uusivaraus.fxml");
 						    }
 						    
-						    PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+"' and varattu_loppupvm ='"+loppupvm+"' and varattu_pvm = '"+strDate+"'");
+						    PreparedStatement preparedStatement3=connection.prepareStatement("select * from varaus where mokki_mokki_id="+mokkiidee+" and varattu_alkupvm ='"+alkupvm+" 14:00:00' and varattu_loppupvm ='"+loppupvm+" 12:00:00' and varattu_pvm = '"+strDate+"'");
 						      
 						    ResultSet resultSet3=preparedStatement3.executeQuery();
 						    while(resultSet3.next()){
