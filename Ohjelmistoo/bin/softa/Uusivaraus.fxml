@@ -16,7 +16,7 @@
    <top>
       <AnchorPane prefHeight="34.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#menu" prefHeight="39.0" prefWidth="72.0" text="&lt;" />
+            <Button layoutX="7.0" layoutY="7.0" mnemonicParsing="false" onAction="#menu" prefHeight="39.0" prefWidth="72.0" text="Takaisin" />
          </children>
       </AnchorPane>
    </top>

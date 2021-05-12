@@ -11,7 +11,7 @@
    <children>
       <Pane fx:id="list" prefHeight="700.0" prefWidth="1100.0">
          <children>
-            <Button layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#menu" prefHeight="42.0" prefWidth="73.0" text="&lt;" />
+            <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#menu" prefHeight="42.0" prefWidth="73.0" text="Takaisin" />
             <ListView fx:id="lista" layoutX="258.0" layoutY="152.0" prefHeight="396.0" prefWidth="568.0" />
             <TextField fx:id="hae" layoutX="488.0" layoutY="108.0" prefHeight="36.0" prefWidth="163.0" promptText="Hae toiminta-alueita" />
             <Button layoutX="661.0" layoutY="108.0" mnemonicParsing="false" onAction="#listaHaku" prefHeight="36.0" prefWidth="64.0" text="Hae" />
@@ -31,7 +31,7 @@
             </Pane>
             <Button fx:id="tallenna" layoutX="613.0" layoutY="85.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="36.0" prefWidth="83.0" text="Tallenna" />
             <Button fx:id="poista" layoutX="704.0" layoutY="85.0" mnemonicParsing="false" onAction="#poista" prefHeight="36.0" prefWidth="127.0" text="Poista toiminta-alue" />
-            <Button layoutX="21.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="36.0" prefWidth="60.0" text="&lt;" />
+            <Button layoutX="15.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="42.0" prefWidth="73.0" text="Takaisin" />
             <Button fx:id="up" layoutX="249.0" layoutY="85.0" mnemonicParsing="false" onAction="#uusiPalvelu" prefHeight="36.0" prefWidth="127.0" text="Lisää uusi palvelu" />
          </children>
       </Pane>
@@ -51,7 +51,7 @@
                   <Label layoutX="63.0" layoutY="191.0" text="Alv (%)" />
                </children>
             </Pane>
-            <Button layoutX="20.0" layoutY="14.0" mnemonicParsing="false" onAction="#takas" prefHeight="42.0" prefWidth="64.0" text="&lt;" />
+            <Button layoutX="15.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#takas" prefHeight="42.0" prefWidth="73.0" text="Takaisin" />
             <Button fx:id="tallenna2" layoutX="683.0" layoutY="106.0" mnemonicParsing="false" onAction="#tallenna2" prefHeight="36.0" prefWidth="83.0" text="Tallenna" />
             <Button fx:id="poista2" layoutX="778.0" layoutY="106.0" mnemonicParsing="false" onAction="#poista2" prefHeight="36.0" prefWidth="96.0" text="Poista palvelu" />
          </children>

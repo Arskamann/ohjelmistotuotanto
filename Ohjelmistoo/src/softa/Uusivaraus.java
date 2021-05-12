@@ -241,21 +241,16 @@ public class Uusivaraus extends Menu {
 	 
 	 public void paivitahenkilomaara() throws SQLException {
 		 hlomaara.getItems().clear();
-		 Menu.connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+Menu.kanta, Menu.nimi, Menu.salis);
-			System.out.println("Tiedot saatu!");
-			
-		PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from mokki order by henkilomaara asc");
-		
-		ResultSet resultSet=preparedStatement.executeQuery();
+		 
 		String xx = new String("2");
-		hlomaara.getItems().add(xx);
-		 while(resultSet.next()){
-             String henkilomaara=resultSet.getString("henkilomaara");
-             String x = new String(henkilomaara);
-            
-             
-            hlomaara.getItems().add(x);
-	    }
+		String xxx = new String("3");
+		String xxxx = new String("4");
+		String xxxxx = new String("5");
+		String xxxxxx = new String("6");
+		String xxxxxxx = new String("7");
+		String xxxxxxxx = new String("8");
+		
+		hlomaara.getItems().addAll(xx,xxx,xxxx,xxxxx,xxxxxx,xxxxxxx,xxxxxxxx);
 		 
 		 hlomaara.setOnAction((event) -> {
 	            
@@ -305,6 +300,7 @@ public class Uusivaraus extends Menu {
 		    else {
 		    	valittuhlomaara=" and mokki.henkilomaara>='"+h+"'";
 		    }
+		    
 		    
 		    String hint;
 		    
