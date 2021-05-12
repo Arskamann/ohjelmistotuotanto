@@ -142,7 +142,7 @@ public class Uusivaraus extends Menu {
  	        ResultSet resultSet=preparedStatement.executeQuery();
  	       
  	        while(resultSet.next()){
- 	             int id=resultSet.getInt("asiakas_id");
+ 	             String id=resultSet.getString("asiakas_id");
  	             String etuu=resultSet.getString("etunimi");
  	             String suku=resultSet.getString("sukunimi");
  	           
@@ -150,7 +150,16 @@ public class Uusivaraus extends Menu {
  	           String mail=resultSet.getString("email");
  	          String osoi=resultSet.getString("lahiosoite");
  	         String poss=resultSet.getString("postinro");
+ 	         
+ 	        PreparedStatement preparedStatement2=connection.prepareStatement("select * from vn.asiakas,vn.posti where asiakas_id="+id+" and posti.postinro= '"+poss+"'");
+	         
+	         ResultSet resultSet2=preparedStatement2.executeQuery();
+	         while(resultSet2.next()){
+	           String toimi=(resultSet2.getString("toimipaikka"));
+	           
+	         
  	             Button x=new Button(etuu+" "+suku);
+ 	            x.setAccessibleText(id);
  	            x.setOnAction((event) -> {
  	            etu.setText(etuu);
  	   	        suk.setText(suku);
@@ -158,10 +167,13 @@ public class Uusivaraus extends Menu {
  	   	        sah.setText(mail);
  	   	        oso.setText(osoi);
  	   	        pos.setText(poss);
+ 	   	        toim.setText(toimi);
+ 	   	        asiakasid=x.getAccessibleText();
 	            });
  	
  	            lista.getItems().add(x);
  	           
+ 	        }
  	        }
  	        
  			} catch (SQLException e) {
@@ -641,6 +653,7 @@ public class Uusivaraus extends Menu {
 				
 				
 		 } catch (Exception e) {
+			 e.printStackTrace();
 			 Alert a = new Alert(AlertType.INFORMATION);
 			 a.setContentText("Virhe!");
 			 a.setTitle("Huomio");
