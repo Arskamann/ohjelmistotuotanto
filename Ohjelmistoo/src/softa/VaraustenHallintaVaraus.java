@@ -231,9 +231,10 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
                 a.setContentText("Varaus poistettu");
                 a.setTitle("Huomio");
                 a.show();
+                changeScene("VaraustenHallinta.fxml");
                 //P‰ivitt‰‰ listan uudestaan poiston j‰lkeen
                 listapaivitys();
-            } catch (SQLException e) {
+            } catch (SQLException | IOException e) {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setTitle("Huomio");
                 a.setContentText("Poistaminen ei onnistunut");
