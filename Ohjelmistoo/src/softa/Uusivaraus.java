@@ -68,6 +68,14 @@ public class Uusivaraus extends Menu implements Initializable {
 
 	@Override
 	public void initialize(URL url, ResourceBundle resourceBundle) {
+		
+		try {
+			paivitaalueet();
+			paivitamokit();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		listapaivitys();
 	}
 
@@ -228,6 +236,7 @@ public class Uusivaraus extends Menu implements Initializable {
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    String tt = new String("Kaikki");
 	    alueet.getItems().add(tt);
+	    alueet.setValue(tt);
 	    while(resultSet.next()){
              String nimi=resultSet.getString("nimi");
              String t = new String(nimi);
@@ -250,7 +259,7 @@ public class Uusivaraus extends Menu implements Initializable {
            }
            
 	    });
-	     alueet.setValue("Kaikki");
+	     
 	     paivitahenkilomaara();
 	 }
 	 
