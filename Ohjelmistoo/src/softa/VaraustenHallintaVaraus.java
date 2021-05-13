@@ -283,6 +283,32 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
             Text id = (Text) palveluList.getSelectionModel().getSelectedItem();
             String idd = id.getAccessibleText();
             System.out.println(idd);
+            
+            
+            //-------------------
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //-----------------
+            
+
+            
 
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
 
