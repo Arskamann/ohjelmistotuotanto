@@ -283,7 +283,7 @@ public void listap‰ivitys1(){
 	             String aluee=resultSet.getString("nimi");
 	             String m‰‰r‰=resultSet.getString("m‰‰r‰");
 	        
-	             Text x=new Text(palvelu+": "+m‰‰r‰+"       ("+aluee+")");
+	             Text x=new Text(aluee+": "+m‰‰r‰+"       ("+palvelu+")");
 	            
             
                     
