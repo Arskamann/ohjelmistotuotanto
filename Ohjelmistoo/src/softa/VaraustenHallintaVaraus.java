@@ -15,6 +15,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.MonthDay;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
@@ -50,6 +51,9 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
     @FXML
     DatePicker varauksenLoppuPVM;
     //</editor-fold>
+    
+    Double alkuhinta;
+    Double ekahinta;
 
     final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
         public DateCell call(final DatePicker datePicker) {
@@ -269,6 +273,58 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
 
                 tallenna.setText("Tallennettu");
                 tallenna.setStyle("-fx-background-color: #00ff00");
+                
+                
+                //-----------------------------------------
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                int hinta = 0;
+                LocalDate ldA = LocalDate.parse( sVarauksenAlkuPVM );
+         		 LocalDate ldB = LocalDate.parse( sVarauksenLoppuPVM );
+         		 int daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
+                
+                
+         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + mokkiID.getText() + "'");
+                  ResultSet resultSet = preparedStatement2.executeQuery();
+                  while(resultSet.next()){
+                	 hinta=resultSet.getInt("hinta");
+                  }
+                double uusihinta = (double) (hinta*daysBetween);
+                
+                
+                
+                PreparedStatement preparedStatement3 = connection.prepareStatement("select summa from lasku where varaus_id ="+iddd);
+                ResultSet resultSet3 = preparedStatement3.executeQuery();
+                while(resultSet3.next()){
+              	 ekahinta=resultSet3.getDouble("summa");
+                }
+                double välihinta=ekahinta-alkuhinta;
+                
+                uusihinta+=välihinta;
+                
+                
+                preparedStatement = connection.prepareStatement(
+                        "update lasku set summa="+uusihinta+" where varaus_id="+iddd);
+                preparedStatement.executeUpdate();
+                
+                //-----------------------------------------------
+                
+                
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
                 System.out.println("Feilas");
@@ -342,6 +398,25 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
             try {
                 palveluListapaivitys();
                 paivita();
+                connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
+                
+                
+                int hinta = 0;
+                LocalDate ldA = LocalDate.parse( varauksenAlkuPVM.getValue().toString() );
+         		 LocalDate ldB = LocalDate.parse( varauksenLoppuPVM.getValue().toString() );
+         		 int daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
+                
+                
+         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + mokkiID.getText() + "'");
+                  ResultSet resultSet = preparedStatement2.executeQuery();
+                  while(resultSet.next()){
+                	 hinta=resultSet.getInt("hinta");
+                  }
+               alkuhinta = (double) (hinta*daysBetween);
+                
+                
+                
+                
             } catch (SQLException | ParseException throwables) {
                 throwables.printStackTrace();
             }
