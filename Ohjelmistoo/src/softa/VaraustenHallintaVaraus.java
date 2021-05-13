@@ -215,6 +215,8 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
         }
 
         public void poista() {
+        	
+        	
             //Poistetaan ensin varauksesta palvelut
             try {
                 PreparedStatement preparedStatement = connection.prepareStatement("delete from varauksen_palvelut where varaus_id=" + iddd);
@@ -226,6 +228,13 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
                 a.show();
             }
             try {
+            	
+            	
+            	 //laskun poisto.
+                PreparedStatement preparedStatement2 = connection.prepareStatement("delete from lasku where varaus_id=" + iddd);
+                preparedStatement2.executeUpdate();
+                
+                
                 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
 
                 //Seuraavana itse varaus
@@ -235,6 +244,10 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
                 a.setContentText("Varaus poistettu");
                 a.setTitle("Huomio");
                 a.show();
+                
+                
+               
+                
                 changeScene("VaraustenHallinta.fxml");
                 //P‰ivitt‰‰ listan uudestaan poiston j‰lkeen
                 listapaivitys();
