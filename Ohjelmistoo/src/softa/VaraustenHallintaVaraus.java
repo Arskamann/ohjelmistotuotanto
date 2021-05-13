@@ -27,15 +27,11 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
     @FXML
     TextField asiakasID;
     @FXML
-    TextField mokkiID;
+    TextField mokkinimi;
     @FXML
     Pane varaus;
     @FXML
-    Label hakuTulos;
-    @FXML
     Button tallenna;
-    @FXML
-    private ListView<Button> lista;
     @FXML
     Label d;
     @FXML
@@ -54,6 +50,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
     
     Double alkuhinta;
     Double ekahinta;
+    static String sMokkinimi;
 
     final Callback<DatePicker, DateCell> dayCellFactory = new Callback<DatePicker, DateCell>() {
         public DateCell call(final DatePicker datePicker) {
@@ -176,7 +173,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
 
             varausID.setText(resultSet.getString("varaus_ID"));
             asiakasID.setText(resultSet.getString("asiakas_id"));
-            mokkiID.setText(mokkinimi.getString("mokkinimi"));
+            this.mokkinimi.setText(mokkinimi.getString("mokkinimi"));
 
             //kutsuu muunnaLocalDateksi metodia ett‰ saadaan p‰iv‰m‰‰r‰muuttujista yhteensopivat
             varattuPVM.setValue(muunnaLocalDateksi(dVarattuPVM));
@@ -274,7 +271,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
             String sVarauksenAlkuPVM = varauksenAlkuPVM.getValue().toString();
             String sVarauksenLoppuPVM = varauksenLoppuPVM.getValue().toString();
 
-            PreparedStatement preparedStatement = connection.prepareStatement("select mokki_id from mokki where mokkinimi = '" + mokkiID.getText() + "'");
+            PreparedStatement preparedStatement = connection.prepareStatement("select mokki_id from mokki where mokkinimi = '" + mokkinimi.getText() + "'");
             ResultSet mokkinimi = preparedStatement.executeQuery();
             try {
 
@@ -312,7 +309,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
          		 int daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
                 
                 
-         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + mokkiID.getText() + "'");
+         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + this.mokkinimi.getText() + "'");
                   ResultSet resultSet = preparedStatement2.executeQuery();
                   while(resultSet.next()){
                 	 hinta=resultSet.getInt("hinta");
@@ -411,6 +408,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
             try {
                 palveluListapaivitys();
                 paivita();
+                sMokkinimi = mokkinimi.getText();
                 connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
                 
                 
@@ -420,7 +418,7 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
          		 int daysBetween = (int) ChronoUnit.DAYS.between( ldA , ldB );
                 
                 
-         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + mokkiID.getText() + "'");
+         		  PreparedStatement preparedStatement2 = connection.prepareStatement("select hinta from mokki where mokkinimi = '" + mokkinimi.getText() + "'");
                   ResultSet resultSet = preparedStatement2.executeQuery();
                   while(resultSet.next()){
                 	 hinta=resultSet.getInt("hinta");

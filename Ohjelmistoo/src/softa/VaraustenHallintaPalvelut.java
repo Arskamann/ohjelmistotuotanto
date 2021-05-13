@@ -125,7 +125,10 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
         }
     }
     public void paivitaPalvelut() throws SQLException {
-        ResultSet rs = connection.prepareStatement("select nimi from palvelu").executeQuery();
+        ResultSet temp = connection.prepareStatement("select toimintaalue_id from mokki where mokkinimi = '"+sMokkinimi+"'").executeQuery();
+        temp.next();
+
+        ResultSet rs = connection.prepareStatement("select nimi from palvelu where toimintaalue_id = '"+temp.getString("toimintaalue_id")+"'").executeQuery();
         while (rs.next()) {
             palveluNimiDrop.getItems().add(rs.getString("nimi"));
         }

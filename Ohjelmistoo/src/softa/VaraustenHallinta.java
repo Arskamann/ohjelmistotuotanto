@@ -1,22 +1,15 @@
 package softa;
 
-import com.mysql.cj.jdbc.exceptions.MysqlDataTruncation;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -25,19 +18,9 @@ public class VaraustenHallinta extends Menu implements Initializable {
 
     //<editor-fold desc="FXML oliot">
     @FXML
-    TextField varausID;
-    @FXML
-    TextField asiakasID;
-    @FXML
-    TextField mokkiID;
-    @FXML
     Pane list;
     @FXML
-    Pane varaus;
-    @FXML
     Label hakuTulos;
-    @FXML
-    Button tallenna;
     @FXML
     private ListView<Button> lista;
     @FXML
@@ -45,31 +28,9 @@ public class VaraustenHallinta extends Menu implements Initializable {
     @FXML
     Button paivita;
     @FXML
-    ListView palveluList;
-    @FXML
-    Pane palvelu;
-    @FXML
-    TextField palveluIDText;
-    @FXML
-    TextField palvelunNimiText;
-    @FXML
-    TextField lkmText;
-    @FXML
-    TextField varausIDText;
-    @FXML
     CheckBox naytaTulevat;
     @FXML
     CheckBox naytaVanhat;
-    @FXML
-    DatePicker vahvistusPVM;
-    @FXML
-    DatePicker varattuPVM;
-    @FXML
-    DatePicker varauksenAlkuPVM;
-    @FXML
-    DatePicker varauksenLoppuPVM;
-    @FXML
-    Label palveluStatus;
     //</editor-fold>
 
     static int iddd = 0;

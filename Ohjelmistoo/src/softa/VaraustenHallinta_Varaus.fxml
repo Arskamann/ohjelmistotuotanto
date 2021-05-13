@@ -27,13 +27,13 @@
             <Label layoutX="214.0" layoutY="159.0" text="VarausID" />
             <Label layoutX="212.0" layoutY="215.0" text="AsiakasID" />
             <TextField id="asiakasID" fx:id="asiakasID" disable="true" editable="false" layoutX="285.0" layoutY="211.0" prefHeight="25.0" prefWidth="251.0" />
-            <Label layoutX="216.0" layoutY="274.0" text="MökkiID" />
-            <TextField id="mokkiID" fx:id="mokkiID" layoutX="285.0" layoutY="270.0" prefHeight="25.0" prefWidth="251.0" />
+            <Label layoutX="216.0" layoutY="274.0" text="Mökkinimi" />
+            <TextField id="mokkiID" fx:id="mokkinimi" layoutX="285.0" layoutY="270.0" prefHeight="25.0" prefWidth="251.0" />
             <Label layoutX="198.0" layoutY="329.0" text="VarattuPVM" />
             <Label layoutX="183.0" layoutY="447.0" text="Varauksen alku" />
             <Label layoutX="186.0" layoutY="386.0" text="VahvistusPVM" />
             <Label layoutX="178.0" layoutY="501.0" text="Varauksen loppu" />
-            <Button layoutX="17.0" layoutY="11.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="32.0" prefWidth="58.0" text="&lt;" />
+            <Button layoutX="17.0" layoutY="11.0" mnemonicParsing="false" onAction="#takaisin" prefHeight="32.0" prefWidth="64.0" text="Takaisin" />
             <Button fx:id="poista" layoutX="964.0" layoutY="27.0" mnemonicParsing="false" onAction="#poista" prefHeight="45.0" prefWidth="112.0" style="-fx-background-color: red;" text="Poista varaus" />
             <Button fx:id="tallenna" layoutX="186.0" layoutY="80.0" mnemonicParsing="false" onAction="#tallenna" prefHeight="45.0" prefWidth="112.0" text="Tallenna" />
             <ListView fx:id="palveluList" layoutX="606.0" layoutY="155.0" prefHeight="365.0" prefWidth="191.0" />
