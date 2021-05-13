@@ -547,10 +547,10 @@ public class Uusivaraus extends Menu implements Initializable {
 					
 					String sähkk;
 					if(lask.isSelected()) {
-						sähkk="kyllä";
+						sähkk="true";
 					}
 					else {
-						sähkk="ei";
+						sähkk="false";
 					}
 					
 					
