@@ -388,7 +388,7 @@ public class Uusivaraus extends Menu implements Initializable {
 		
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement(
 	    		"SELECT distinct mokki_id, mokkinimi, henkilomaara, varustelu,hinta,nimi FROM vn.mokki,vn.varaus,vn.toimintaalue WHERE "+hint+" vn.toimintaalue.toimintaalue_id=vn.mokki.toimintaalue_id"
-	    		+nimi +ajanjakso +valittuhlomaara +varust);
+	    		+nimi +ajanjakso +valittuhlomaara +varust+ "order by henkilomaara");
 	      
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    while(resultSet.next()){
