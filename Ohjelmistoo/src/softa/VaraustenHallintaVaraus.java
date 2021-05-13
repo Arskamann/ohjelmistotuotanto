@@ -282,38 +282,52 @@ public class VaraustenHallintaVaraus extends VaraustenHallinta implements Initia
         public void poistaVarauksenPalvelu() throws SQLException { //Poistaa varauksesta valitun palvelun
             Text id = (Text) palveluList.getSelectionModel().getSelectedItem();
             String idd = id.getAccessibleText();
-            System.out.println(idd);
-            
-            
-            //-------------------
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            //-----------------
-            
-
-            
 
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/" + kanta, nimi, salis);
 
             try {
-                PreparedStatement preparedStatement = connection.prepareStatement("delete from varauksen_palvelut where palvelu_id =" + Integer.parseInt(idd));
+            	
+            	
+            	
+            	Double hinta = 0.00;
+                Double alkusumma = 0.00;
+                int m‰‰r‰ = 0;
+                System.out.println("Tiedot saatu!");
+    			PreparedStatement preparedStatement2=connection.prepareStatement("select * from lasku where varaus_id="+Integer.parseInt(varausID.getText()));
+    			 ResultSet resultSet=preparedStatement2.executeQuery();
+    			   while(resultSet.next()){
+      	             alkusumma=resultSet.getDouble("summa");
+    			   }
+    			   PreparedStatement preparedStatement4=connection.prepareStatement("select * from palvelu where palvelu_id="+idd);
+    				 ResultSet resultSet4=preparedStatement4.executeQuery();
+    				   while(resultSet4.next()){
+    	  	             hinta=resultSet4.getDouble("hinta");
+    				   }
+    				   PreparedStatement preparedStatement6=connection.prepareStatement("select * from varauksen_palvelut where varaus_id="+Integer.parseInt(varausID.getText())+" and palvelu_id="+idd);
+      				 ResultSet resultSet6=preparedStatement6.executeQuery();
+      				   while(resultSet6.next()){
+      	  	             m‰‰r‰=resultSet6.getInt("lkm");
+      				   }
+    				   
+    				   Double uusisumma = alkusumma-(hinta*m‰‰r‰);
+    				   PreparedStatement preparedStatement5=connection.prepareStatement("update lasku set summa="+uusisumma+" where varaus_id="+Integer.parseInt(varausID.getText()));
+    					preparedStatement5.executeUpdate();
+    				   
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+            	
+                PreparedStatement preparedStatement = connection.prepareStatement("delete from varauksen_palvelut where palvelu_id =" + Integer.parseInt(idd)+" and varaus_id="
+                		+varausID.getText().toString());
                 preparedStatement.executeUpdate();
                 palveluList.getItems().remove(palveluList.getSelectionModel().getSelectedItem());
             } catch (SQLIntegrityConstraintViolationException e) {
