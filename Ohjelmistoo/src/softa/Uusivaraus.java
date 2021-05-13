@@ -11,7 +11,9 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import javafx.event.ActionEvent;
@@ -42,6 +44,10 @@ public class Uusivaraus extends Menu implements Initializable {
 	private String mokkiid="";
 	private String asiakasid="";
 	static boolean uusiposti=true;
+	
+	List<Integer> palvelutt = new ArrayList<Integer>();
+	List<Integer>m‰‰r‰t = new ArrayList<Integer>();
+
 	
 	@FXML
     TextField etu;
@@ -232,7 +238,7 @@ public class Uusivaraus extends Menu implements Initializable {
 			System.out.println("Tiedot saatu!");
 		
 	    PreparedStatement preparedStatement=Menu.connection.prepareStatement("select * from toimintaalue");
-	      
+	     
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    String tt = new String("Kaikki");
 	    alueet.getItems().add(tt);
@@ -398,6 +404,8 @@ public class Uusivaraus extends Menu implements Initializable {
           
           
            x.setOnAction((event) -> {
+  
+        	   
                System.out.println("mokin id:"+x.getAccessibleText());
       		 
       		 LocalDate ldA = LocalDate.parse( alkaa );
@@ -427,6 +435,8 @@ public class Uusivaraus extends Menu implements Initializable {
 	 private ListView<Button> palvelut;
 	 
 	 public void paivitapalvelut() throws SQLException {
+		 palvelutt.clear();
+		 m‰‰r‰t.clear();
 		 palvelut.getItems().clear();
 		 
 		 String nimi;
@@ -453,6 +463,26 @@ public class Uusivaraus extends Menu implements Initializable {
 	    	Button x = new Button(pnimi+" "+pkuvaus+" "+phinta+"Ä 0");
 	    	x.setAccessibleText(id);
 	    	 x.setOnAction((event) -> {
+	    		 
+	    		 
+	    		 
+	    		   int y = Integer.parseInt(x.getAccessibleText());
+	        	   if(!palvelutt.contains(y)) {
+	        		   palvelutt.add(y);
+	        		   m‰‰r‰t.add(1);
+	        	   }
+	        	   else {
+	        		   int eka = m‰‰r‰t.get(palvelutt.indexOf(y));
+	        		   int toka = eka+1;
+	        		   m‰‰r‰t.set(palvelutt.indexOf(y), toka);
+	        	   }
+	        	   
+	    		 
+	    		 
+	    		 
+	    		 
+	    		 
+	    		 
 	    		 String alkaa = alku.getText();
 	    		 String loppuu = loppu.getText();
 	    		 LocalDate ldA = LocalDate.parse( alkaa );
@@ -464,8 +494,8 @@ public class Uusivaraus extends Menu implements Initializable {
                    String[] sisaltoosissa= sisalto.split(" ");
                    palveluthinta+=phinta;
                    int maara=Integer.parseInt(sisalto.substring(sisalto.lastIndexOf(" ")+1))+1;
-	    		 String y=pnimi+" "+pkuvaus+" "+phinta+" "+maara;
-	         x.setText(y);
+	    		 String y2=pnimi+" "+pkuvaus+" "+phinta+" "+maara;
+	         x.setText(y2);
 	         hinta.setText((Double.toString(palveluthinta+(mokkihinta*daysBetween))));
 				
 	            });
@@ -562,7 +592,12 @@ public class Uusivaraus extends Menu implements Initializable {
 					
 					
 					
-					
+					for(int i=0; i<palvelutt.size();i++) {
+						PreparedStatement preparedStatementt=connection.prepareStatement("insert varauksen_palvelut set varaus_id ='"+IIDEE+"', palvelu_id="+palvelutt.get(i)+", lkm ="+m‰‰r‰t.get(i));
+							
+
+						preparedStatementt.executeUpdate();
+					}
 					
 					//-----------------------------
 					
@@ -651,6 +686,14 @@ public class Uusivaraus extends Menu implements Initializable {
 
 						preparedStatement4.executeUpdate();
 						
+						
+						//varauksen palvelut...
+						for(int i=0; i<palvelutt.size();i++) {
+							PreparedStatement preparedStatementt=connection.prepareStatement("insert varauksen_palvelut set varaus_id ='"+IIDEE+"', palvelu_id="+palvelutt.get(i)+", lkm ="+m‰‰r‰t.get(i));
+								
+
+							preparedStatementt.executeUpdate();
+						}
 						
 						
 					   
