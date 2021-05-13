@@ -400,7 +400,7 @@ public class MokkienHallinta extends Menu {
         	String alkuPVM = formatoi.format(alku);
             String loppuPVM =formatoi.format(loppu);
         	
-        	Text varattu=new Text(alkuPVM+"—"+loppuPVM+" "+"("+etunimi+" "+sukunimi+")");
+        	Text varattu=new Text(alkuPVM+"-"+loppuPVM+" "+"("+etunimi+" "+sukunimi+")");
         	
         	tulevatVaraukset.getItems().add(varattu);
         	
