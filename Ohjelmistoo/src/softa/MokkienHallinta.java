@@ -201,17 +201,17 @@ public class MokkienHallinta extends Menu {
     	             String alue=resultSet.getString("nimi");
     	             String id=resultSet.getString("mokki_id");
     	        
-    	             Button x=new Button(nimi+" "+"(" + alue +")");
-    	             x.setMinWidth(150);
-    	             x.setAlignment(Pos.CENTER_LEFT);
-    	             x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�
+    	             Button btn=new Button(nimi+" "+"(" + alue +")");
+    	             btn.setMinWidth(150);
+    	             btn.setAlignment(Pos.CENTER_LEFT);
+    	             btn.setAccessibleText(id);               //  napin id:n poimiminen
     	            
-    	            x.setOnAction((event) -> {
-    	                System.out.println(x.getText());
-  	                     String sisalto=x.getText();
+    	            btn.setOnAction((event) -> {
+    	                System.out.println(btn.getText());
+  	                     String sisalto=btn.getText();
   	                     String[] sisaltoosissa= sisalto.split(" ");
   	                   
-  	                    iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
+  	                    iddd=Integer.parseInt(btn.getAccessibleText()); // mökin id:n poimiminen
   	                   
   	                    hakutulos.setVisible(true);
 					try {
@@ -222,7 +222,7 @@ public class MokkienHallinta extends Menu {
 						e.printStackTrace();
 						}
     	            });
-    	            lista.getItems().add(x);
+    	            lista.getItems().add(btn);
     	            }
     	        
     			} catch (SQLException e) {
@@ -268,12 +268,12 @@ public class MokkienHallinta extends Menu {
 	    				eituloksia.setVisible(false);
     		    		String nimi=resultSet.getString("mokkinimi");
     		    	    String id=resultSet.getString("mokki_id");
-    		    	    Button x=new Button(nimi+" "+"(" + id +")");
+    		    	    Button btn=new Button(nimi+" "+"(" + id +")");
 
-    		    	    x.setAccessibleText(id);               //  n�in saahaan se napin ID talteen ilman ett� sit� n�ytet��n siin�	    	             
-    		    	    x.setOnAction((event) -> {
-    		    	    	System.out.println(x.getText());
-    		    	  	    iddd=Integer.parseInt(x.getAccessibleText()); // t�lleen saahaan se id sielt� sit poimittua
+    		    	    btn.setAccessibleText(id);               //  napin id:n poimiminen    	             
+    		    	    btn.setOnAction((event) -> {
+    		    	    	System.out.println(btn.getText());
+    		    	  	    iddd=Integer.parseInt(btn.getAccessibleText()); // mökin id:n poimiminen
     		    	  	    hakutulos.setVisible(true);
     		    	  	    
     		    	  	    try {
@@ -281,11 +281,10 @@ public class MokkienHallinta extends Menu {
     		    	  	    	} catch (SQLException e) {
     		    	  	    		e.printStackTrace();
     		    	  	    		} catch (ParseException e) {
-									// TODO Auto-generated catch block
-									e.printStackTrace();
-								}
+    		    	  	    			e.printStackTrace();
+    		    	  	    			}
     		    	  	    });
-    		    	    lista.getItems().add(x);
+    		    	    lista.getItems().add(btn);
     		    	    }
 	    			}
 	    	} catch (SQLException e) {
@@ -311,41 +310,44 @@ public class MokkienHallinta extends Menu {
  	        
  	        ResultSet resultSet=preparedStatement.executeQuery();
  	        
- 	        while(resultSet.next()){
- 	        	String id=resultSet.getString("mokki_id");
-	            String nimi=resultSet.getString("mokkinimi");
-	            
-	        
-	            Button x=new Button(nimi+" "+"(" + id +")");
-	            x.setMinWidth(150);
-	            x.setAlignment(Pos.CENTER_LEFT);
-	            x.setAccessibleText(id);               //  mökin id talteen
-	            
-	            x.setOnAction((event) -> {
-	            	System.out.println(x.getText());
-                    String sisalto=x.getText();
-                    String[] sisaltoosissa= sisalto.split(" ");
-                   
-                    iddd=Integer.parseInt(x.getAccessibleText()); // poimitaan id
-                   
-                    list.setVisible(false);
-                    hakutulos.setVisible(true);
-                   
-					try {
-						paivita();
-						} catch (SQLException e) {
-						e.printStackTrace();
-						} catch (ParseException e) {
-							// TODO Auto-generated catch block
-							e.printStackTrace();
-						}
-					});
-	            
-	            lista.getItems().add(x);
-	            }
- 	        
- 			} catch (SQLException e) {
- 				System.out.println("Error while connecting to the database");
+ 	       if(!resultSet.isBeforeFirst()) {
+	    		System.out.println("Ei tuloksia");
+	    		eituloksia.setVisible(true);
+	    		eituloksia.setText("Ei hakutuloksia");
+	    		} else {
+	    			while(resultSet.next()){
+	    				eituloksia.setVisible(false);
+	     	        	String id=resultSet.getString("mokki_id");
+	    	            String nimi=resultSet.getString("mokkinimi");
+	    	            
+	    	            Button btn=new Button(nimi+" "+"(" + id +")");
+	    	            btn.setMinWidth(150);
+	    	            btn.setAlignment(Pos.CENTER_LEFT);
+	    	            btn.setAccessibleText(id);               //  mökin id talteen
+	    	            
+	    	            btn.setOnAction((event) -> {
+	    	            	System.out.println(btn.getText());
+	                        String sisalto=btn.getText();
+	                        String[] sisaltoosissa= sisalto.split(" ");
+	                       
+	                        iddd=Integer.parseInt(btn.getAccessibleText()); // poimitaan id
+	                       
+	                        list.setVisible(false);
+	                        hakutulos.setVisible(true);
+	                       
+	    					try {
+	    						paivita();
+	    						} catch (SQLException e) {
+	    						e.printStackTrace();
+	    						} catch (ParseException e) {
+	    							e.printStackTrace();
+	    						}
+	    					});
+	    	            lista.getItems().add(btn);
+	    	            }
+	    			}
+ 	       } catch (SQLException e) {
+ 	    	   System.out.println("Error while connecting to the database");
  				}
     	}
     
@@ -411,6 +413,7 @@ public class MokkienHallinta extends Menu {
 	//muutosten tallentaminen olemassaolevaan mökkiin
 	public void tallenna() throws SQLException, IOException {
 		if (validoiTallentaessa()==true) {
+			//tarkistetaan, onko postinumero ja toimipaikka jo kannassa
 			try {
 				uusiposti=true;
 				System.out.println(iddd);
@@ -438,6 +441,7 @@ public class MokkienHallinta extends Menu {
 						}
 					}
 				
+				//jos postinumeroa ja toimipaikkaa ei ole, lisätään ne kantaan
 				if(uusiposti==true) {
 					PreparedStatement preparedStatement2=connection.prepareStatement(
 							"insert into posti set postinro ='"+nro+"',toimipaikka= '"+kaupunki+"'");
@@ -580,6 +584,7 @@ public class MokkienHallinta extends Menu {
 						}
 					}
 				
+				//jos postinumero ja toimipaikka eivät ole jo kannassa, lisätään ne
 				if(uusiposti==true) {
 					PreparedStatement preparedStatement2=connection.prepareStatement(
 							"insert into posti set postinro ='"+nro+"',toimipaikka= '"+kaupunki+"'");
