@@ -242,7 +242,7 @@ public class Uusivaraus extends Menu implements Initializable {
 	    ResultSet resultSet=preparedStatement.executeQuery();
 	    String tt = new String("Kaikki");
 	    alueet.getItems().add(tt);
-	    alueet.setValue(tt);
+	    alueet.setValue("Valitse");
 	    while(resultSet.next()){
              String nimi=resultSet.getString("nimi");
              String t = new String(nimi);

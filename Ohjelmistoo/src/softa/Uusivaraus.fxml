@@ -52,9 +52,8 @@
             <Text layoutX="8.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mökin tiedot" />
             <TextField fx:id="alku" layoutX="56.0" layoutY="128.0" onKeyReleased="#paivitamokit" prefHeight="25.0" prefWidth="85.0" promptText="vvvv-kk-pp" />
             <Text layoutX="6.0" layoutY="145.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Aikaväli" />
-            <Button layoutX="242.0" layoutY="12.0" mnemonicParsing="false" onAction="#paivitaalueet" prefHeight="37.0" prefWidth="73.0" text="Päivitä" />
             <Text layoutX="658.0" layoutY="9.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Palvelut" />
-            <ComboBox fx:id="alueet" layoutX="332.0" layoutY="13.0" prefHeight="36.0" prefWidth="106.0" />
+            <ComboBox fx:id="alueet" layoutX="332.0" layoutY="13.0" onAction="#paivitaalueet" prefHeight="36.0" prefWidth="106.0" />
             <ComboBox fx:id="hlomaara" layoutX="449.0" layoutY="14.0" prefHeight="35.0" prefWidth="107.0" />
             <Text layoutX="332.0" layoutY="11.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Toiminta-alueet           Henkilömäärä" />
             <RadioButton fx:id="normaali" layoutX="128.0" layoutY="34.0" mnemonicParsing="false" onAction="#paivitamokit" text="Normaali" />
