@@ -57,6 +57,29 @@ public class VaraustenHallintaPalvelut extends VaraustenHallintaVaraus implement
                     "insert into varauksen_palvelut set varaus_id ='"+Integer.parseInt(varausIDText.getText())+"', palvelu_id='"+palvelu_id+"',"+"lkm='"+lkm+"'");
             preparedStatement2.executeUpdate();
             preparedStatement2 = connection.prepareStatement("Insert into palvelu set nimi = '"+palvelunNimiText.getText()+"'");
+            //---------------------------------------------
+            Double hinta = 0.00;
+            Double alkusumma = 0.00;
+            System.out.println("Tiedot saatu!");
+			PreparedStatement preparedStatement=connection.prepareStatement("select * from lasku where varaus_id="+Integer.parseInt(varausIDText.getText()));
+			 ResultSet resultSet=preparedStatement.executeQuery();
+			   while(resultSet.next()){
+  	             alkusumma=resultSet.getDouble("summa");
+			   }
+			   PreparedStatement preparedStatement4=connection.prepareStatement("select * from palvelu where palvelu_id="+palvelu_id);
+				 ResultSet resultSet4=preparedStatement4.executeQuery();
+				   while(resultSet4.next()){
+	  	             hinta=resultSet4.getDouble("hinta");
+				   }
+				   
+				   Double uusisumma = alkusumma+(hinta*lkm);
+				   PreparedStatement preparedStatement5=connection.prepareStatement("update lasku set summa="+uusisumma+" where varaus_id="+Integer.parseInt(varausIDText.getText()));
+					preparedStatement5.executeUpdate();
+				   
+				   
+			//-----------------------------------------
+	      
+	       
 
             palveluStatus.setText("Lisäys onnistui");
             palveluStatus.setVisible(true);
