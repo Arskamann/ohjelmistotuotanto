@@ -16,7 +16,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -29,7 +28,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
-
 
 public class MokkienHallinta extends Menu {
 	
@@ -45,7 +43,7 @@ public class MokkienHallinta extends Menu {
 	@FXML
 	private Pane list;
 	@FXML
-	private Label eituloksia;
+	private Label eituloksia;	
 	
 	//mökin tietojen muokkauksen napit, listat ja kentät
 	@FXML
@@ -112,7 +110,7 @@ public class MokkienHallinta extends Menu {
     static int paikanID=1;
     static boolean uusiposti=true;
 	
-    //choicebox-listat (mökkien haku, mökin lisäys, mökin muokkaus)
+    //choicebox-listat (eri näkymiin: mökkien haku, mökin lisäys, mökin muokkaus)
     @FXML
 	private void initialize() throws SQLException {
     	toimipaikkalistaus.getItems().clear();
@@ -182,50 +180,46 @@ public class MokkienHallinta extends Menu {
 		uusiMokki.setVisible(true);
 		}
 	
-	
 	// kaikkien mökkien näkyminen listassa painamalla 'näytä kaikki'
 	public void listapaivitys() {
     	try {
     		lista.getItems().clear();
     		eituloksia.setVisible(false);
     		  
-    		  Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
-    			System.out.println("Tiedot saatu!");
-    			PreparedStatement preparedStatement=connection.prepareStatement(
-    					"Select m.mokki_id, m.mokkinimi, t.nimi from mokki m join toimintaalue t using(toimintaalue_id);");
+    		Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+kanta, nimi, salis);
+    		System.out.println("Tiedot saatu!");
+    		PreparedStatement preparedStatement=connection.prepareStatement(
+    				"Select m.mokki_id, m.mokkinimi, t.nimi from mokki m join toimintaalue t using(toimintaalue_id);");
     	      
-    	        ResultSet resultSet=preparedStatement.executeQuery();
+    	    ResultSet resultSet=preparedStatement.executeQuery();
     	        
-    	        while(resultSet.next()){
-    	             String nimi=resultSet.getString("mokkinimi");
-    	             String alue=resultSet.getString("nimi");
-    	             String id=resultSet.getString("mokki_id");
+    	    while(resultSet.next()){
+    	    	String nimi=resultSet.getString("mokkinimi");
+    	        String alue=resultSet.getString("nimi");
+    	        String id=resultSet.getString("mokki_id");
     	        
-    	             Button btn=new Button(nimi+" "+"(" + alue +")");
-    	             btn.setMinWidth(150);
-    	             btn.setAlignment(Pos.CENTER_LEFT);
-    	             btn.setAccessibleText(id);               //  napin id:n poimiminen
+    	        Button btn=new Button(nimi+" "+"(" + alue +")");
+    	        btn.setAccessibleText(id);               //  napin id:n poimiminen
     	            
-    	            btn.setOnAction((event) -> {
-    	                System.out.println(btn.getText());
-  	                     String sisalto=btn.getText();
-  	                     String[] sisaltoosissa= sisalto.split(" ");
-  	                   
-  	                    iddd=Integer.parseInt(btn.getAccessibleText()); // mökin id:n poimiminen
-  	                   
-  	                    hakutulos.setVisible(true);
+    	        btn.setOnAction((event) -> {
+    	        	System.out.println(btn.getText());
+  	                String sisalto=btn.getText();
+  	                String[] sisaltoosissa= sisalto.split(" ");
+  	                
+  	                iddd=Integer.parseInt(btn.getAccessibleText()); // mökin id:n poimiminen
+  	                hakutulos.setVisible(true);
+  	                
 					try {
 						paivita();
 					} catch (SQLException e) {
 						e.printStackTrace();
 						} catch (ParseException e) {
-						e.printStackTrace();
+							e.printStackTrace();
 						}
     	            });
-    	            lista.getItems().add(btn);
+    	        lista.getItems().add(btn);
     	            }
-    	        
-    			} catch (SQLException e) {
+    	    } catch (SQLException e) {
     			System.out.println("Error while connecting to the database");
     			}
     	}
@@ -321,8 +315,6 @@ public class MokkienHallinta extends Menu {
 	    	            String nimi=resultSet.getString("mokkinimi");
 	    	            
 	    	            Button btn=new Button(nimi+" "+"(" + id +")");
-	    	            btn.setMinWidth(150);
-	    	            btn.setAlignment(Pos.CENTER_LEFT);
 	    	            btn.setAccessibleText(id);               //  mökin id talteen
 	    	            
 	    	            btn.setOnAction((event) -> {
@@ -399,7 +391,7 @@ public class MokkienHallinta extends Menu {
         	String etunimi=resultSet3.getString("etunimi");
         	String sukunimi=resultSet3.getString("sukunimi");
         	
-        	String alkuPVM = formatoi.format(alku);
+        	String alkuPVM = formatoi.format(alku); //kannasta otetun päivämäärän muotoilu
             String loppuPVM =formatoi.format(loppu);
         	
         	Text varattu=new Text(alkuPVM+"-"+loppuPVM+" "+"("+etunimi+" "+sukunimi+")");
@@ -489,7 +481,7 @@ public class MokkienHallinta extends Menu {
 			}
 		}
 			
-	//tallentaminen ja poistuminen saman tien takaisin mökkienhallintaan
+	//tallentaminen ja poistuminen saman tien takaisin mökkienhallintanäkymään
 	public void tallennaJaPoistu() throws SQLException, IOException {
 		if (validoiTallentaessa()==true) {
 			try {
@@ -535,8 +527,7 @@ public class MokkienHallinta extends Menu {
 			PreparedStatement preparedStatement=connection.prepareStatement(
 					"Delete from mokki where mokki_id="+iddd);
 			preparedStatement.executeUpdate();
-			
-			
+
 			Alert a = new Alert(AlertType.INFORMATION);
 			a.setContentText("Mökki on poistettu");
 			a.setHeaderText("Huomio");
@@ -545,15 +536,16 @@ public class MokkienHallinta extends Menu {
 			
 			changeScene("MokkienHallinta.fxml");
 			listapaivitys();
-			
-		} catch(Exception e) {
-			Alert a = new Alert(AlertType.INFORMATION);
-			a.setContentText("Mökkiin on kiinnitetty varauksia! Poista varaukset ensin.");
-			a.setTitle("Huomio");
-			a.setHeaderText("Huomio");
-			a.show();
+		
+			//huomautus: mökkiä ei voi poistaa, jos siinä on voimassaolevia varauksia
+			} catch(Exception e) {
+				Alert a = new Alert(AlertType.INFORMATION);
+				a.setContentText("Mökkiin on kiinnitetty varauksia! Poista varaukset ensin.");
+				a.setTitle("Huomio");
+				a.setHeaderText("Huomio");
+				a.show();
+				}
 		}
-	}
 
 	//uuden mökin luominen
 	public void luoUusi() throws SQLException, IOException {

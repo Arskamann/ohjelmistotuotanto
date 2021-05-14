@@ -21,7 +21,7 @@
                   <Font name="System Bold" size="24.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="toimipaikkalistaus" layoutX="615.0" layoutY="117.0" onMouseReleased="#hakuToimipaikoilla" prefHeight="26.0" prefWidth="280.0" />
+            <ChoiceBox fx:id="toimipaikkalistaus" layoutX="615.0" layoutY="117.0" onMousePressed="#hakuToimipaikoilla" prefHeight="26.0" prefWidth="280.0" />
             <Button fx:id="lisaaMokki" layoutX="789.0" layoutY="155.0" mnemonicParsing="false" onAction="#mokinLisays" text="Lisää uusi mökki" />
             <TextField fx:id="hakukentta" layoutX="614.0" layoutY="83.0" prefHeight="26.0" prefWidth="281.0" />
             <Button fx:id="paivita" layoutX="615.0" layoutY="155.0" mnemonicParsing="false" onAction="#listapaivitys" text="Näytä kaikki" />
@@ -106,7 +106,7 @@
                </font>
             </Label>
             <ChoiceBox fx:id="toimialue1" layoutX="101.0" layoutY="155.0" prefHeight="26.0" prefWidth="270.0" />
-            <ChoiceBox fx:id="varustelu1" layoutX="238.0" layoutY="297.0" prefHeight="26.0" prefWidth="133.0" />
+            <ChoiceBox fx:id="varustelu1" layoutX="229.0" layoutY="297.0" prefHeight="26.0" prefWidth="142.0" />
             <Label layoutX="65.0" layoutY="335.0" text="Hinta" />
             <TextField fx:id="hinta1" layoutX="103.0" layoutY="331.0" prefHeight="26.0" prefWidth="59.0" />
          </children>
